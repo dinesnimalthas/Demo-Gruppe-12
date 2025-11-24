@@ -1,0 +1,10 @@
+# Lokale Konfigurationsdateien mit Secrets
+config.js
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

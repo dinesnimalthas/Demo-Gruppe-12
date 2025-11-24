@@ -3,826 +3,631 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechGear Store - Premium Electronics & Gadgets</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="Premium-Elektronik und Gadgets mit intelligenter Automatisierung. MacBook, iPhone, AirPods und mehr.">
+    <title>TechGear — Premium Electronics</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* === FONTS === */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
-        
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* === ANIMATIONS === */
-        @keyframes slide-in-up {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .scroll-animate {
-            opacity: 0;
-            animation: slide-in-up 0.8s ease-out forwards;
-        }
-
-        /* === PARALLAX EFFECTS === */
-        .parallax-hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .parallax-layer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
-
-        /* === PRODUCT CARDS === */
-        .product-card {
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            transform-style: preserve-3d;
-            position: relative;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
-        }
-        
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            opacity: 0;
-            transition: opacity 0.3s;
-            border-radius: 1rem;
-        }
-        
-        .product-card:hover::before {
-            opacity: 1;
-        }
-
-        /* === BADGE ANIMATIONS === */
-        @keyframes badge-pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-        }
-        
-        .sale-badge {
-            animation: badge-pulse 2s infinite;
-        }
-
-        /* === UTILITY CLASSES === */
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stars {
-            color: #fbbf24;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* === ADDITIONAL ANIMATIONS === */
-        @keyframes count-up {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -1000px 0;
-            }
-            100% {
-                background-position: 1000px 0;
-            }
-        }
-        
-        .shimmer {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            background-size: 1000px 100%;
-            animation: shimmer 2s infinite;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-50">
+<body>
     
-    <!-- ========================================
-         TOP BANNER
-         ======================================== -->
-    <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center py-2 text-sm font-semibold">
-        🔥 BLACK FRIDAY SALE: Bis zu 40% Rabatt auf ausgewählte Produkte! 🔥
-    </div>
-
-    <!-- ========================================
-         NAVIGATION
-         ======================================== -->
-    <nav class="bg-white/95 backdrop-blur-lg shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <!-- Logo -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-bolt text-white text-xl"></i>
-                    </div>
-                    <span class="text-2xl font-black gradient-text">TechGear</span>
-                </div>
-                
-                <!-- Navigation Links -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#products" class="text-gray-700 hover:text-purple-600 font-semibold transition-colors duration-300">Shop</a>
-                    <a href="#bestsellers" class="text-gray-700 hover:text-purple-600 font-semibold transition-colors duration-300">Bestseller</a>
-                    <a href="#support" class="text-gray-700 hover:text-purple-600 font-semibold transition-colors duration-300">Support</a>
-                    <a href="#automation" class="text-gray-700 hover:text-purple-600 font-semibold transition-colors duration-300">Tech</a>
-                </div>
-                
-                <!-- Action Buttons -->
-                <div class="flex items-center space-x-4">
-                    <button class="text-gray-700 hover:text-purple-600">
-                        <i class="fas fa-search text-xl"></i>
-                    </button>
-                    <button class="text-gray-700 hover:text-purple-600">
-                        <i class="fas fa-heart text-xl"></i>
-                    </button>
-                    <button class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 flex items-center space-x-2">
-                        <i class="fas fa-shopping-bag"></i>
-                        <span>0</span>
-                    </button>
-                </div>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">TechGear</a>
+            
+            <ul class="nav-links">
+                <li><a href="#bestsellers" class="nav-link">Shop</a></li>
+                <li><a href="#products" class="nav-link">Kategorien</a></li>
+                <li><a href="#support" class="nav-link">Support</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <button class="nav-icon"><i class="fas fa-search"></i></button>
+                <button class="nav-icon"><i class="fas fa-heart"></i></button>
+                <button class="cart-button">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- ========================================
-         HERO SECTION
-         ======================================== -->
-    <section class="parallax-hero min-h-screen flex items-center justify-center text-white relative overflow-hidden pb-32">
-        <!-- Animated Background Layers -->
-        <div class="parallax-layer">
-            <div class="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl"></div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-badge">Neu</span>
+            <h1 class="hero-title">Das Beste aus Technologie</h1>
+            <p class="hero-subtitle">Premium-Elektronik für anspruchsvolle Menschen. Einfach. Elegant. Innovativ.</p>
+            
+            <div class="hero-cta">
+                <a href="#bestsellers" class="btn btn-primary">Jetzt shoppen</a>
+                <a href="#products" class="btn btn-secondary">Mehr erfahren</a>
+            </div>
+            
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <div class="trust-badge-icon"><i class="fas fa-shipping-fast"></i></div>
+                    <div class="trust-badge-text">Gratis Versand</div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-badge-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="trust-badge-text">2 Jahre Garantie</div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-badge-icon"><i class="fas fa-undo"></i></div>
+                    <div class="trust-badge-text">30 Tage Rückgabe</div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-badge-icon"><i class="fas fa-headset"></i></div>
+                    <div class="trust-badge-text">24/7 Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bestsellers Section -->
+    <section id="bestsellers" class="section">
+        <div class="section-header">
+            <span class="section-badge">Bestseller</span>
+            <h2 class="section-title">Die beliebtesten Produkte</h2>
+            <p class="section-subtitle">Handverlesen für anspruchsvolle Nutzer</p>
         </div>
         
-        <!-- Hero Content -->
-        <div class="container mx-auto px-6 text-center relative z-20">
-            <!-- Badge -->
-            <div class="mb-6">
-                <span class="inline-block bg-white/20 backdrop-blur-lg px-6 py-2 rounded-full text-sm font-semibold border border-white/30">
-                    Neu eingetroffen ✨
-                </span>
-            </div>
-            
-            <!-- Main Headline -->
-            <h1 class="text-6xl md:text-8xl font-black mb-6 leading-tight">
-                Tech, das<br/>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-pink-300">begeistert</span>
-            </h1>
-            
-            <!-- Subheadline -->
-            <p class="text-xl md:text-2xl mb-10 text-purple-100 max-w-3xl mx-auto font-light">
-                Entdecke die neuesten Gadgets, Premium-Elektronik und innovative Technologie zu unschlagbaren Preisen.
-            </p>
-            
-            <!-- CTA Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#products" class="bg-white text-purple-600 px-10 py-4 rounded-full text-lg font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-110 shadow-2xl">
-                    Jetzt shoppen
-                </a>
-                <a href="#bestsellers" class="glass px-10 py-4 rounded-full text-lg font-bold hover:bg-white/20 transition-all duration-300">
-                    Bestseller ansehen
-                </a>
-            </div>
-
-            <!-- Trust Badges -->
-            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-                <div class="glass p-4 rounded-xl text-center">
-                    <i class="fas fa-shipping-fast text-3xl mb-2"></i>
-                    <p class="text-sm font-semibold">Gratis Versand</p>
+        <div class="product-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span class="product-badge product-badge-sale">-25%</span>
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&h=400&fit=crop" alt="MacBook Pro" class="product-img">
                 </div>
-                <div class="glass p-4 rounded-xl text-center">
-                    <i class="fas fa-shield-alt text-3xl mb-2"></i>
-                    <p class="text-sm font-semibold">2 Jahre Garantie</p>
-                </div>
-                <div class="glass p-4 rounded-xl text-center">
-                    <i class="fas fa-undo text-3xl mb-2"></i>
-                    <p class="text-sm font-semibold">30 Tage Rückgabe</p>
-                </div>
-                <div class="glass p-4 rounded-xl text-center">
-                    <i class="fas fa-headset text-3xl mb-2"></i>
-                    <p class="text-sm font-semibold">24/7 Support</p>
+                <div class="product-info">
+                    <div class="product-category">Laptops</div>
+                    <h3 class="product-name">MacBook Pro 16"</h3>
+                    <p class="product-description">M3 Max Chip, 32GB RAM, 1TB SSD</p>
+                    <div class="product-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-count">(2.4k)</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price-current">CHF 2'624</span>
+                        <span class="price-old">CHF 3'499</span>
+                    </div>
+                    <button class="product-button">In den Warenkorb</button>
                 </div>
             </div>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <i class="fas fa-chevron-down text-2xl text-white/70"></i>
-        </div>
-    </section>
-
-    <!-- ========================================
-         BESTSELLERS SECTION
-         ======================================== -->
-    <section id="bestsellers" class="py-24 bg-white relative z-10">
-        <div class="container mx-auto px-6">
-            <!-- Section Header -->
-            <div class="text-center mb-16 scroll-animate">
-                <span class="inline-block bg-purple-100 text-purple-600 px-4 py-1 rounded-full text-sm font-semibold mb-4">MOST WANTED</span>
-                <h2 class="text-5xl font-black text-gray-900 mb-4">Unsere Bestseller</h2>
-                <p class="text-xl text-gray-600">Die beliebtesten Produkte unserer Community</p>
+            
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span class="product-badge product-badge-sale">-15%</span>
+                    <img src="https://images.unsplash.com/photo-1592286927505-2fd0bd1e2c50?w=600&h=400&fit=crop" alt="iPhone 15 Pro Max" class="product-img">
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Smartphones</div>
+                    <h3 class="product-name">iPhone 15 Pro Max</h3>
+                    <p class="product-description">512GB, Titan Blau, A17 Pro</p>
+                    <div class="product-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-count">(3.2k)</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price-current">CHF 1'274</span>
+                        <span class="price-old">CHF 1'499</span>
+                    </div>
+                    <button class="product-button">In den Warenkorb</button>
+                </div>
             </div>
             
-            <!-- Bestseller Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Bestseller 1 -->
-                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group">
-                    <div class="relative overflow-hidden bg-gradient-to-br from-purple-50 to-blue-50 h-72">
-                        <span class="sale-badge absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold z-10">-25%</span>
-                        <span class="absolute top-4 left-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-bold z-10">🔥 HOT</span>
-                        <i class="fas fa-laptop text-9xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs text-purple-600 font-semibold uppercase">Laptops</span>
-                            <div class="stars text-sm">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                                <span class="text-gray-500 ml-1">(2.4k)</span>
-                            </div>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 group-hover:text-purple-600 transition-colors">MacBook Pro 16" M3 Max</h3>
-                        <p class="text-sm text-gray-600 mb-4">M3 Max Chip, 32GB RAM, 1TB SSD, Space Black</p>
-                        <div class="flex items-baseline gap-2 mb-4">
-                            <span class="text-3xl font-black text-purple-600">CHF 2'624.-</span>
-                            <span class="text-lg text-gray-400 line-through">CHF 3'499.-</span>
-                        </div>
-                        <button class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-xl font-bold hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                            <i class="fas fa-shopping-bag mr-2"></i>In den Warenkorb
-                        </button>
-                    </div>
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span class="product-badge product-badge-new">Neu</span>
+                    <img src="https://images.unsplash.com/photo-1545127398-14699f92334b?w=600&h=400&fit=crop" alt="AirPods Max" class="product-img">
                 </div>
-
-                <!-- Bestseller 2 -->
-                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group" style="animation-delay: 0.1s;">
-                    <div class="relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 h-72">
-                        <span class="sale-badge absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold z-10">-15%</span>
-                        <span class="absolute top-4 left-4 bg-green-400 text-gray-900 px-3 py-1 rounded-full text-xs font-bold z-10">⭐ TOP</span>
-                        <i class="fas fa-mobile-alt text-9xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
+                <div class="product-info">
+                    <div class="product-category">Audio</div>
+                    <h3 class="product-name">AirPods Max</h3>
+                    <p class="product-description">Active Noise Cancellation, 20h Akku</p>
+                    <div class="product-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-count">(1.8k)</span>
                     </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs text-blue-600 font-semibold uppercase">Smartphones</span>
-                            <div class="stars text-sm">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span class="text-gray-500 ml-1">(3.2k)</span>
-                            </div>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">iPhone 15 Pro Max</h3>
-                        <p class="text-sm text-gray-600 mb-4">512GB, Titan Blau, A17 Pro, Always-On Display</p>
-                        <div class="flex items-baseline gap-2 mb-4">
-                            <span class="text-3xl font-black text-blue-600">CHF 1'274.-</span>
-                            <span class="text-lg text-gray-400 line-through">CHF 1'499.-</span>
-                        </div>
-                        <button class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-3 rounded-xl font-bold hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                            <i class="fas fa-shopping-bag mr-2"></i>In den Warenkorb
-                        </button>
+                    <div class="product-price">
+                        <span class="price-current">CHF 579</span>
                     </div>
+                    <button class="product-button">In den Warenkorb</button>
                 </div>
-
-                <!-- Bestseller 3 -->
-                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group" style="animation-delay: 0.2s;">
-                    <div class="relative overflow-hidden bg-gradient-to-br from-pink-50 to-purple-50 h-72">
-                        <span class="absolute top-4 left-4 bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-bold z-10">NEU</span>
-                        <i class="fas fa-headphones text-9xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs text-pink-600 font-semibold uppercase">Audio</span>
-                            <div class="stars text-sm">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span class="text-gray-500 ml-1">(1.8k)</span>
-                            </div>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 group-hover:text-pink-600 transition-colors">AirPods Max</h3>
-                        <p class="text-sm text-gray-600 mb-4">Active Noise Cancellation, Spatial Audio, 20h Akku</p>
-                        <div class="flex items-baseline gap-2 mb-4">
-                            <span class="text-3xl font-black text-pink-600">CHF 579.-</span>
-                        </div>
-                        <button class="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white py-3 rounded-xl font-bold hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                            <i class="fas fa-shopping-bag mr-2"></i>In den Warenkorb
-                        </button>
-                    </div>
+            </div>
+            
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span class="product-badge product-badge-sale">-30%</span>
+                    <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&h=400&fit=crop" alt="iPad Pro" class="product-img">
                 </div>
-
-                <!-- Bestseller 4 -->
-                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group" style="animation-delay: 0.3s;">
-                    <div class="relative overflow-hidden bg-gradient-to-br from-green-50 to-emerald-50 h-72">
-                        <span class="sale-badge absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold z-10">-30%</span>
-                        <i class="fas fa-tablet-alt text-9xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
+                <div class="product-info">
+                    <div class="product-category">Tablets</div>
+                    <h3 class="product-name">iPad Pro 12.9"</h3>
+                    <p class="product-description">M2 Chip, 256GB, WiFi + Cellular</p>
+                    <div class="product-rating">
+                        <span class="stars">★★★★☆</span>
+                        <span class="rating-count">(956)</span>
                     </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs text-green-600 font-semibold uppercase">Tablets</span>
-                            <div class="stars text-sm">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                                <span class="text-gray-500 ml-1">(956)</span>
-                            </div>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 group-hover:text-green-600 transition-colors">iPad Pro 12.9" M2</h3>
-                        <p class="text-sm text-gray-600 mb-4">M2 Chip, 256GB, WiFi + Cellular, Magic Keyboard</p>
-                        <div class="flex items-baseline gap-2 mb-4">
-                            <span class="text-3xl font-black text-green-600">CHF 979.-</span>
-                            <span class="text-lg text-gray-400 line-through">CHF 1'399.-</span>
-                        </div>
-                        <button class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 rounded-xl font-bold hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                            <i class="fas fa-shopping-bag mr-2"></i>In den Warenkorb
-                        </button>
+                    <div class="product-price">
+                        <span class="price-current">CHF 979</span>
+                        <span class="price-old">CHF 1'399</span>
                     </div>
+                    <button class="product-button">In den Warenkorb</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ========================================
-         PRODUCTS SECTION
-         ======================================== -->
-    <section id="products" class="py-24 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <!-- Section Header -->
-            <div class="text-center mb-16 scroll-animate">
-                <h2 class="text-5xl font-black text-gray-900 mb-4">Entdecke alle Kategorien</h2>
-                <p class="text-xl text-gray-600">Premium-Technologie für jeden Bedarf</p>
+    <!-- Categories Section -->
+    <section id="products" class="section bg-surface">
+        <div class="section-header">
+            <span class="section-badge">Kategorien</span>
+            <h2 class="section-title">Entdecke alle Kategorien</h2>
+            <p class="section-subtitle">Premium-Technologie für jeden Bedarf</p>
+        </div>
+        
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-watch product-icon"></i>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Smartwatches</h3>
+                    <p class="product-description">Apple Watch, Fitbit, Garmin und mehr</p>
+                </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <!-- Category 1 -->
-                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group">
-                    <div class="relative overflow-hidden bg-gradient-to-br from-orange-50 to-red-50 h-64">
-                        <i class="fas fa-watch text-8xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-2">Smartwatches & Wearables</h3>
-                        <p class="text-gray-600 mb-4">Apple Watch, Fitbit, Garmin und mehr</p>
-                        <a href="#" class="inline-block text-orange-600 font-bold hover:text-orange-700">
-                            Jetzt ansehen <i class="fas fa-arrow-right ml-1"></i>
-                        </a>
-                    </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-gamepad product-icon"></i>
                 </div>
-
-                <!-- Category 2 -->
-                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group" style="animation-delay: 0.1s;">
-                    <div class="relative overflow-hidden bg-gradient-to-br from-indigo-50 to-blue-50 h-64">
-                        <i class="fas fa-gamepad text-8xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-2">Gaming & Zubehör</h3>
-                        <p class="text-gray-600 mb-4">PS5, Xbox, Gaming-PCs und Peripherie</p>
-                        <a href="#" class="inline-block text-indigo-600 font-bold hover:text-indigo-700">
-                            Jetzt ansehen <i class="fas fa-arrow-right ml-1"></i>
-                        </a>
-                    </div>
+                <div class="product-info">
+                    <h3 class="product-name">Gaming</h3>
+                    <p class="product-description">PS5, Xbox, Gaming-PCs</p>
                 </div>
-
-                <!-- Category 3 -->
-                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group" style="animation-delay: 0.2s;">
-                    <div class="relative overflow-hidden bg-gradient-to-br from-teal-50 to-green-50 h-64">
-                        <i class="fas fa-camera text-8xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-2">Foto & Video</h3>
-                        <p class="text-gray-600 mb-4">Kameras, Objektive, Drohnen und Zubehör</p>
-                        <a href="#" class="inline-block text-teal-600 font-bold hover:text-teal-700">
-                            Jetzt ansehen <i class="fas fa-arrow-right ml-1"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================
-         CUSTOMER REVIEWS SECTION
-         ======================================== -->
-    <section class="py-24 bg-white">
-        <div class="container mx-auto px-6">
-            <!-- Section Header -->
-            <div class="text-center mb-16 scroll-animate">
-                <h2 class="text-5xl font-black text-gray-900 mb-4">Das sagen unsere Kunden</h2>
-                <div class="flex items-center justify-center gap-2 text-2xl">
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <span class="font-bold">4.9/5</span>
-                    <span class="text-gray-500">(12'450 Bewertungen)</span>
-                </div>
-            </div>
-
-            <!-- Reviews Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Review 1 -->
-                <div class="bg-gradient-to-br from-purple-50 to-blue-50 p-8 rounded-2xl scroll-animate">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                            S
-                        </div>
-                        <div>
-                            <h4 class="font-bold">Sarah M.</h4>
-                            <div class="stars text-sm">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-gray-700 italic">"Beste Online-Shop-Erfahrung ever! Lieferung super schnell, Produkte top und der Support ist unglaublich hilfreich. Werde definitiv wieder bestellen!"</p>
-                    <div class="mt-4 text-sm text-gray-500">Verifizierter Kauf • vor 2 Tagen</div>
-                </div>
-
-                <!-- Review 2 -->
-                <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-2xl scroll-animate" style="animation-delay: 0.1s;">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                            M
-                        </div>
-                        <div>
-                            <h4 class="font-bold">Marco K.</h4>
-                            <div class="stars text-sm">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-gray-700 italic">"Das MacBook Pro kam perfekt verpackt an. Der automatisierte Support hat mir sogar geholfen, die passenden Accessories zu finden. 5 Sterne!"</p>
-                    <div class="mt-4 text-sm text-gray-500">Verifizierter Kauf • vor 5 Tagen</div>
-                </div>
-
-                <!-- Review 3 -->
-                <div class="bg-gradient-to-br from-pink-50 to-purple-50 p-8 rounded-2xl scroll-animate" style="animation-delay: 0.2s;">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 bg-pink-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                            L
-                        </div>
-                        <div>
-                            <h4 class="font-bold">Laura B.</h4>
-                            <div class="stars text-sm">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-gray-700 italic">"Preis-Leistung unschlagbar! Die Black Friday Deals sind echt der Hammer. Habe schon 3 Freunden davon erzählt."</p>
-                    <div class="mt-4 text-sm text-gray-500">Verifizierter Kauf • vor 1 Woche</div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ========================================
-         SUPPORT SECTION - AUTOMATION DEMO
-         ======================================== -->
-    <section id="support" class="py-24 bg-gradient-to-br from-gray-50 via-purple-50 to-blue-50">
-        <div class="container mx-auto px-6">
-            <!-- Section Header -->
-            <div class="text-center mb-12 scroll-animate">
-                <span class="inline-block bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold mb-4">💬 24/7 AI-POWERED SUPPORT</span>
-                <h2 class="text-5xl md:text-6xl font-black text-gray-900 mb-4">Brauchst du Hilfe?</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Unser KI-gestütztes Automatisierungssystem ist rund um die Uhr für dich da – blitzschnell und intelligent!</p>
             </div>
             
-            <!-- Support Form Container -->
-            <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl p-8 md:p-16 scroll-animate relative overflow-hidden">
-                <!-- Animated Background Blobs -->
-                <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-purple-200 to-blue-200 rounded-full blur-3xl opacity-20 -z-0 animate-pulse"></div>
-                <div class="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-pink-200 to-purple-200 rounded-full blur-3xl opacity-20 -z-0 animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-camera product-icon"></i>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Foto & Video</h3>
+                    <p class="product-description">Kameras, Drohnen, Zubehör</p>
+                </div>
+            </div>
 
-                <div class="relative z-10">                    <form id="supportForm" class="space-y-6">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="userName" class="block text-sm font-bold text-gray-700 mb-2">👤 Dein Name</label>
-                                <input type="text" id="userName" class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-200 focus:border-purple-600 transition-all font-medium" placeholder="Max Mustermann" required>
-                            </div>
-                            <div>
-                                <label for="userEmail" class="block text-sm font-bold text-gray-700 mb-2">📧 E-Mail</label>
-                                <input type="email" id="userEmail" class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-200 focus:border-purple-600 transition-all font-medium" placeholder="max@beispiel.ch" required>
-                            </div>
-                        </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-tv product-icon"></i>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Smart Home</h3>
+                    <p class="product-description">Beleuchtung, Sicherheit, Automation</p>
+                </div>
+            </div>
 
-                        <div>
-                            <label for="issueType" class="block text-sm font-bold text-gray-700 mb-2">🎯 Art des Problems</label>
-                            <select id="issueType" class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-200 focus:border-purple-600 transition-all font-medium cursor-pointer appearance-none">
-                                <option value="bug">🐛 Technisches Problem / Bug</option>
-                                <option value="feature">✨ Feature-Wunsch</option>
-                                <option value="payment">💳 Zahlungsproblem</option>
-                                <option value="delivery">📦 Lieferungsproblem</option>
-                                <option value="product">🛍️ Produktfrage</option>
-                                <option value="other">❓ Andere Anfrage</option>
-                            </select>
-                        </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-speaker product-icon"></i>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Audio</h3>
+                    <p class="product-description">Lautsprecher, Soundbars, Hi-Fi</p>
+                </div>
+            </div>
 
-                        <div>
-                            <label for="issueDescription" class="block text-sm font-bold text-gray-700 mb-2">📝 Beschreibung</label>
-                            <textarea id="issueDescription" rows="6" class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-200 focus:border-purple-600 transition-all font-medium resize-none" placeholder="Beschreibe dein Anliegen so detailliert wie möglich..." required></textarea>
-                        </div>
-
-                        <div class="flex items-center space-x-3 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
-                            <input type="checkbox" id="urgentCheckbox" class="w-6 h-6 text-red-600 rounded border-gray-300 focus:ring-red-500 cursor-pointer">
-                            <label for="urgentCheckbox" class="text-gray-900 font-bold cursor-pointer select-none flex-1">🚨 Dies ist dringend / kritisch (Antwort binnen 1h)</label>
-                        </div>
-
-                        <button type="submit" class="w-full bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-size-200 text-white py-5 rounded-xl font-black text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] hover:bg-pos-100 flex items-center justify-center gap-3">
-                            <i class="fas fa-rocket text-2xl"></i>
-                            <span>Support-Anfrage jetzt senden</span>
-                        </button>
-                    </form>
-
-                    <!-- Success Message -->
-                    <div id="successMessage" class="hidden mt-10">
-                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-4 border-green-500 p-10 rounded-3xl shadow-xl">
-                            <div class="flex flex-col md:flex-row items-start gap-6">
-                                <div class="bg-green-500 rounded-2xl p-6 shadow-lg">
-                                    <i class="fas fa-check-circle text-white text-5xl"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="text-3xl font-black text-green-800 mb-3">🎉 Anfrage erfolgreich!</h3>
-                                    <div class="bg-green-200 inline-block px-4 py-2 rounded-lg mb-4">
-                                        <span class="text-sm font-bold text-green-800">Ticket-Nummer:</span>
-                                        <span id="ticketNumber" class="font-mono text-lg font-black text-green-900 ml-2"></span>
-                                    </div>
-                                    <p class="text-lg text-green-700 mb-4 font-semibold">Deine Anfrage wurde von unserem intelligenten System verarbeitet:</p>
-                                    <div class="grid md:grid-cols-2 gap-3">
-                                        <div class="flex items-center gap-3 bg-white p-3 rounded-lg">
-                                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
-                                            <span class="font-bold text-gray-800">GitHub Issue erstellt</span>
-                                        </div>
-                                        <div class="flex items-center gap-3 bg-white p-3 rounded-lg">
-                                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
-                                            <span class="font-bold text-gray-800">Team benachrichtigt</span>
-                                        </div>
-                                        <div class="flex items-center gap-3 bg-white p-3 rounded-lg">
-                                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
-                                            <span class="font-bold text-gray-800">Priorität zugewiesen</span>
-                                        </div>
-                                        <div class="flex items-center gap-3 bg-white p-3 rounded-lg">
-                                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
-                                            <span class="font-bold text-gray-800">Experte assigned</span>
-                                        </div>
-                                    </div>
-                                    <p class="mt-4 text-sm text-green-700">📩 Du erhältst in wenigen Minuten eine Bestätigungsmail.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Automation Info -->
-                    <div class="mt-10 p-8 bg-gradient-to-r from-purple-50 via-blue-50 to-purple-50 border-2 border-purple-300 rounded-3xl shadow-lg">
-                        <div class="flex flex-col md:flex-row items-start gap-6">
-                            <div class="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-5 shadow-lg">
-                                <i class="fas fa-robot text-white text-4xl"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-2xl font-black text-purple-900 mb-3">🤖 Vollautomatisierter KI-Support</h3>
-                                <p class="text-purple-800 mb-4 font-semibold">Deine Anfrage durchläuft unser intelligentes Automatisierungssystem:</p>
-                                <div class="grid md:grid-cols-2 gap-4">
-                                    <div class="flex items-center gap-3">
-                                        <i class="fas fa-bolt text-purple-600 text-xl"></i>
-                                        <span class="font-bold text-purple-900">Sofortige Ticketerstellung</span>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <i class="fas fa-brain text-purple-600 text-xl"></i>
-                                        <span class="font-bold text-purple-900">KI-basierte Analyse</span>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <i class="fas fa-users-cog text-purple-600 text-xl"></i>
-                                        <span class="font-bold text-purple-900">Smart Team-Routing</span>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <i class="fas fa-chart-line text-purple-600 text-xl"></i>
-                                        <span class="font-bold text-purple-900">Echtzeit-Tracking</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="product-card">
+                <div class="product-image">
+                    <i class="fas fa-plug product-icon"></i>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Zubehör</h3>
+                    <p class="product-description">Kabel, Ladegeräte, Cases</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Automation Demo Section -->
-    <section id="automation" class="py-20 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16 scroll-animate">
-                <h2 class="text-4xl font-bold">
-                    <i class="fas fa-cogs mr-2"></i>Powered by GitHub Automation
-                </h2>
-                <p class="text-xl mt-2 text-purple-200">Erlebe die Zukunft des Supports – schnell, intelligent und effizient.</p>
+    <!-- More Products Section -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-badge">Weitere Highlights</span>
+            <h2 class="section-title">Entdecke noch mehr</h2>
+            <p class="section-subtitle">Handverlesene Produkte für jeden Anspruch</p>
+        </div>
+        
+        <div class="product-grid">
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span class="product-badge product-badge-new">Neu</span>
+                    <img src="https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=600&h=400&fit=crop" alt="Apple Watch" class="product-img">
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Wearables</div>
+                    <h3 class="product-name">Apple Watch Series 9</h3>
+                    <p class="product-description">GPS + Cellular, 45mm, Always-On Display</p>
+                    <div class="product-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-count">(1.2k)</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price-current">CHF 499</span>
+                    </div>
+                    <button class="product-button">In den Warenkorb</button>
+                </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Automation Card 1 -->
-                <div class="tilt-card bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center scroll-animate" style="animation-delay: 0.1s;">
-                    <i class="fas fa-tags text-5xl mb-4 text-white"></i>
-                    <h3 class="font-bold text-xl mb-2">Auto-Labeling</h3>
-                    <p class="text-sm text-purple-200">Intelligente Kategorisierung aller Anfragen für sofortige Klarheit.</p>
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span class="product-badge product-badge-sale">-20%</span>
+                    <img src="https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600&h=400&fit=crop" alt="Samsung QLED TV" class="product-img">
                 </div>
-                
-                <!-- Automation Card 2 -->
-                <div class="tilt-card bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center scroll-animate" style="animation-delay: 0.2s;">
-                    <i class="fas fa-users-cog text-5xl mb-4 text-white"></i>
-                    <h3 class="font-bold text-xl mb-2">Smart Triage</h3>
-                    <p class="text-sm text-purple-200">Automatische Zuweisung an den richtigen Experten im Team.</p>
+                <div class="product-info">
+                    <div class="product-category">Smart Home</div>
+                    <h3 class="product-name">Samsung QLED 4K TV</h3>
+                    <p class="product-description">65", Quantum Processor, HDR10+</p>
+                    <div class="product-rating">
+                        <span class="stars">★★★★☆</span>
+                        <span class="rating-count">(847)</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price-current">CHF 1'199</span>
+                        <span class="price-old">CHF 1'499</span>
+                    </div>
+                    <button class="product-button">In den Warenkorb</button>
                 </div>
-                
-                <!-- Automation Card 3 -->
-                <div class="tilt-card bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center scroll-animate" style="animation-delay: 0.3s;">
-                    <i class="fas fa-bell fa-shake text-5xl mb-4 text-white"></i>
-                    <h3 class="font-bold text-xl mb-2">Team Notifications</h3>
-                    <p class="text-sm text-purple-200">Sofortige Alerts via Teams & Discord, damit nichts untergeht.</p>
+            </div>
+            
+            <!-- Product 7 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&h=400&fit=crop" alt="Sony Headphones" class="product-img">
                 </div>
-                
-                <!-- Automation Card 4 -->
-                <div class="tilt-card bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center scroll-animate" style="animation-delay: 0.4s;">
-                    <i class="fas fa-ruler-combined text-5xl mb-4 text-white"></i>
-                    <h3 class="font-bold text-xl mb-2">PR Size Control</h3>
-                    <p class="text-sm text-purple-200">Optimierte Code-Reviews für schnellere und bessere Fixes.</p>
+                <div class="product-info">
+                    <div class="product-category">Audio</div>
+                    <h3 class="product-name">Sony WH-1000XM5</h3>
+                    <p class="product-description">Noise Cancelling, 30h Akku, Multipoint</p>
+                    <div class="product-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-count">(2.1k)</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price-current">CHF 379</span>
+                    </div>
+                    <button class="product-button">In den Warenkorb</button>
+                </div>
+            </div>
+            
+            <!-- Product 8 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span class="product-badge product-badge-sale">-35%</span>
+                    <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&h=400&fit=crop" alt="Magic Keyboard" class="product-img">
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Zubehör</div>
+                    <h3 class="product-name">Magic Keyboard</h3>
+                    <p class="product-description">Wireless, Touch ID, CH-Layout</p>
+                    <div class="product-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-count">(654)</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price-current">CHF 129</span>
+                        <span class="price-old">CHF 199</span>
+                    </div>
+                    <button class="product-button">In den Warenkorb</button>
                 </div>
             </div>
 
-            <div class="text-center mt-16 scroll-animate">
-                <a href="automation-dashboard.html" class="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-bold hover:bg-gray-200 transition-all duration-300 transform hover:scale-110">
-                    <i class="fas fa-chart-bar mr-2"></i>Live Automation Dashboard
-                </a>
+            <!-- Product 9 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span class="product-badge product-badge-new">Neu</span>
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop" alt="Roomba Saugroboter" class="product-img">
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Smart Home</div>
+                    <h3 class="product-name">Roomba j7+</h3>
+                    <p class="product-description">Saugroboter, Auto-Entleerung, Mapping</p>
+                    <div class="product-rating">
+                        <span class="stars">★★★★☆</span>
+                        <span class="rating-count">(432)</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price-current">CHF 799</span>
+                    </div>
+                    <button class="product-button">In den Warenkorb</button>
+                </div>
+            </div>
+
+            <!-- Product 10 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <span class="product-badge product-badge-sale">-18%</span>
+                    <img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&h=400&fit=crop" alt="DJI Drohne" class="product-img">
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Foto</div>
+                    <h3 class="product-name">DJI Mini 3 Pro</h3>
+                    <p class="product-description">Drohne, 4K HDR, 34min Flugzeit</p>
+                    <div class="product-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-count">(1.5k)</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price-current">CHF 819</span>
+                        <span class="price-old">CHF 999</span>
+                    </div>
+                    <button class="product-button">In den Warenkorb</button>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ========================================
-         FOOTER
-         ======================================== -->
-    <footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white py-16">
-        <div class="container mx-auto px-6">
-            <!-- Footer Grid -->
-            <div class="grid md:grid-cols-4 gap-12 mb-12">
-                <!-- Brand Column -->
-                <div>
-                    <div class="flex items-center space-x-3 mb-6">
-                        <div class="w-12 h-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-bolt text-white text-2xl"></i>
-                        </div>
-                        <span class="text-2xl font-black gradient-text">TechGear</span>
-                    </div>
-                    <p class="text-gray-400 mb-6">Premium-Elektronik trifft auf intelligente Automation. Die Zukunft des Online-Shopping.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://github.com/HSLU-Exercise/scope-your-project-gruppe-12" target="_blank" class="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Shop Column -->
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Shop</h4>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#bestsellers" class="hover:text-purple-400 transition-colors">Bestseller</a></li>
-                        <li><a href="#products" class="hover:text-purple-400 transition-colors">Alle Kategorien</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition-colors">Neue Produkte</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition-colors">Sale & Angebote</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition-colors">Geschenkkarten</a></li>
-                    </ul>
-                </div>
-
-                <!-- Support Column -->
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Support</h4>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#support" class="hover:text-purple-400 transition-colors">Kontakt</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition-colors">FAQ</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition-colors">Versand & Lieferung</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition-colors">Rückgabe & Umtausch</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition-colors">Garantie</a></li>
-                    </ul>
-                </div>
-
-                <!-- Info Column -->
-                <div>
-                    <h4 class="text-lg font-bold mb-4">Über uns</h4>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#automation" class="hover:text-purple-400 transition-colors">Unsere Technologie</a></li>
-                        <li><a href="automation-dashboard.html" class="hover:text-purple-400 transition-colors">Live Dashboard</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition-colors">Karriere</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition-colors">Presse</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition-colors">Blog</a></li>
-                    </ul>
-                </div>
+    <!-- Reviews Section -->
+    <section class="section bg-surface">
+        <div class="section-header">
+            <span class="section-badge">Kundenmeinungen</span>
+            <h2 class="section-title">Das sagen unsere Kunden</h2>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem;">
+                <span class="stars" style="font-size: 1.5rem;">★★★★★</span>
+                <span style="font-size: 1.5rem; font-weight: 700;">4.9/5</span>
+                <span style="color: var(--color-text-secondary);">(12'450 Bewertungen)</span>
             </div>
-
-            <!-- Newsletter -->
-            <div class="bg-gradient-to-r from-purple-900/50 to-blue-900/50 backdrop-blur-lg rounded-2xl p-8 mb-12 border border-purple-500/30">
-                <div class="grid md:grid-cols-2 gap-6 items-center">
+        </div>
+        
+        <div class="product-grid">
+            <div style="background: white; padding: 2rem; border-radius: var(--border-radius); border: 1px solid var(--color-border);">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 48px; height: 48px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.25rem;">S</div>
                     <div>
-                        <h3 class="text-2xl font-bold mb-2">📬 Newsletter abonnieren</h3>
-                        <p class="text-gray-300">Erhalte exklusive Deals und die neuesten Tech-News!</p>
+                        <div style="font-weight: 600;">Sarah M.</div>
+                        <div class="stars" style="font-size: 0.875rem;">★★★★★</div>
                     </div>
-                    <div class="flex gap-3">
-                        <input type="email" placeholder="deine@email.ch" class="flex-1 px-5 py-3 bg-gray-800 border-2 border-gray-700 rounded-xl focus:outline-none focus:border-purple-500 transition-all">
-                        <button class="bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300 transform hover:scale-105 whitespace-nowrap">
-                            Anmelden
-                        </button>
+                </div>
+                <p style="color: var(--color-text-secondary); line-height: 1.6;">"Beste Online-Shop-Erfahrung! Lieferung super schnell, Produkte top und der Support ist unglaublich hilfreich. Werde definitiv wieder bestellen!"</p>
+                <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--color-text-secondary);">Verifizierter Kauf • vor 2 Tagen</div>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: var(--border-radius); border: 1px solid var(--color-border);">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 48px; height: 48px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.25rem;">M</div>
+                    <div>
+                        <div style="font-weight: 600;">Marco K.</div>
+                        <div class="stars" style="font-size: 0.875rem;">★★★★★</div>
+                    </div>
+                </div>
+                <p style="color: var(--color-text-secondary); line-height: 1.6;">"Das MacBook Pro kam perfekt verpackt an. Der automatisierte Support hat mir sogar geholfen, die passenden Accessories zu finden. 5 Sterne!"</p>
+                <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--color-text-secondary);">Verifizierter Kauf • vor 5 Tagen</div>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: var(--border-radius); border: 1px solid var(--color-border);">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 48px; height: 48px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.25rem;">L</div>
+                    <div>
+                        <div style="font-weight: 600;">Laura B.</div>
+                        <div class="stars" style="font-size: 0.875rem;">★★★★★</div>
+                    </div>
+                </div>
+                <p style="color: var(--color-text-secondary); line-height: 1.6;">"Preis-Leistung unschlagbar! Die Deals sind echt der Hammer. Habe schon 3 Freunden davon erzählt. Kann ich nur empfehlen!"</p>
+                <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--color-text-secondary);">Verifizierter Kauf • vor 1 Woche</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Automation Features Section -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-badge">Powered by AI</span>
+            <h2 class="section-title">Intelligente Automatisierung</h2>
+            <p class="section-subtitle">Unsere GitHub Actions-basierte Support-Infrastruktur</p>
+        </div>
+        
+        <div class="product-grid">
+            <div style="text-align: center; padding: 2rem; background: var(--color-surface); border-radius: var(--border-radius);">
+                <div style="width: 64px; height: 64px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                    <i class="fas fa-tags" style="font-size: 2rem; color: white;"></i>
+                </div>
+                <h3 style="font-weight: 600; margin-bottom: 0.5rem;">Auto-Labeling</h3>
+                <p style="color: var(--color-text-secondary); font-size: 0.875rem;">Intelligente Kategorisierung aller Support-Anfragen</p>
+            </div>
+
+            <div style="text-align: center; padding: 2rem; background: var(--color-surface); border-radius: var(--border-radius);">
+                <div style="width: 64px; height: 64px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                    <i class="fas fa-users-cog" style="font-size: 2rem; color: white;"></i>
+                </div>
+                <h3 style="font-weight: 600; margin-bottom: 0.5rem;">Smart Triage</h3>
+                <p style="color: var(--color-text-secondary); font-size: 0.875rem;">Automatische Zuweisung an den richtigen Experten</p>
+            </div>
+
+            <div style="text-align: center; padding: 2rem; background: var(--color-surface); border-radius: var(--border-radius);">
+                <div style="width: 64px; height: 64px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                    <i class="fas fa-bell" style="font-size: 2rem; color: white;"></i>
+                </div>
+                <h3 style="font-weight: 600; margin-bottom: 0.5rem;">Team Notifications</h3>
+                <p style="color: var(--color-text-secondary); font-size: 0.875rem;">Sofortige Alerts via Teams & Discord</p>
+            </div>
+
+            <div style="text-align: center; padding: 2rem; background: var(--color-surface); border-radius: var(--border-radius);">
+                <div style="width: 64px; height: 64px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                    <i class="fas fa-chart-line" style="font-size: 2rem; color: white;"></i>
+                </div>
+                <h3 style="font-weight: 600; margin-bottom: 0.5rem;">Analytics</h3>
+                <p style="color: var(--color-text-secondary); font-size: 0.875rem;">Echtzeit-Tracking und Performance-Metriken</p>
+            </div>
+
+            <div style="text-align: center; padding: 2rem; background: var(--color-surface); border-radius: var(--border-radius);">
+                <div style="width: 64px; height: 64px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                    <i class="fas fa-code-branch" style="font-size: 2rem; color: white;"></i>
+                </div>
+                <h3 style="font-weight: 600; margin-bottom: 0.5rem;">PR Size Control</h3>
+                <p style="color: var(--color-text-secondary); font-size: 0.875rem;">Optimierte Code-Reviews für schnellere Fixes</p>
+            </div>
+
+            <div style="text-align: center; padding: 2rem; background: var(--color-surface); border-radius: var(--border-radius);">
+                <div style="width: 64px; height: 64px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                    <i class="fas fa-robot" style="font-size: 2rem; color: white;"></i>
+                </div>
+                <h3 style="font-weight: 600; margin-bottom: 0.5rem;">AI Assistant</h3>
+                <p style="color: var(--color-text-secondary); font-size: 0.875rem;">KI-gestützte Antworten und Lösungsvorschläge</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="automation-dashboard.html" class="btn btn-primary">
+                <i class="fas fa-chart-bar"></i> Live Dashboard ansehen
+            </a>
+        </div>
+    </section>
+
+    <!-- Support Section -->
+    <section id="support" class="section">
+        <div class="section-header">
+            <span class="section-badge">24/7 Support</span>
+            <h2 class="section-title">Wie können wir helfen?</h2>
+            <p class="section-subtitle">Unser intelligentes System ist rund um die Uhr für dich da</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="supportForm">
+                <div class="form-group">
+                    <label for="userName" class="form-label">Name</label>
+                    <input type="text" id="userName" class="form-input" placeholder="Max Mustermann" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userEmail" class="form-label">E-Mail</label>
+                    <input type="email" id="userEmail" class="form-input" placeholder="max@beispiel.ch" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="issueType" class="form-label">Art des Problems</label>
+                    <select id="issueType" class="form-select" required>
+                        <option value="bug">Technisches Problem</option>
+                        <option value="feature">Feature-Wunsch</option>
+                        <option value="payment">Zahlungsproblem</option>
+                        <option value="delivery">Lieferungsproblem</option>
+                        <option value="product">Produktfrage</option>
+                        <option value="other">Andere Anfrage</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="issueDescription" class="form-label">Beschreibung</label>
+                    <textarea id="issueDescription" class="form-textarea" placeholder="Beschreibe dein Anliegen so detailliert wie möglich..." required></textarea>
+                </div>
+                
+                <div class="form-checkbox-group">
+                    <input type="checkbox" id="urgentCheckbox" class="form-checkbox">
+                    <label for="urgentCheckbox" class="form-checkbox-label">Dies ist dringend (Antwort binnen 1h)</label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-paper-plane"></i> Anfrage senden
+                </button>
+            </form>
+            
+            <div id="successMessage" class="success-message">
+                <div class="success-header">
+                    <div class="success-icon"><i class="fas fa-check"></i></div>
+                    <h3 class="success-title">Anfrage erfolgreich!</h3>
+                </div>
+                <div class="ticket-number">Ticket: <span id="ticketNumber">#0000</span></div>
+                <p style="margin-bottom: 1rem;">Deine Anfrage wurde von unserem intelligenten System verarbeitet:</p>
+                <div class="success-features">
+                    <div class="success-feature">
+                        <i class="fas fa-check-circle success-feature-icon"></i>
+                        <span>GitHub Issue erstellt</span>
+                    </div>
+                    <div class="success-feature">
+                        <i class="fas fa-check-circle success-feature-icon"></i>
+                        <span>Team benachrichtigt</span>
+                    </div>
+                    <div class="success-feature">
+                        <i class="fas fa-check-circle success-feature-icon"></i>
+                        <span>Priorität zugewiesen</span>
+                    </div>
+                    <div class="success-feature">
+                        <i class="fas fa-check-circle success-feature-icon"></i>
+                        <span>Experte assigned</span>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Bottom Bar -->
-            <div class="border-t border-gray-800 pt-8">
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p class="text-gray-400 text-center md:text-left">
-                        © 2025 <span class="font-bold text-white">TechGear Store</span> - Powered by GitHub Automations 🤖
-                    </p>
-                    <div class="flex gap-6 text-sm text-gray-400">
-                        <a href="#" class="hover:text-purple-400 transition-colors">Datenschutz</a>
-                        <a href="#" class="hover:text-purple-400 transition-colors">AGB</a>
-                        <a href="#" class="hover:text-purple-400 transition-colors">Impressum</a>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>Shop</h4>
+                    <ul class="footer-links">
+                        <li><a href="#bestsellers" class="footer-link">Bestseller</a></li>
+                        <li><a href="#products" class="footer-link">Alle Kategorien</a></li>
+                        <li><a href="#" class="footer-link">Neue Produkte</a></li>
+                        <li><a href="#" class="footer-link">Sale</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#support" class="footer-link">Kontakt</a></li>
+                        <li><a href="#" class="footer-link">FAQ</a></li>
+                        <li><a href="#" class="footer-link">Versand & Lieferung</a></li>
+                        <li><a href="#" class="footer-link">Rückgabe</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Unternehmen</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Über uns</a></li>
+                        <li><a href="automation-dashboard.html" class="footer-link">Live Dashboard</a></li>
+                        <li><a href="#" class="footer-link">Karriere</a></li>
+                        <li><a href="#" class="footer-link">Presse</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Folge uns</h4>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="https://github.com/dinesnimalthas/Demo-Gruppe-12" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
-                <p class="text-center text-gray-500 text-sm mt-4">
-                    Demo-Website für IT Project Basics - HSLU | 
-                    <a href="https://github.com/HSLU-Exercise/scope-your-project-gruppe-12" target="_blank" class="text-purple-400 hover:text-purple-300 font-semibold">
-                        View on GitHub <i class="fas fa-external-link-alt ml-1 text-xs"></i>
-                    </a>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 TechGear — Premium Electronics</p>
+                <div class="footer-links-bottom">
+                    <a href="#" class="footer-link">Datenschutz</a>
+                    <a href="#" class="footer-link">AGB</a>
+                    <a href="#" class="footer-link">Impressum</a>
+                </div>
+                <p style="margin-top: 1rem; font-size: 0.75rem;">
+                    Demo-Website für IT Project Basics — HSLU | 
+                    <a href="https://github.com/dinesnimalthas/Demo-Gruppe-12" target="_blank" style="color: var(--color-accent);">View on GitHub</a>
                 </p>
             </div>
         </div>
     </footer>
 
+<<<<<<< HEAD
+    <script src="script.js"></script>
+=======
     <!-- ========================================
          JAVASCRIPT
          ======================================== -->
@@ -979,5 +784,6 @@
         });
     </script>
 
+>>>>>>> aac5c033975e4cedd7f991e8f24e5b81e6e53164
 </body>
 </html>
