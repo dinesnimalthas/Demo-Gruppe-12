@@ -6,7 +6,7 @@
 // WICHTIG: Setze deinen GitHub Personal Access Token hier ein
 // NIEMALS den echten Token in Git committen!
 const CONFIG = {
-  GITHUB_PAT: '', // Füge hier deinen PAT ein (nur lokal, nicht committen!)
+  GITHUB_PAT: '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', // Füge hier deinen PAT ein (nur lokal, nicht committen!)
   REPO_OWNER: 'dinesnimalthas',
   REPO_NAME: 'Demo-Gruppe-12'
 };
