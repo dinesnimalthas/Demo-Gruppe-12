@@ -1,0 +1,336 @@
+name: Reusable PR Size Labeler
+
+on:
+  workflow_call:
+    inputs:
+      size_xs:
+        description: 'Maximum lines for XS label'
+        required: false
+        type: number
+        default: 10
+      size_s:
+        description: 'Maximum lines for S label'
+        required: false
+        type: number
+        default: 50
+      size_m:
+        description: 'Maximum lines for M label'
+        required: false
+        type: number
+        default: 200
+      size_l:
+        description: 'Maximum lines for L label'
+        required: false
+        type: number
+        default: 500
+      enable_discord:
+        description: 'Enable Discord notifications'
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      discord_webhook:
+        description: 'Discord webhook URL (required if enable_discord is true)'
+        required: false
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  label-pr-size:
+    runs-on: ubuntu-latest
+    name: Label PR by Size
+    
+    steps:
+      - name: Analyze PR Size
+        uses: actions/github-script@v7
+        id: analyze
+        with:
+          result-encoding: string
+          script: |
+            const pr = context.payload.pull_request;
+            
+            // Get PR files
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+            });
+            
+            // Calculate stats
+            let additions = 0;
+            let deletions = 0;
+            let totalChanges = 0;
+            
+            files.forEach(file => {
+              additions += file.additions;
+              deletions += file.deletions;
+              totalChanges += file.changes;
+            });
+            
+            // Determine size based on inputs
+            const thresholds = {
+              xs: ${{ inputs.size_xs }},
+              s: ${{ inputs.size_s }},
+              m: ${{ inputs.size_m }},
+              l: ${{ inputs.size_l }}
+            };
+            
+            let size = 'XL';
+            if (totalChanges < thresholds.xs) size = 'XS';
+            else if (totalChanges < thresholds.s) size = 'S';
+            else if (totalChanges < thresholds.m) size = 'M';
+            else if (totalChanges < thresholds.l) size = 'L';
+            
+            // Store results as environment variables for next steps
+            core.exportVariable('PR_SIZE', size);
+            core.exportVariable('PR_ADDITIONS', additions);
+            core.exportVariable('PR_DELETIONS', deletions);
+            core.exportVariable('PR_TOTAL_CHANGES', totalChanges);
+            core.exportVariable('PR_FILES_CHANGED', files.length);
+            
+            console.log(`PR Size Analysis: ${size} (${totalChanges} changes in ${files.length} files)`);
+            
+            // Return just the size for the step output
+            return size;
+
+      - name: Remove Old Size Labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const sizeLabels = ['size: XS', 'size: S', 'size: M', 'size: L', 'size: XL'];
+            
+            for (const label of sizeLabels) {
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  name: label
+                });
+              } catch (error) {
+                // Label doesn't exist, ignore
+              }
+            }
+
+      - name: Add Size Label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const size = process.env.PR_SIZE;
+            
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              labels: [`size: ${size}`]
+            });
+            
+            console.log(`✅ Added label: size: ${size}`);
+
+      - name: Add "needs split" Label for XL
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const size = process.env.PR_SIZE;
+            
+            if (size !== 'XL') {
+              console.log('ℹ️ PR is not XL size, skipping "needs split" label');
+              return;
+            }
+            
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              labels: ['needs split']
+            });
+            
+            console.log('⚠️ Added label: needs split (PR is too large)');
+
+      - name: Post Statistics Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const size = process.env.PR_SIZE;
+            const additions = process.env.PR_ADDITIONS;
+            const deletions = process.env.PR_DELETIONS;
+            const totalChanges = process.env.PR_TOTAL_CHANGES;
+            const filesChanged = process.env.PR_FILES_CHANGED;
+            
+            // Emoji based on size
+            const sizeEmojis = {
+              'XS': '🟢',
+              'S': '🟢',
+              'M': '🟡',
+              'L': '🟠',
+              'XL': '🔴'
+            };
+            
+            const emoji = sizeEmojis[size] || '⚪';
+            
+            // Build comment
+            let comment = `## ${emoji} PR Size Analysis: **${size}**\n\n`;
+            comment += `| Metric | Value |\n`;
+            comment += `|--------|-------|\n`;
+            comment += `| **Additions** | \`+${additions}\` |\n`;
+            comment += `| **Deletions** | \`-${deletions}\` |\n`;
+            comment += `| **Total Changes** | \`${totalChanges}\` lines |\n`;
+            comment += `| **Files Changed** | \`${filesChanged}\` files |\n\n`;
+            
+            // Add size chart with calculated ranges
+            const xs_max = ${{ inputs.size_xs }};
+            const s_min = xs_max;
+            const s_max = ${{ inputs.size_s }} - 1;
+            const m_min = ${{ inputs.size_s }};
+            const m_max = ${{ inputs.size_m }} - 1;
+            const l_min = ${{ inputs.size_m }};
+            const l_max = ${{ inputs.size_l }} - 1;
+            const xl_min = ${{ inputs.size_l }};
+            
+            comment += `### Size Categories\n\n`;
+            comment += `| Size | Range | Status |\n`;
+            comment += `|------|-------|--------|\n`;
+            comment += `| XS | < ${xs_max} lines | ${size === 'XS' ? '✅ **Current**' : ''} |\n`;
+            comment += `| S | ${s_min}-${s_max} lines | ${size === 'S' ? '✅ **Current**' : ''} |\n`;
+            comment += `| M | ${m_min}-${m_max} lines | ${size === 'M' ? '✅ **Current**' : ''} |\n`;
+            comment += `| L | ${l_min}-${l_max} lines | ${size === 'L' ? '✅ **Current**' : ''} |\n`;
+            comment += `| XL | ≥ ${xl_min} lines | ${size === 'XL' ? '⚠️ **Current - Consider splitting!**' : ''} |\n\n`;
+            
+            if (size === 'XL') {
+              comment += `> ⚠️ **Warning:** This PR is very large. Consider splitting it into smaller, focused PRs for easier review.\n\n`;
+            }
+            
+            comment += `---\n`;
+            comment += `*Automated by [Reusable PR Size Labeler](https://github.com/HSLU-Exercise/scope-your-project-gruppe-12)*\n`;
+            
+            // Check if comment already exists
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+            });
+            
+            const botComment = comments.find(c => 
+              c.user.type === 'Bot' && c.body.includes('PR Size Analysis')
+            );
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+              console.log('✅ Updated existing comment');
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: comment
+              });
+              console.log('✅ Created new comment');
+            }
+
+      - name: Discord Notification
+        if: inputs.enable_discord == true
+        uses: actions/github-script@v7
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.discord_webhook }}
+        with:
+          script: |
+            const webhook = process.env.DISCORD_WEBHOOK;
+            
+            if (!webhook) {
+              console.log('⚠️ Discord webhook not configured, skipping notification');
+              return;
+            }
+            
+            const pr = context.payload.pull_request;
+            const size = process.env.PR_SIZE;
+            const totalChanges = process.env.PR_TOTAL_CHANGES;
+            const filesChanged = process.env.PR_FILES_CHANGED;
+            
+            // Color based on size
+            const colors = {
+              'XS': 3066993,  // Green
+              'S': 3066993,   // Green
+              'M': 16776960,  // Yellow
+              'L': 16753920,  // Orange
+              'XL': 15158332  // Red
+            };
+            
+            const emoji = {
+              'XS': '🟢',
+              'S': '🟢',
+              'M': '🟡',
+              'L': '🟠',
+              'XL': '🔴'
+            };
+            
+            const payload = {
+              embeds: [{
+                title: `${emoji[size]} PR Size Labeled: ${pr.title}`,
+                description: `This PR has been automatically labeled as **${size}**`,
+                url: pr.html_url,
+                color: colors[size],
+                fields: [
+                  {
+                    name: '📏 Size',
+                    value: size,
+                    inline: true
+                  },
+                  {
+                    name: '📊 Changes',
+                    value: `${totalChanges} lines`,
+                    inline: true
+                  },
+                  {
+                    name: '📁 Files',
+                    value: filesChanged,
+                    inline: true
+                  },
+                  {
+                    name: '👤 Author',
+                    value: `[@${pr.user.login}](${pr.user.html_url})`,
+                    inline: true
+                  },
+                  {
+                    name: '#️⃣ PR',
+                    value: `#${pr.number}`,
+                    inline: true
+                  },
+                  {
+                    name: '🔀 Branch',
+                    value: `\`${pr.head.ref}\` → \`${pr.base.ref}\``,
+                    inline: false
+                  }
+                ],
+                footer: {
+                  text: `${context.repo.owner}/${context.repo.repo}`,
+                  icon_url: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
+                },
+                timestamp: new Date().toISOString()
+              }]
+            };
+            
+            if (size === 'XL') {
+              payload.embeds[0].description += '\n\n⚠️ **Warning:** This PR is very large and should be split!';
+            }
+            
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            
+            console.log('✅ Discord notification sent');

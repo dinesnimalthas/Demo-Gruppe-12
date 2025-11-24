@@ -1,0 +1,112 @@
+name: Triage Bot
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add triage label and welcome comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const isIssue = !!context.payload.issue;
+            const item = context.payload.issue || context.payload.pull_request;
+            const itemType = isIssue ? 'issue' : 'pull request';
+            
+            // Add "needs triage" label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: item.number,
+              labels: ['needs triage']
+            });
+            
+            // Check if it's the user's first contribution
+            const creator = item.user.login;
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              creator: creator,
+              state: 'all'
+            });
+            
+            const isFirstContribution = issues.length <= 1;
+            
+            // Welcome message for first-time contributors
+            if (isFirstContribution) {
+              const welcomeMessage = isIssue 
+                ? `👋 Willkommen! Danke für dein erstes Issue!\n\n` +
+                  `Ein Teammitglied wird sich das Issue ansehen und entsprechend priorisieren.\n\n` +
+                  `In der Zwischenzeit kannst du:\n` +
+                  `- Weitere Details hinzufügen\n` +
+                  `- Screenshots oder Logs beifügen\n` +
+                  `- Schritte zur Reproduktion präzisieren`
+                : `👋 Willkommen! Danke für deinen ersten Pull Request!\n\n` +
+                  `Bitte stelle sicher, dass:\n` +
+                  `- [ ] Der Code getestet wurde\n` +
+                  `- [ ] Die Dokumentation aktualisiert wurde\n` +
+                  `- [ ] Der Code-Style konsistent ist\n\n` +
+                  `Ein Reviewer wird sich deinen PR bald ansehen!`;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: item.number,
+                body: welcomeMessage
+              });
+            }
+            
+            // Assign to project board or notify team
+            console.log(`New ${itemType} #${item.number} needs triage`);
+
+  check-for-missing-info:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues'
+    steps:
+      - name: Check for missing information
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || '';
+            const missingItems = [];
+            
+            // Check for basic information
+            if (body.length < 50) {
+              missingItems.push('ausführliche Beschreibung');
+            }
+            
+            if (!body.match(/\b(steps|schritte|reproduce|reproduzieren)\b/i)) {
+              missingItems.push('Schritte zur Reproduktion');
+            }
+            
+            if (!body.match(/\b(expected|erwartet|actual|tatsächlich)\b/i)) {
+              missingItems.push('erwartetes vs. tatsächliches Verhalten');
+            }
+            
+            // If information is missing, add label and comment
+            if (missingItems.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['needs more info']
+              });
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `ℹ️ Bitte ergänze folgende Informationen:\n\n${missingItems.map(item => `- ${item}`).join('\n')}\n\nDies hilft uns, das Problem besser zu verstehen und schneller zu lösen.`
+              });
+            }

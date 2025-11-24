@@ -1,0 +1,21 @@
+{
+  "name": "buggy-example-project",
+  "version": "1.0.0",
+  "description": "Ein Beispielprojekt mit absichtlichen Bugs zum Testen von Label- und Triage-Bots",
+  "main": "calculator.js",
+  "scripts": {
+    "start": "node calculator.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "example",
+    "bugs",
+    "testing",
+    "triage"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

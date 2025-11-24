@@ -1,0 +1,342 @@
+# Example Usage of Reusable PR Size Labeler
+
+> Copy these examples to your own repository!
+
+---
+
+## Example 1: Basic Usage (Recommended Start)
+
+**File:** `.github/workflows/pr-size-labeler.yml`
+
+```yaml
+name: PR Size Labeler
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label-pr:
+    uses: HSLU-Exercise/scope-your-project-gruppe-12/.github/workflows/reusable-pr-size-labeler.yml@main
+```
+
+**What it does:**
+- ✅ Uses default size thresholds (XS<10, S<50, M<200, L<500, XL≥500)
+- ✅ Adds size labels automatically
+- ✅ Posts statistics comment
+- ✅ No Discord notifications
+
+---
+
+## Example 2: Custom Size Thresholds
+
+**File:** `.github/workflows/pr-size-labeler.yml`
+
+```yaml
+name: PR Size Labeler (Custom Sizes)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label-pr:
+    uses: HSLU-Exercise/scope-your-project-gruppe-12/.github/workflows/reusable-pr-size-labeler.yml@main
+    with:
+      # Stricter thresholds for better code review
+      size_xs: 5      # XS: < 5 lines (trivial changes)
+      size_s: 25      # S: 5-24 lines (small fixes)
+      size_m: 100     # M: 25-99 lines (normal PRs)
+      size_l: 300     # L: 100-299 lines (large features)
+                      # XL: ≥ 300 lines (needs split!)
+```
+
+**What it does:**
+- ✅ Uses stricter size limits
+- ✅ Encourages smaller, more focused PRs
+- ✅ Good for teams with fast review cycles
+
+---
+
+## Example 3: With Discord Notifications
+
+**File:** `.github/workflows/pr-size-labeler.yml`
+
+```yaml
+name: PR Size Labeler with Discord
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label-pr:
+    uses: HSLU-Exercise/scope-your-project-gruppe-12/.github/workflows/reusable-pr-size-labeler.yml@main
+    with:
+      enable_discord: true
+    secrets:
+      discord_webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+```
+
+**What it does:**
+- ✅ All standard features
+- ✅ Sends real-time Discord notifications
+- ✅ Rich embeds with PR info
+- ✅ Color-coded by size
+
+**Setup Discord Secret:**
+```bash
+# Settings → Secrets and variables → Actions → New repository secret
+# Name: DISCORD_WEBHOOK_URL
+# Value: https://discord.com/api/webhooks/...
+```
+
+---
+
+## Example 4: Full Configuration
+
+**File:** `.github/workflows/pr-size-labeler.yml`
+
+```yaml
+name: PR Size Labeler (Full Featured)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main, develop]  # Only for specific branches
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label-pr:
+    uses: HSLU-Exercise/scope-your-project-gruppe-12/.github/workflows/reusable-pr-size-labeler.yml@main
+    with:
+      # Custom thresholds
+      size_xs: 10
+      size_s: 50
+      size_m: 200
+      size_l: 500
+      # Discord notifications
+      enable_discord: true
+    secrets:
+      discord_webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+```
+
+**What it does:**
+- ✅ Custom size thresholds
+- ✅ Discord notifications enabled
+- ✅ Only runs on main and develop branches
+- ✅ Full feature set
+
+---
+
+## Example 5: Multiple Workflows Combined
+
+**File:** `.github/workflows/pr-automation.yml`
+
+```yaml
+name: PR Automation Suite
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  # Size labeler
+  size-labeler:
+    uses: HSLU-Exercise/scope-your-project-gruppe-12/.github/workflows/reusable-pr-size-labeler.yml@main
+    with:
+      enable_discord: true
+    secrets:
+      discord_webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  
+  # Your other automations
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Linter
+        run: npm run lint
+  
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Tests
+        run: npm test
+```
+
+**What it does:**
+- ✅ Size labeling
+- ✅ Linting
+- ✅ Testing
+- ✅ All in one workflow!
+
+---
+
+## Example 6: Enterprise Setup
+
+**File:** `.github/workflows/pr-size-labeler.yml`
+
+```yaml
+name: Enterprise PR Size Labeler
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - release/*
+      - hotfix/*
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label-pr:
+    # Only run on business hours (optional)
+    if: github.event.pull_request.draft == false
+    uses: HSLU-Exercise/scope-your-project-gruppe-12/.github/workflows/reusable-pr-size-labeler.yml@main
+    with:
+      # Enterprise thresholds
+      size_xs: 20
+      size_s: 100
+      size_m: 300
+      size_l: 750
+      # Notifications
+      enable_discord: true
+    secrets:
+      discord_webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+```
+
+**What it does:**
+- ✅ Only runs on specific branches (main, release, hotfix)
+- ✅ Skips draft PRs
+- ✅ Larger thresholds for enterprise scale
+- ✅ Discord integration for team awareness
+
+---
+
+## Example 7: Strict PR Policy
+
+**File:** `.github/workflows/pr-size-labeler.yml`
+
+```yaml
+name: Strict PR Size Policy
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  label-pr:
+    uses: HSLU-Exercise/scope-your-project-gruppe-12/.github/workflows/reusable-pr-size-labeler.yml@main
+    with:
+      # Very strict limits
+      size_xs: 5
+      size_s: 20
+      size_m: 75
+      size_l: 150
+      # XL = anything over 150 lines!
+      enable_discord: true
+    secrets:
+      discord_webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  
+  # Block XL PRs
+  check-size:
+    runs-on: ubuntu-latest
+    needs: label-pr
+    steps:
+      - name: Check PR Size
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const labels = pr.labels.map(l => l.name);
+            
+            if (labels.includes('size: XL')) {
+              core.setFailed('❌ PR is too large (XL). Please split into smaller PRs!');
+            } else {
+              console.log('✅ PR size is acceptable');
+            }
+```
+
+**What it does:**
+- ✅ Very strict size limits
+- ✅ **Blocks XL PRs from merging**
+- ✅ Forces team to split large changes
+- ✅ Discord alerts for violations
+
+---
+
+## Test Your Implementation
+
+### Quick Test Script
+
+```bash
+# 1. Create test branch
+git checkout -b test/pr-size-demo
+
+# 2. Make small change (will be labeled "S")
+echo "Test line 1" >> test.txt
+echo "Test line 2" >> test.txt
+echo "Test line 3" >> test.txt
+# ... add ~30 lines total
+
+# 3. Commit and push
+git add test.txt
+git commit -m "test: PR size labeler demo"
+git push -u origin test/pr-size-demo
+
+# 4. Create PR on GitHub
+# Expected: Label "size: S" appears in ~30 seconds
+```
+
+---
+
+## Comparing Configurations
+
+| Configuration | XS | S | M | L | XL | Discord | Best For |
+|--------------|----|----|----|----|-----|---------|----------|
+| **Default** | <10 | <50 | <200 | <500 | ≥500 | ❌ | General use |
+| **Strict** | <5 | <25 | <100 | <300 | ≥300 | ✅ | Fast reviews |
+| **Relaxed** | <20 | <100 | <300 | <750 | ≥750 | ✅ | Large projects |
+| **Enterprise** | <20 | <100 | <300 | <750 | ≥750 | ✅ | Big teams |
+
+---
+
+## Next Steps
+
+1. **Choose an example** above that fits your needs
+2. **Copy the YAML** to your repository
+3. **Create the labels** (see HOW-TO-USE.md)
+4. **Test with a PR** to verify it works
+5. **Adjust thresholds** based on your team's feedback
+
+---
+
+**Questions? Check out [HOW-TO-USE.md](HOW-TO-USE.md) for detailed documentation!**

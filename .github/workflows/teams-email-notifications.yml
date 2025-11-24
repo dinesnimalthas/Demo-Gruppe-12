@@ -1,0 +1,251 @@
+name: Teams & Email Notifications
+
+on:
+  issues:
+    types: [opened, closed, labeled]
+  pull_request:
+    types: [opened, closed, ready_for_review]
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+jobs:
+  teams-email-notify:
+    runs-on: ubuntu-latest
+    name: Send Teams & Email Notifications
+    
+    steps:
+      - name: Issue Critical Alert
+        if: github.event_name == 'issues' && (github.event.action == 'opened' || github.event.action == 'labeled')
+        uses: actions/github-script@v7
+        env:
+          TEAMS_WEBHOOK: ${{ secrets.TEAMS_WEBHOOK_URL }}
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const labels = issue.labels.map(label => label.name.toLowerCase());
+            
+            // Check für kritische Issues
+            const isCritical = labels.some(label => 
+              label.includes('critical') || 
+              label.includes('urgent') || 
+              label.includes('priority: high')
+            );
+            
+            if (!isCritical) {
+              console.log('Issue ist nicht kritisch, keine Benachrichtigung');
+              return;
+            }
+            
+            console.log(`🚨 Kritisches Issue erkannt: ${issue.title}`);
+            
+            // Teams Notification
+            if (process.env.TEAMS_WEBHOOK) {
+              const teamsCard = {
+                "@type": "MessageCard",
+                "@context": "https://schema.org/extensions",
+                "summary": `🚨 Kritisches Issue: ${issue.title}`,
+                "themeColor": "FF0000",
+                "sections": [{
+                  "activityTitle": "🚨 Kritisches Issue erkannt!",
+                  "activitySubtitle": `Issue #${issue.number} von ${issue.user.login}`,
+                  "activityImage": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+                  "facts": [
+                    {
+                      "name": "Titel",
+                      "value": issue.title
+                    },
+                    {
+                      "name": "Labels", 
+                      "value": labels.join(", ")
+                    },
+                    {
+                      "name": "Reporter",
+                      "value": issue.user.login
+                    },
+                    {
+                      "name": "Repository",
+                      "value": `${context.repo.owner}/${context.repo.repo}`
+                    }
+                  ],
+                  "text": issue.body ? issue.body.substring(0, 300) + '...' : 'Keine Beschreibung verfügbar'
+                }],
+                "potentialAction": [{
+                  "@type": "OpenUri",
+                  "name": "Issue auf GitHub öffnen",
+                  "targets": [{
+                    "os": "default",
+                    "uri": issue.html_url
+                  }]
+                }]
+              };
+              
+              try {
+                const teamsResponse = await fetch(process.env.TEAMS_WEBHOOK, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(teamsCard)
+                });
+                
+                if (teamsResponse.ok) {
+                  console.log('✅ Teams Notification erfolgreich gesendet');
+                } else {
+                  console.log(`❌ Teams Notification fehlgeschlagen: ${teamsResponse.status}`);
+                }
+              } catch (error) {
+                console.log(`❌ Teams Notification Fehler: ${error.message}`);
+              }
+            }
+
+      - name: PR Teams Notification
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        env:
+          TEAMS_WEBHOOK: ${{ secrets.TEAMS_WEBHOOK_URL }}
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const action = context.payload.action;
+            
+            // Nur bei wichtigen PR Events
+            if (!['opened', 'closed', 'ready_for_review'].includes(action)) {
+              return;
+            }
+            
+            let title = '';
+            let color = '0078D4';
+            
+            if (action === 'opened') {
+              title = '🔄 Neuer Pull Request';
+            } else if (action === 'closed' && pr.merged) {
+              title = '✅ Pull Request gemerged';
+              color = '28a745';
+            } else if (action === 'closed' && !pr.merged) {
+              title = '❌ Pull Request geschlossen';
+              color = 'dc3545';
+            } else if (action === 'ready_for_review') {
+              title = '👀 Pull Request bereit für Review';
+              color = 'ffc107';
+            }
+            
+            if (process.env.TEAMS_WEBHOOK) {
+              const teamsCard = {
+                "@type": "MessageCard",
+                "@context": "https://schema.org/extensions", 
+                "summary": `${title}: ${pr.title}`,
+                "themeColor": color,
+                "sections": [{
+                  "activityTitle": title,
+                  "activitySubtitle": `PR #${pr.number} von ${pr.user.login}`,
+                  "activityImage": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+                  "facts": [
+                    {
+                      "name": "Titel",
+                      "value": pr.title
+                    },
+                    {
+                      "name": "Branch",
+                      "value": `${pr.head.ref} → ${pr.base.ref}`
+                    },
+                    {
+                      "name": "Autor",
+                      "value": pr.user.login
+                    }
+                  ]
+                }],
+                "potentialAction": [{
+                  "@type": "OpenUri",
+                  "name": "PR auf GitHub öffnen",
+                  "targets": [{
+                    "os": "default", 
+                    "uri": pr.html_url
+                  }]
+                }]
+              };
+              
+              try {
+                const response = await fetch(process.env.TEAMS_WEBHOOK, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(teamsCard)
+                });
+                
+                if (response.ok) {
+                  console.log('✅ Teams PR Notification gesendet');
+                } else {
+                  console.log(`❌ Teams PR Notification fehlgeschlagen: ${response.status}`);
+                }
+              } catch (error) {
+                console.log(`❌ Teams PR Notification Fehler: ${error.message}`);
+              }
+            }
+
+      - name: Release Teams Notification
+        if: github.event_name == 'release' && github.event.action == 'published'
+        uses: actions/github-script@v7
+        env:
+          TEAMS_WEBHOOK: ${{ secrets.TEAMS_WEBHOOK_URL }}
+        with:
+          script: |
+            const release = context.payload.release;
+            
+            if (process.env.TEAMS_WEBHOOK) {
+              const teamsCard = {
+                "@type": "MessageCard",
+                "@context": "https://schema.org/extensions",
+                "summary": `🚀 Neue Version veröffentlicht: ${release.tag_name}`,
+                "themeColor": "9C27B0",
+                "sections": [{
+                  "activityTitle": "🚀 Neue Version veröffentlicht!",
+                  "activitySubtitle": `Version ${release.tag_name}`,
+                  "activityImage": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+                  "facts": [
+                    {
+                      "name": "Version",
+                      "value": release.tag_name
+                    },
+                    {
+                      "name": "Name",
+                      "value": release.name || release.tag_name
+                    },
+                    {
+                      "name": "Autor",
+                      "value": release.author.login
+                    },
+                    {
+                      "name": "Repository",
+                      "value": `${context.repo.owner}/${context.repo.repo}`
+                    }
+                  ],
+                  "text": release.body ? release.body.substring(0, 400) + '...' : 'Keine Release Notes verfügbar'
+                }],
+                "potentialAction": [{
+                  "@type": "OpenUri",
+                  "name": "Release auf GitHub ansehen",
+                  "targets": [{
+                    "os": "default",
+                    "uri": release.html_url
+                  }]
+                }]
+              };
+              
+              try {
+                const response = await fetch(process.env.TEAMS_WEBHOOK, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(teamsCard)
+                });
+                
+                if (response.ok) {
+                  console.log('✅ Teams Release Notification gesendet');
+                } else {
+                  console.log(`❌ Teams Release Notification fehlgeschlagen: ${response.status}`);
+                }
+              } catch (error) {
+                console.log(`❌ Teams Release Notification Fehler: ${error.message}`);
+              }
+            }

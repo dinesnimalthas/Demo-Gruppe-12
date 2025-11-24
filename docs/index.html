@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechGear Store - Premium Electronics & Gadgets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === FONTS === */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* === ANIMATIONS === */
+        @keyframes slide-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .scroll-animate {
+            opacity: 0;
+            animation: slide-in-up 0.8s ease-out forwards;
+        }
+
+        /* === PARALLAX EFFECTS === */
+        .parallax-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .parallax-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        /* === PRODUCT CARDS === */
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transform-style: preserve-3d;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+        }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 1rem;
+        }
+        
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        /* === BADGE ANIMATIONS === */
+        @keyframes badge-pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        .sale-badge {
+            animation: badge-pulse 2s infinite;
+        }
+
+        /* === UTILITY CLASSES === */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stars {
+            color: #fbbf24;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* === ADDITIONAL ANIMATIONS === */
+        @keyframes count-up {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- ========================================
+         TOP BANNER
+         ======================================== -->
+    <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center py-2 text-sm font-semibold">
+        🔥 BLACK FRIDAY SALE: Bis zu 40% Rabatt auf ausgewählte Produkte! 🔥
+    </div>
+
+    <!-- ========================================
+         NAVIGATION
+         ======================================== -->
+    <nav class="bg-white/95 backdrop-blur-lg shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-black gradient-text">TechGear</span>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#products" class="text-gray-700 hover:text-purple-600 font-semibold transition-colors duration-300">Shop</a>
+                    <a href="#bestsellers" class="text-gray-700 hover:text-purple-600 font-semibold transition-colors duration-300">Bestseller</a>
+                    <a href="#support" class="text-gray-700 hover:text-purple-600 font-semibold transition-colors duration-300">Support</a>
+                    <a href="#automation" class="text-gray-700 hover:text-purple-600 font-semibold transition-colors duration-300">Tech</a>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-700 hover:text-purple-600">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                    <button class="text-gray-700 hover:text-purple-600">
+                        <i class="fas fa-heart text-xl"></i>
+                    </button>
+                    <button class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105 flex items-center space-x-2">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span>0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========================================
+         HERO SECTION
+         ======================================== -->
+    <section class="parallax-hero min-h-screen flex items-center justify-center text-white relative overflow-hidden pb-32">
+        <!-- Animated Background Layers -->
+        <div class="parallax-layer">
+            <div class="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="container mx-auto px-6 text-center relative z-20">
+            <!-- Badge -->
+            <div class="mb-6">
+                <span class="inline-block bg-white/20 backdrop-blur-lg px-6 py-2 rounded-full text-sm font-semibold border border-white/30">
+                    Neu eingetroffen ✨
+                </span>
+            </div>
+            
+            <!-- Main Headline -->
+            <h1 class="text-6xl md:text-8xl font-black mb-6 leading-tight">
+                Tech, das<br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-pink-300">begeistert</span>
+            </h1>
+            
+            <!-- Subheadline -->
+            <p class="text-xl md:text-2xl mb-10 text-purple-100 max-w-3xl mx-auto font-light">
+                Entdecke die neuesten Gadgets, Premium-Elektronik und innovative Technologie zu unschlagbaren Preisen.
+            </p>
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#products" class="bg-white text-purple-600 px-10 py-4 rounded-full text-lg font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-110 shadow-2xl">
+                    Jetzt shoppen
+                </a>
+                <a href="#bestsellers" class="glass px-10 py-4 rounded-full text-lg font-bold hover:bg-white/20 transition-all duration-300">
+                    Bestseller ansehen
+                </a>
+            </div>
+
+            <!-- Trust Badges -->
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <div class="glass p-4 rounded-xl text-center">
+                    <i class="fas fa-shipping-fast text-3xl mb-2"></i>
+                    <p class="text-sm font-semibold">Gratis Versand</p>
+                </div>
+                <div class="glass p-4 rounded-xl text-center">
+                    <i class="fas fa-shield-alt text-3xl mb-2"></i>
+                    <p class="text-sm font-semibold">2 Jahre Garantie</p>
+                </div>
+                <div class="glass p-4 rounded-xl text-center">
+                    <i class="fas fa-undo text-3xl mb-2"></i>
+                    <p class="text-sm font-semibold">30 Tage Rückgabe</p>
+                </div>
+                <div class="glass p-4 rounded-xl text-center">
+                    <i class="fas fa-headset text-3xl mb-2"></i>
+                    <p class="text-sm font-semibold">24/7 Support</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-2xl text-white/70"></i>
+        </div>
+    </section>
+
+    <!-- ========================================
+         BESTSELLERS SECTION
+         ======================================== -->
+    <section id="bestsellers" class="py-24 bg-white relative z-10">
+        <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-16 scroll-animate">
+                <span class="inline-block bg-purple-100 text-purple-600 px-4 py-1 rounded-full text-sm font-semibold mb-4">MOST WANTED</span>
+                <h2 class="text-5xl font-black text-gray-900 mb-4">Unsere Bestseller</h2>
+                <p class="text-xl text-gray-600">Die beliebtesten Produkte unserer Community</p>
+            </div>
+            
+            <!-- Bestseller Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Bestseller 1 -->
+                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group">
+                    <div class="relative overflow-hidden bg-gradient-to-br from-purple-50 to-blue-50 h-72">
+                        <span class="sale-badge absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold z-10">-25%</span>
+                        <span class="absolute top-4 left-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-bold z-10">🔥 HOT</span>
+                        <i class="fas fa-laptop text-9xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs text-purple-600 font-semibold uppercase">Laptops</span>
+                            <div class="stars text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="text-gray-500 ml-1">(2.4k)</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 group-hover:text-purple-600 transition-colors">MacBook Pro 16" M3 Max</h3>
+                        <p class="text-sm text-gray-600 mb-4">M3 Max Chip, 32GB RAM, 1TB SSD, Space Black</p>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-3xl font-black text-purple-600">CHF 2'624.-</span>
+                            <span class="text-lg text-gray-400 line-through">CHF 3'499.-</span>
+                        </div>
+                        <button class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-xl font-bold hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                            <i class="fas fa-shopping-bag mr-2"></i>In den Warenkorb
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bestseller 2 -->
+                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group" style="animation-delay: 0.1s;">
+                    <div class="relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 h-72">
+                        <span class="sale-badge absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold z-10">-15%</span>
+                        <span class="absolute top-4 left-4 bg-green-400 text-gray-900 px-3 py-1 rounded-full text-xs font-bold z-10">⭐ TOP</span>
+                        <i class="fas fa-mobile-alt text-9xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs text-blue-600 font-semibold uppercase">Smartphones</span>
+                            <div class="stars text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="text-gray-500 ml-1">(3.2k)</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">iPhone 15 Pro Max</h3>
+                        <p class="text-sm text-gray-600 mb-4">512GB, Titan Blau, A17 Pro, Always-On Display</p>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-3xl font-black text-blue-600">CHF 1'274.-</span>
+                            <span class="text-lg text-gray-400 line-through">CHF 1'499.-</span>
+                        </div>
+                        <button class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-3 rounded-xl font-bold hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                            <i class="fas fa-shopping-bag mr-2"></i>In den Warenkorb
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bestseller 3 -->
+                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group" style="animation-delay: 0.2s;">
+                    <div class="relative overflow-hidden bg-gradient-to-br from-pink-50 to-purple-50 h-72">
+                        <span class="absolute top-4 left-4 bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-bold z-10">NEU</span>
+                        <i class="fas fa-headphones text-9xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs text-pink-600 font-semibold uppercase">Audio</span>
+                            <div class="stars text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="text-gray-500 ml-1">(1.8k)</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 group-hover:text-pink-600 transition-colors">AirPods Max</h3>
+                        <p class="text-sm text-gray-600 mb-4">Active Noise Cancellation, Spatial Audio, 20h Akku</p>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-3xl font-black text-pink-600">CHF 579.-</span>
+                        </div>
+                        <button class="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white py-3 rounded-xl font-bold hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                            <i class="fas fa-shopping-bag mr-2"></i>In den Warenkorb
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bestseller 4 -->
+                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group" style="animation-delay: 0.3s;">
+                    <div class="relative overflow-hidden bg-gradient-to-br from-green-50 to-emerald-50 h-72">
+                        <span class="sale-badge absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold z-10">-30%</span>
+                        <i class="fas fa-tablet-alt text-9xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs text-green-600 font-semibold uppercase">Tablets</span>
+                            <div class="stars text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span class="text-gray-500 ml-1">(956)</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 group-hover:text-green-600 transition-colors">iPad Pro 12.9" M2</h3>
+                        <p class="text-sm text-gray-600 mb-4">M2 Chip, 256GB, WiFi + Cellular, Magic Keyboard</p>
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <span class="text-3xl font-black text-green-600">CHF 979.-</span>
+                            <span class="text-lg text-gray-400 line-through">CHF 1'399.-</span>
+                        </div>
+                        <button class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 rounded-xl font-bold hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                            <i class="fas fa-shopping-bag mr-2"></i>In den Warenkorb
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         PRODUCTS SECTION
+         ======================================== -->
+    <section id="products" class="py-24 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-5xl font-black text-gray-900 mb-4">Entdecke alle Kategorien</h2>
+                <p class="text-xl text-gray-600">Premium-Technologie für jeden Bedarf</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Category 1 -->
+                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group">
+                    <div class="relative overflow-hidden bg-gradient-to-br from-orange-50 to-red-50 h-64">
+                        <i class="fas fa-watch text-8xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2">Smartwatches & Wearables</h3>
+                        <p class="text-gray-600 mb-4">Apple Watch, Fitbit, Garmin und mehr</p>
+                        <a href="#" class="inline-block text-orange-600 font-bold hover:text-orange-700">
+                            Jetzt ansehen <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group" style="animation-delay: 0.1s;">
+                    <div class="relative overflow-hidden bg-gradient-to-br from-indigo-50 to-blue-50 h-64">
+                        <i class="fas fa-gamepad text-8xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2">Gaming & Zubehör</h3>
+                        <p class="text-gray-600 mb-4">PS5, Xbox, Gaming-PCs und Peripherie</p>
+                        <a href="#" class="inline-block text-indigo-600 font-bold hover:text-indigo-700">
+                            Jetzt ansehen <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate group" style="animation-delay: 0.2s;">
+                    <div class="relative overflow-hidden bg-gradient-to-br from-teal-50 to-green-50 h-64">
+                        <i class="fas fa-camera text-8xl text-gray-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2">Foto & Video</h3>
+                        <p class="text-gray-600 mb-4">Kameras, Objektive, Drohnen und Zubehör</p>
+                        <a href="#" class="inline-block text-teal-600 font-bold hover:text-teal-700">
+                            Jetzt ansehen <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         CUSTOMER REVIEWS SECTION
+         ======================================== -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-5xl font-black text-gray-900 mb-4">Das sagen unsere Kunden</h2>
+                <div class="flex items-center justify-center gap-2 text-2xl">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <span class="font-bold">4.9/5</span>
+                    <span class="text-gray-500">(12'450 Bewertungen)</span>
+                </div>
+            </div>
+
+            <!-- Reviews Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-gradient-to-br from-purple-50 to-blue-50 p-8 rounded-2xl scroll-animate">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            S
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Sarah M.</h4>
+                            <div class="stars text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"Beste Online-Shop-Erfahrung ever! Lieferung super schnell, Produkte top und der Support ist unglaublich hilfreich. Werde definitiv wieder bestellen!"</p>
+                    <div class="mt-4 text-sm text-gray-500">Verifizierter Kauf • vor 2 Tagen</div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-2xl scroll-animate" style="animation-delay: 0.1s;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            M
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Marco K.</h4>
+                            <div class="stars text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"Das MacBook Pro kam perfekt verpackt an. Der automatisierte Support hat mir sogar geholfen, die passenden Accessories zu finden. 5 Sterne!"</p>
+                    <div class="mt-4 text-sm text-gray-500">Verifizierter Kauf • vor 5 Tagen</div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="bg-gradient-to-br from-pink-50 to-purple-50 p-8 rounded-2xl scroll-animate" style="animation-delay: 0.2s;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-pink-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            L
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Laura B.</h4>
+                            <div class="stars text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"Preis-Leistung unschlagbar! Die Black Friday Deals sind echt der Hammer. Habe schon 3 Freunden davon erzählt."</p>
+                    <div class="mt-4 text-sm text-gray-500">Verifizierter Kauf • vor 1 Woche</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ========================================
+         SUPPORT SECTION - AUTOMATION DEMO
+         ======================================== -->
+    <section id="support" class="py-24 bg-gradient-to-br from-gray-50 via-purple-50 to-blue-50">
+        <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-12 scroll-animate">
+                <span class="inline-block bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold mb-4">💬 24/7 AI-POWERED SUPPORT</span>
+                <h2 class="text-5xl md:text-6xl font-black text-gray-900 mb-4">Brauchst du Hilfe?</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Unser KI-gestütztes Automatisierungssystem ist rund um die Uhr für dich da – blitzschnell und intelligent!</p>
+            </div>
+            
+            <!-- Support Form Container -->
+            <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl p-8 md:p-16 scroll-animate relative overflow-hidden">
+                <!-- Animated Background Blobs -->
+                <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-purple-200 to-blue-200 rounded-full blur-3xl opacity-20 -z-0 animate-pulse"></div>
+                <div class="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-pink-200 to-purple-200 rounded-full blur-3xl opacity-20 -z-0 animate-pulse" style="animation-delay: 1s;"></div>
+
+                <div class="relative z-10">                    <form id="supportForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="userName" class="block text-sm font-bold text-gray-700 mb-2">👤 Dein Name</label>
+                                <input type="text" id="userName" class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-200 focus:border-purple-600 transition-all font-medium" placeholder="Max Mustermann" required>
+                            </div>
+                            <div>
+                                <label for="userEmail" class="block text-sm font-bold text-gray-700 mb-2">📧 E-Mail</label>
+                                <input type="email" id="userEmail" class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-200 focus:border-purple-600 transition-all font-medium" placeholder="max@beispiel.ch" required>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="issueType" class="block text-sm font-bold text-gray-700 mb-2">🎯 Art des Problems</label>
+                            <select id="issueType" class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-200 focus:border-purple-600 transition-all font-medium cursor-pointer appearance-none">
+                                <option value="bug">🐛 Technisches Problem / Bug</option>
+                                <option value="feature">✨ Feature-Wunsch</option>
+                                <option value="payment">💳 Zahlungsproblem</option>
+                                <option value="delivery">📦 Lieferungsproblem</option>
+                                <option value="product">🛍️ Produktfrage</option>
+                                <option value="other">❓ Andere Anfrage</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="issueDescription" class="block text-sm font-bold text-gray-700 mb-2">📝 Beschreibung</label>
+                            <textarea id="issueDescription" rows="6" class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-200 focus:border-purple-600 transition-all font-medium resize-none" placeholder="Beschreibe dein Anliegen so detailliert wie möglich..." required></textarea>
+                        </div>
+
+                        <div class="flex items-center space-x-3 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                            <input type="checkbox" id="urgentCheckbox" class="w-6 h-6 text-red-600 rounded border-gray-300 focus:ring-red-500 cursor-pointer">
+                            <label for="urgentCheckbox" class="text-gray-900 font-bold cursor-pointer select-none flex-1">🚨 Dies ist dringend / kritisch (Antwort binnen 1h)</label>
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-size-200 text-white py-5 rounded-xl font-black text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] hover:bg-pos-100 flex items-center justify-center gap-3">
+                            <i class="fas fa-rocket text-2xl"></i>
+                            <span>Support-Anfrage jetzt senden</span>
+                        </button>
+                    </form>
+
+                    <!-- Success Message -->
+                    <div id="successMessage" class="hidden mt-10">
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-4 border-green-500 p-10 rounded-3xl shadow-xl">
+                            <div class="flex flex-col md:flex-row items-start gap-6">
+                                <div class="bg-green-500 rounded-2xl p-6 shadow-lg">
+                                    <i class="fas fa-check-circle text-white text-5xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="text-3xl font-black text-green-800 mb-3">🎉 Anfrage erfolgreich!</h3>
+                                    <div class="bg-green-200 inline-block px-4 py-2 rounded-lg mb-4">
+                                        <span class="text-sm font-bold text-green-800">Ticket-Nummer:</span>
+                                        <span id="ticketNumber" class="font-mono text-lg font-black text-green-900 ml-2"></span>
+                                    </div>
+                                    <p class="text-lg text-green-700 mb-4 font-semibold">Deine Anfrage wurde von unserem intelligenten System verarbeitet:</p>
+                                    <div class="grid md:grid-cols-2 gap-3">
+                                        <div class="flex items-center gap-3 bg-white p-3 rounded-lg">
+                                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                            <span class="font-bold text-gray-800">GitHub Issue erstellt</span>
+                                        </div>
+                                        <div class="flex items-center gap-3 bg-white p-3 rounded-lg">
+                                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                            <span class="font-bold text-gray-800">Team benachrichtigt</span>
+                                        </div>
+                                        <div class="flex items-center gap-3 bg-white p-3 rounded-lg">
+                                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                            <span class="font-bold text-gray-800">Priorität zugewiesen</span>
+                                        </div>
+                                        <div class="flex items-center gap-3 bg-white p-3 rounded-lg">
+                                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                            <span class="font-bold text-gray-800">Experte assigned</span>
+                                        </div>
+                                    </div>
+                                    <p class="mt-4 text-sm text-green-700">📩 Du erhältst in wenigen Minuten eine Bestätigungsmail.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Automation Info -->
+                    <div class="mt-10 p-8 bg-gradient-to-r from-purple-50 via-blue-50 to-purple-50 border-2 border-purple-300 rounded-3xl shadow-lg">
+                        <div class="flex flex-col md:flex-row items-start gap-6">
+                            <div class="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-5 shadow-lg">
+                                <i class="fas fa-robot text-white text-4xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-black text-purple-900 mb-3">🤖 Vollautomatisierter KI-Support</h3>
+                                <p class="text-purple-800 mb-4 font-semibold">Deine Anfrage durchläuft unser intelligentes Automatisierungssystem:</p>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fas fa-bolt text-purple-600 text-xl"></i>
+                                        <span class="font-bold text-purple-900">Sofortige Ticketerstellung</span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <i class="fas fa-brain text-purple-600 text-xl"></i>
+                                        <span class="font-bold text-purple-900">KI-basierte Analyse</span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <i class="fas fa-users-cog text-purple-600 text-xl"></i>
+                                        <span class="font-bold text-purple-900">Smart Team-Routing</span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                                        <span class="font-bold text-purple-900">Echtzeit-Tracking</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Automation Demo Section -->
+    <section id="automation" class="py-20 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-4xl font-bold">
+                    <i class="fas fa-cogs mr-2"></i>Powered by GitHub Automation
+                </h2>
+                <p class="text-xl mt-2 text-purple-200">Erlebe die Zukunft des Supports – schnell, intelligent und effizient.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Automation Card 1 -->
+                <div class="tilt-card bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center scroll-animate" style="animation-delay: 0.1s;">
+                    <i class="fas fa-tags text-5xl mb-4 text-white"></i>
+                    <h3 class="font-bold text-xl mb-2">Auto-Labeling</h3>
+                    <p class="text-sm text-purple-200">Intelligente Kategorisierung aller Anfragen für sofortige Klarheit.</p>
+                </div>
+                
+                <!-- Automation Card 2 -->
+                <div class="tilt-card bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center scroll-animate" style="animation-delay: 0.2s;">
+                    <i class="fas fa-users-cog text-5xl mb-4 text-white"></i>
+                    <h3 class="font-bold text-xl mb-2">Smart Triage</h3>
+                    <p class="text-sm text-purple-200">Automatische Zuweisung an den richtigen Experten im Team.</p>
+                </div>
+                
+                <!-- Automation Card 3 -->
+                <div class="tilt-card bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center scroll-animate" style="animation-delay: 0.3s;">
+                    <i class="fas fa-bell fa-shake text-5xl mb-4 text-white"></i>
+                    <h3 class="font-bold text-xl mb-2">Team Notifications</h3>
+                    <p class="text-sm text-purple-200">Sofortige Alerts via Teams & Discord, damit nichts untergeht.</p>
+                </div>
+                
+                <!-- Automation Card 4 -->
+                <div class="tilt-card bg-white/20 backdrop-blur-xl rounded-2xl p-6 text-center scroll-animate" style="animation-delay: 0.4s;">
+                    <i class="fas fa-ruler-combined text-5xl mb-4 text-white"></i>
+                    <h3 class="font-bold text-xl mb-2">PR Size Control</h3>
+                    <p class="text-sm text-purple-200">Optimierte Code-Reviews für schnellere und bessere Fixes.</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-16 scroll-animate">
+                <a href="automation-dashboard.html" class="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-bold hover:bg-gray-200 transition-all duration-300 transform hover:scale-110">
+                    <i class="fas fa-chart-bar mr-2"></i>Live Automation Dashboard
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         FOOTER
+         ======================================== -->
+    <footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white py-16">
+        <div class="container mx-auto px-6">
+            <!-- Footer Grid -->
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand Column -->
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-bolt text-white text-2xl"></i>
+                        </div>
+                        <span class="text-2xl font-black gradient-text">TechGear</span>
+                    </div>
+                    <p class="text-gray-400 mb-6">Premium-Elektronik trifft auf intelligente Automation. Die Zukunft des Online-Shopping.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://github.com/HSLU-Exercise/scope-your-project-gruppe-12" target="_blank" class="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Shop Column -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Shop</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#bestsellers" class="hover:text-purple-400 transition-colors">Bestseller</a></li>
+                        <li><a href="#products" class="hover:text-purple-400 transition-colors">Alle Kategorien</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">Neue Produkte</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">Sale & Angebote</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">Geschenkkarten</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support Column -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Support</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#support" class="hover:text-purple-400 transition-colors">Kontakt</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">FAQ</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">Versand & Lieferung</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">Rückgabe & Umtausch</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">Garantie</a></li>
+                    </ul>
+                </div>
+
+                <!-- Info Column -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Über uns</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#automation" class="hover:text-purple-400 transition-colors">Unsere Technologie</a></li>
+                        <li><a href="automation-dashboard.html" class="hover:text-purple-400 transition-colors">Live Dashboard</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">Karriere</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">Presse</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="bg-gradient-to-r from-purple-900/50 to-blue-900/50 backdrop-blur-lg rounded-2xl p-8 mb-12 border border-purple-500/30">
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">📬 Newsletter abonnieren</h3>
+                        <p class="text-gray-300">Erhalte exklusive Deals und die neuesten Tech-News!</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <input type="email" placeholder="deine@email.ch" class="flex-1 px-5 py-3 bg-gray-800 border-2 border-gray-700 rounded-xl focus:outline-none focus:border-purple-500 transition-all">
+                        <button class="bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300 transform hover:scale-105 whitespace-nowrap">
+                            Anmelden
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-gray-400 text-center md:text-left">
+                        © 2025 <span class="font-bold text-white">TechGear Store</span> - Powered by GitHub Automations 🤖
+                    </p>
+                    <div class="flex gap-6 text-sm text-gray-400">
+                        <a href="#" class="hover:text-purple-400 transition-colors">Datenschutz</a>
+                        <a href="#" class="hover:text-purple-400 transition-colors">AGB</a>
+                        <a href="#" class="hover:text-purple-400 transition-colors">Impressum</a>
+                    </div>
+                </div>
+                <p class="text-center text-gray-500 text-sm mt-4">
+                    Demo-Website für IT Project Basics - HSLU | 
+                    <a href="https://github.com/HSLU-Exercise/scope-your-project-gruppe-12" target="_blank" class="text-purple-400 hover:text-purple-300 font-semibold">
+                        View on GitHub <i class="fas fa-external-link-alt ml-1 text-xs"></i>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================
+         JAVASCRIPT
+         ======================================== -->
+    <script>
+        // ===================================
+        // SMOOTH SCROLLING
+        // ===================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===================================
+        // SCROLL ANIMATIONS
+        // ===================================
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-animate').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            scrollObserver.observe(el);
+        });
+
+        // ===================================
+        // PRODUCT CARD HOVER EFFECTS
+        // ===================================
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-12px) scale(1.02)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // ===================================
+        // PARALLAX HERO EFFECT
+        // ===================================
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.parallax-hero');
+            if (parallax && scrolled < window.innerHeight) {
+                parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // ===================================
+        // SUPPORT FORM - GITHUB API
+        // ===================================
+        document.getElementById('supportForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            // !!! SICHERHEITSWARNUNG !!!
+            // Ein Personal Access Token (PAT) sollte NIEMALS direkt im Frontend-Code stehen.
+            // Jeder Besucher der Webseite kann diesen Token sehen und missbrauchen.
+            // Für diese Demo wird es implementiert, aber für ECHTE PROJEKTE ist dies ein
+            // ENORMES SICHERHEITSRISIKO. Verwenden Sie stattdessen eine Backend-Funktion.
+            const GITHUB_PAT = 'YOUR_GITHUB_PAT_HERE';
+            const REPO_OWNER = 'HSLU-Exercise';
+            const REPO_NAME = 'scope-your-project-gruppe-12';
+
+            if (GITHUB_PAT === 'DEIN_PERSONAL_ACCESS_TOKEN_HIER_EINFUEGEN') {
+                alert('⚠️ FEHLER: Bitte ersetze "DEIN_PERSONAL_ACCESS_TOKEN_HIER_EINFUEGEN" im JavaScript-Code durch einen echten GitHub Personal Access Token.');
+                return;
+            }
+            
+            // Disable button and show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Wird verarbeitet...';
+
+            const issueType = document.getElementById('issueType').value;
+            const userName = document.getElementById('userName').value;
+            const userEmail = document.getElementById('userEmail').value;
+            const description = document.getElementById('issueDescription').value;
+            const isUrgent = document.getElementById('urgentCheckbox').checked;
+
+            const title = `[${issueType.toUpperCase()}] Support-Anfrage von ${userName}`;
+            const body = `**Anfrage von:** ${userName} (${userEmail})\n**Priorität:** ${isUrgent ? '🚨 DRINGEND' : 'Normal'}\n\n**Problembeschreibung:**\n${description}`;
+            const labels = [issueType];
+            if (isUrgent) {
+                labels.push('critical', 'priority:high');
+            }
+            
+            try {
+                const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `token ${GITHUB_PAT}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title, body, labels })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`GitHub API Fehler: ${errorData.message}`);
+                }
+
+                const issue = await response.json();
+
+                // Show success message with animation
+                document.getElementById('ticketNumber').textContent = `#${issue.number}`;
+                const successMessage = document.getElementById('successMessage');
+                form.style.display = 'none';
+                successMessage.classList.remove('hidden');
+                
+                // Smooth scroll to success message
+                setTimeout(() => {
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+
+                // Console logging for debugging
+                console.log('✅ GitHub Issue erstellt:', issue.html_url);
+                console.log('✅ Team wurde automatisch benachrichtigt');
+                console.log('✅ Labels wurden zugewiesen:', labels);
+
+            } catch (error) {
+                console.error('❌ Fehler beim Erstellen des GitHub-Tickets:', error);
+                alert(`❌ Es gab einen Fehler beim Erstellen des Tickets:\n\n${error.message}\n\nBitte versuche es später erneut oder kontaktiere uns direkt.`);
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-rocket mr-2"></i>Support-Anfrage jetzt senden';
+            }
+        });
+
+        // ===================================
+        // SHOPPING CART ANIMATION
+        // ===================================
+        document.querySelectorAll('button:has(.fa-shopping-bag)').forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (!e.target.closest('form')) {
+                    e.preventDefault();
+                    this.innerHTML = '<i class="fas fa-check mr-2"></i>Hinzugefügt!';
+                    this.classList.add('bg-green-600');
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-shopping-bag mr-2"></i>In den Warenkorb';
+                        this.classList.remove('bg-green-600');
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

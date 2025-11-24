@@ -1,0 +1,341 @@
+name: Discord Notifications
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, closed]
+  issues:
+    types: [opened, labeled, closed]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  pull-requests: read
+  contents: read
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    name: Send Discord Notification
+    steps:
+      - name: PR Opened Notification
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        uses: actions/github-script@v7
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const webhook = process.env.DISCORD_WEBHOOK;
+            
+            if (!webhook) {
+              console.log('⚠️ Discord webhook not configured');
+              return;
+            }
+            
+            // Get PR stats
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+            });
+            
+            let totalChanges = 0;
+            files.forEach(file => {
+              totalChanges += file.changes;
+            });
+            
+            // Determine size and color
+            let sizeEmoji = '🟢';
+            let color = 3066993; // Green
+            let sizeLabel = 'Small';
+            
+            if (totalChanges >= 500) {
+              sizeEmoji = '🔴';
+              color = 15158332; // Red
+              sizeLabel = 'XL - ⚠️ TOO LARGE!';
+            } else if (totalChanges >= 200) {
+              sizeEmoji = '🟠';
+              color = 16753920; // Orange
+              sizeLabel = 'Large';
+            } else if (totalChanges >= 50) {
+              sizeEmoji = '🟡';
+              color = 16776960; // Yellow
+              sizeLabel = 'Medium';
+            }
+            
+            const payload = {
+              embeds: [{
+                title: `${sizeEmoji} New Pull Request: ${pr.title}`,
+                description: pr.body || 'No description provided',
+                url: pr.html_url,
+                color: color,
+                fields: [
+                  {
+                    name: '👤 Author',
+                    value: `[@${pr.user.login}](${pr.user.html_url})`,
+                    inline: true
+                  },
+                  {
+                    name: '📏 Size',
+                    value: sizeLabel,
+                    inline: true
+                  },
+                  {
+                    name: '📊 Changes',
+                    value: `${totalChanges} lines in ${files.length} files`,
+                    inline: true
+                  },
+                  {
+                    name: '🔀 Branch',
+                    value: `\`${pr.head.ref}\` → \`${pr.base.ref}\``,
+                    inline: false
+                  }
+                ],
+                footer: {
+                  text: `${context.repo.owner}/${context.repo.repo}`,
+                  icon_url: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
+                },
+                timestamp: new Date().toISOString()
+              }]
+            };
+            
+            // Send to Discord
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            
+            console.log('✅ Discord notification sent for new PR');
+
+      - name: Large PR Warning
+        if: github.event_name == 'pull_request' && github.event.action == 'labeled'
+        uses: actions/github-script@v7
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const label = context.payload.label;
+            const webhook = process.env.DISCORD_WEBHOOK;
+            
+            if (!webhook) return;
+            
+            // Only notify for size: XL or needs split
+            if (label.name === 'size: XL' || label.name === 'needs split') {
+              const payload = {
+                embeds: [{
+                  title: '🚨 Large PR Alert!',
+                  description: `PR **#${pr.number}** is too large and should be split!`,
+                  url: pr.html_url,
+                  color: 15158332, // Red
+                  fields: [
+                    {
+                      name: '📝 PR Title',
+                      value: pr.title,
+                      inline: false
+                    },
+                    {
+                      name: '👤 Author',
+                      value: `[@${pr.user.login}](${pr.user.html_url})`,
+                      inline: true
+                    },
+                    {
+                      name: '🏷️ Label Added',
+                      value: `\`${label.name}\``,
+                      inline: true
+                    },
+                    {
+                      name: '💡 Recommendation',
+                      value: 'Consider splitting this PR into smaller, focused changes for better review quality.',
+                      inline: false
+                    }
+                  ],
+                  footer: {
+                    text: 'PR Size Labeler Bot',
+                    icon_url: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
+                  },
+                  timestamp: new Date().toISOString()
+                }]
+              };
+              
+              await fetch(webhook, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+              });
+              
+              console.log('✅ Large PR warning sent to Discord');
+            }
+
+      - name: Issue Opened Notification
+        if: github.event_name == 'issues' && github.event.action == 'opened'
+        uses: actions/github-script@v7
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const webhook = process.env.DISCORD_WEBHOOK;
+            
+            if (!webhook) return;
+            
+            // Determine issue type and color
+            let emoji = '📋';
+            let color = 7506394; // Blue
+            let issueType = 'New Issue';
+            
+            if (issue.title.toLowerCase().includes('bug')) {
+              emoji = '🐛';
+              color = 15158332; // Red
+              issueType = 'Bug Report';
+            } else if (issue.title.toLowerCase().includes('feature')) {
+              emoji = '✨';
+              color = 3066993; // Green
+              issueType = 'Feature Request';
+            } else if (issue.title.toLowerCase().includes('question')) {
+              emoji = '❓';
+              color = 10181046; // Purple
+              issueType = 'Question';
+            }
+            
+            const payload = {
+              embeds: [{
+                title: `${emoji} ${issueType}: ${issue.title}`,
+                description: issue.body ? issue.body.substring(0, 500) : 'No description provided',
+                url: issue.html_url,
+                color: color,
+                fields: [
+                  {
+                    name: '👤 Author',
+                    value: `[@${issue.user.login}](${issue.user.html_url})`,
+                    inline: true
+                  },
+                  {
+                    name: '#️⃣ Issue Number',
+                    value: `#${issue.number}`,
+                    inline: true
+                  }
+                ],
+                footer: {
+                  text: `${context.repo.owner}/${context.repo.repo}`,
+                  icon_url: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
+                },
+                timestamp: new Date().toISOString()
+              }]
+            };
+            
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            
+            console.log('✅ Issue notification sent to Discord');
+
+      - name: Security Issue Alert
+        if: github.event_name == 'issues' && github.event.action == 'labeled'
+        uses: actions/github-script@v7
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const label = context.payload.label;
+            const webhook = process.env.DISCORD_WEBHOOK;
+            
+            if (!webhook) return;
+            
+            // Only notify for critical labels
+            if (label.name === 'security' || label.name === 'priority: high') {
+              const payload = {
+                content: '@everyone 🚨 **CRITICAL ALERT** 🚨',
+                embeds: [{
+                  title: `⚠️ Critical Issue: ${issue.title}`,
+                  description: issue.body ? issue.body.substring(0, 500) : 'No description',
+                  url: issue.html_url,
+                  color: 15158332, // Red
+                  fields: [
+                    {
+                      name: '👤 Reporter',
+                      value: `[@${issue.user.login}](${issue.user.html_url})`,
+                      inline: true
+                    },
+                    {
+                      name: '🏷️ Label',
+                      value: `\`${label.name}\``,
+                      inline: true
+                    },
+                    {
+                      name: '⚡ Action Required',
+                      value: 'This issue requires immediate attention!',
+                      inline: false
+                    }
+                  ],
+                  footer: {
+                    text: 'Label Bot - Security Alert',
+                    icon_url: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
+                  },
+                  timestamp: new Date().toISOString()
+                }]
+              };
+              
+              await fetch(webhook, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+              });
+              
+              console.log('🚨 Security alert sent to Discord');
+            }
+
+      - name: PR Merged Notification
+        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+        uses: actions/github-script@v7
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const webhook = process.env.DISCORD_WEBHOOK;
+            
+            if (!webhook) return;
+            
+            const payload = {
+              embeds: [{
+                title: '✅ Pull Request Merged!',
+                description: `**${pr.title}** has been merged into \`${pr.base.ref}\``,
+                url: pr.html_url,
+                color: 5763719, // Green
+                fields: [
+                  {
+                    name: '👤 Author',
+                    value: `[@${pr.user.login}](${pr.user.html_url})`,
+                    inline: true
+                  },
+                  {
+                    name: '🎉 Merged by',
+                    value: `[@${pr.merged_by?.login || 'Unknown'}](${pr.merged_by?.html_url || ''})`,
+                    inline: true
+                  },
+                  {
+                    name: '#️⃣ PR Number',
+                    value: `#${pr.number}`,
+                    inline: true
+                  }
+                ],
+                footer: {
+                  text: `${context.repo.owner}/${context.repo.repo}`,
+                  icon_url: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
+                },
+                timestamp: new Date().toISOString()
+              }]
+            };
+            
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            
+            console.log('✅ PR merged notification sent to Discord');

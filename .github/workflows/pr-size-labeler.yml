@@ -1,0 +1,183 @@
+name: PR Size Labeler
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  contents: read
+  issues: write
+
+jobs:
+  size-label:
+    runs-on: ubuntu-latest
+    name: Label PR by Size
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Calculate PR size and add label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            
+            // Get PR diff stats
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+            });
+            
+            // Calculate total changes
+            let additions = 0;
+            let deletions = 0;
+            let totalChanges = 0;
+            
+            files.forEach(file => {
+              additions += file.additions;
+              deletions += file.deletions;
+              totalChanges += file.changes;
+            });
+            
+            console.log(`📊 PR Stats: +${additions} -${deletions} (${totalChanges} total changes)`);
+            
+            // Determine size based on total changes
+            let sizeLabel = '';
+            let emoji = '';
+            let recommendation = '';
+            
+            if (totalChanges < 10) {
+              sizeLabel = 'size: XS';
+              emoji = '🟢';
+              recommendation = 'Perfekt! Kleine PRs sind einfach zu reviewen.';
+            } else if (totalChanges < 50) {
+              sizeLabel = 'size: S';
+              emoji = '🟢';
+              recommendation = 'Gute Größe für ein schnelles Review!';
+            } else if (totalChanges < 200) {
+              sizeLabel = 'size: M';
+              emoji = '🟡';
+              recommendation = 'Moderate Größe. Review sollte machbar sein.';
+            } else if (totalChanges < 500) {
+              sizeLabel = 'size: L';
+              emoji = '🟠';
+              recommendation = 'Ziemlich groß! Überlege ob der PR aufgeteilt werden kann.';
+            } else {
+              sizeLabel = 'size: XL';
+              emoji = '🔴';
+              recommendation = '⚠️ Sehr großer PR! Stark empfohlen: In kleinere PRs aufteilen für bessere Reviews.';
+            }
+            
+            // Remove existing size labels
+            const currentLabels = pr.labels.map(label => label.name);
+            const sizeLabels = currentLabels.filter(label => label.startsWith('size:'));
+            
+            for (const label of sizeLabels) {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                name: label,
+              });
+            }
+            
+            // Add new size label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              labels: [sizeLabel],
+            });
+            
+            console.log(`✅ Added label: ${sizeLabel}`);
+            
+            // Create or update comment with stats
+            const commentBody = `## ${emoji} PR Size Analysis
+            
+            **Total Changes:** ${totalChanges} lines
+            - ✅ Added: ${additions} lines
+            - ❌ Deleted: ${deletions} lines
+            - 📁 Files changed: ${files.length}
+            
+            **Size Category:** \`${sizeLabel}\`
+            
+            **Recommendation:** ${recommendation}
+            
+            ---
+            <details>
+            <summary>📏 Size Guidelines</summary>
+            
+            | Size | Changes | Review Time | Status |
+            |------|---------|-------------|--------|
+            | XS | < 10 | ~5 min | 🟢 Ideal |
+            | S | < 50 | ~15 min | 🟢 Good |
+            | M | < 200 | ~30 min | 🟡 OK |
+            | L | < 500 | ~1 hour | 🟠 Large |
+            | XL | 500+ | 2+ hours | 🔴 Too Large |
+            
+            **Best Practice:** Keep PRs small and focused for faster, better reviews!
+            </details>
+            
+            *🤖 This comment is automatically updated when the PR changes.*`;
+            
+            // Find existing bot comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('PR Size Analysis')
+            );
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: commentBody,
+              });
+              console.log('📝 Updated existing comment');
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: commentBody,
+              });
+              console.log('📝 Created new comment');
+            }
+            
+            // Add warning label for very large PRs
+            if (totalChanges >= 500) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                labels: ['needs split'],
+              });
+              console.log('⚠️ Added "needs split" label for large PR');
+            } else {
+              // Remove "needs split" label if it exists and PR is now smaller
+              if (currentLabels.includes('needs split')) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: pr.number,
+                    name: 'needs split',
+                  });
+                  console.log('✅ Removed "needs split" label');
+                } catch (error) {
+                  // Label doesn't exist, ignore
+                }
+              }
+            }
