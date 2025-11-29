@@ -6,7 +6,7 @@
 // WICHTIG: Für Live-Demo den PAT lokal einsetzen (nicht committen!)
 // Oder GitHub Discussions/Backend API verwenden
 const CONFIG = {
-  GITHUB_PAT: '', // Lokal vor Demo einsetzen
+  GITHUB_PAT: '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', // Lokal vor Demo einsetzen
   REPO_OWNER: 'dinesnimalthas',
   REPO_NAME: 'Demo-Gruppe-12',
   DEMO_MODE: true // Falls true: Simuliert Success ohne echten API Call
