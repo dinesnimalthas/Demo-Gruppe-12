@@ -6,7 +6,7 @@
 // WICHTIG: GITHUB_PAT wird automatisch von GitHub Actions ersetzt
 // Lokal läuft Demo-Modus (keine echten API Calls)
 const CONFIG = {
-  GITHUB_PAT: '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', // Wird von GitHub Actions ersetzt
+  GITHUB_PAT: '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', // Wird von GitHub Actions ersetzt
   REPO_OWNER: 'dinesnimalthas',
   REPO_NAME: 'Demo-Gruppe-12',
   DEMO_MODE: false // Lokal: true | Nach Deployment: false
