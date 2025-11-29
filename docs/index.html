@@ -687,84 +687,7 @@
         // ===================================
         // SUPPORT FORM - GITHUB API
         // ===================================
-        document.getElementById('supportForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const form = e.target;
-            const submitButton = form.querySelector('button[type="submit"]');
-
-            // !!! SICHERHEITSWARNUNG !!!
-            // Ein Personal Access Token (PAT) sollte NIEMALS direkt im Frontend-Code stehen.
-            // Jeder Besucher der Webseite kann diesen Token sehen und missbrauchen.
-            // Für diese Demo wird es implementiert, aber für ECHTE PROJEKTE ist dies ein
-            // ENORMES SICHERHEITSRISIKO. Verwenden Sie stattdessen eine Backend-Funktion.
-            const GITHUB_PAT = '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';
-            const REPO_OWNER = 'HSLU-Exercise';
-            const REPO_NAME = 'scope-your-project-gruppe-12';
-
-            if (GITHUB_PAT === 'DEIN_PERSONAL_ACCESS_TOKEN_HIER_EINFUEGEN') {
-                alert('⚠️ FEHLER: Bitte ersetze "DEIN_PERSONAL_ACCESS_TOKEN_HIER_EINFUEGEN" im JavaScript-Code durch einen echten GitHub Personal Access Token.');
-                return;
-            }
-            
-            // Disable button and show loading state
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Wird verarbeitet...';
-
-            const issueType = document.getElementById('issueType').value;
-            const userName = document.getElementById('userName').value;
-            const userEmail = document.getElementById('userEmail').value;
-            const description = document.getElementById('issueDescription').value;
-            const isUrgent = document.getElementById('urgentCheckbox').checked;
-
-            const title = `[${issueType.toUpperCase()}] Support-Anfrage von ${userName}`;
-            const body = `**Anfrage von:** ${userName} (${userEmail})\n**Priorität:** ${isUrgent ? '🚨 DRINGEND' : 'Normal'}\n\n**Problembeschreibung:**\n${description}`;
-            const labels = [issueType];
-            if (isUrgent) {
-                labels.push('critical', 'priority:high');
-            }
-            
-            try {
-                const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `token ${GITHUB_PAT}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ title, body, labels })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`GitHub API Fehler: ${errorData.message}`);
-                }
-
-                const issue = await response.json();
-
-                // Show success message with animation
-                document.getElementById('ticketNumber').textContent = `#${issue.number}`;
-                const successMessage = document.getElementById('successMessage');
-                form.style.display = 'none';
-                successMessage.classList.remove('hidden');
-                
-                // Smooth scroll to success message
-                setTimeout(() => {
-                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 100);
-
-                // Console logging for debugging
-                console.log('✅ GitHub Issue erstellt:', issue.html_url);
-                console.log('✅ Team wurde automatisch benachrichtigt');
-                console.log('✅ Labels wurden zugewiesen:', labels);
-
-            } catch (error) {
-                console.error('❌ Fehler beim Erstellen des GitHub-Tickets:', error);
-                alert(`❌ Es gab einen Fehler beim Erstellen des Tickets:\n\n${error.message}\n\nBitte versuche es später erneut oder kontaktiere uns direkt.`);
-                submitButton.disabled = false;
-                submitButton.innerHTML = '<i class="fas fa-rocket mr-2"></i>Support-Anfrage jetzt senden';
-            }
-        });
+        // Support-Form Logic wird nun von script.js übernommen (externe Datei)
 
         // ===================================
         // SHOPPING CART ANIMATION
@@ -783,7 +706,5 @@
             });
         });
     </script>
-
->>>>>>> aac5c033975e4cedd7f991e8f24e5b81e6e53164
 </body>
 </html>
