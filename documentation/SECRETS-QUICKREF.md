@@ -104,7 +104,7 @@ Du kannst das gesamte Projekt präsentieren, ohne Webhooks konfigurieren zu müs
 
 **Vollständige Dokumentation**: [SECRETS.md](SECRETS.md)  
 **Setup-Checklist**: [SETUP-CHECKLIST.md](SETUP-CHECKLIST.md)  
-**Hauptdokumentation**: [README.md](README.md)
+**Hauptdokumentation**: [README.md](../README.md)
 
 ---
 

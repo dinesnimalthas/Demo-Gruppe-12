@@ -54,11 +54,11 @@ switch ($choice) {
     }
     "2" {
         Write-Host "📖 Öffne Quick-Start Guide..." -ForegroundColor Green
-        Start-Process "QUICK-START.md"
+        Start-Process "documentation\QUICK-START.md"
     }
     "3" {
         Write-Host "🎬 Öffne Live-Demo Guide..." -ForegroundColor Green
-        Start-Process "LIVE-DEMO-GUIDE.md"
+        Start-Process "documentation\LIVE-DEMO-GUIDE.md"
     }
     "4" {
         Write-Host "📊 Öffne Automation Dashboard..." -ForegroundColor Green
@@ -95,15 +95,15 @@ switch ($choice) {
         Write-Host "📝 Öffne alle Dokumentations-Dateien..." -ForegroundColor Green
         Start-Process "README.md"
         Start-Sleep -Seconds 1
-        Start-Process "QUICK-START.md"
+        Start-Process "documentation\QUICK-START.md"
         Start-Sleep -Seconds 1
-        Start-Process "LIVE-DEMO-GUIDE.md"
+        Start-Process "documentation\LIVE-DEMO-GUIDE.md"
         Start-Sleep -Seconds 1
-        Start-Process "PRESENTATION-GUIDE.md"
+        Start-Process "documentation\PRAESENTATION-STRUKTUR.md"
     }
     "7" {
         Write-Host "🔐 Öffne Secrets Dokumentation..." -ForegroundColor Green
-        Start-Process "SECRETS.md"
+        Start-Process "documentation\SECRETS.md"
     }
     "0" {
         Write-Host "👋 Auf Wiedersehen!" -ForegroundColor Cyan
@@ -119,8 +119,8 @@ Write-Host "✨ Demo gestartet!" -ForegroundColor Green
 Write-Host ""
 Write-Host "📚 Weitere Informationen:" -ForegroundColor Cyan
 Write-Host "  README.md - Projekt-Übersicht" -ForegroundColor Gray
-Write-Host "  QUICK-START.md - Schnellstart-Anleitung" -ForegroundColor Gray
-Write-Host "  LIVE-DEMO-GUIDE.md - Präsentations-Guide" -ForegroundColor Gray
-Write-Host "  SECRETS.md - Webhook-Konfiguration" -ForegroundColor Gray
+Write-Host "  documentation\QUICK-START.md - Schnellstart-Anleitung" -ForegroundColor Gray
+Write-Host "  documentation\LIVE-DEMO-GUIDE.md - Präsentations-Guide" -ForegroundColor Gray
+Write-Host "  documentation\SECRETS.md - Webhook-Konfiguration" -ForegroundColor Gray
 Write-Host ""
 Write-Host "🎉 Viel Erfolg mit deiner Demo!" -ForegroundColor Green

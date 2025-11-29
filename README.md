@@ -22,12 +22,14 @@ Start-Process index.html
 
 **Demo-Modus ist aktiviert** - Support-Formular funktioniert out-of-the-box!
 
-📖 **[→ QUICK-START Guide](QUICK-START.md)** - In 2 Minuten startklar  
-🎬 **[→ LIVE-DEMO Guide](LIVE-DEMO-GUIDE.md)** - Präsentations-Anleitung  
-🔐 **[→ SECRETS Dokumentation](SECRETS.md)** - Webhook-Konfiguration  
-🤝 **[→ CONTRIBUTING Guide](CONTRIBUTING.md)** - Beitragen zum Projekt  
-📁 **[→ REPOSITORY OVERVIEW](REPOSITORY-OVERVIEW.md)** - Vollständige Datei-Übersicht  
-✅ **[→ SETUP CHECKLIST](SETUP-CHECKLIST.md)** - Komplette Setup-Anleitung
+📖 **[→ QUICK-START Guide](documentation/QUICK-START.md)** - In 2 Minuten startklar  
+🎬 **[→ LIVE-DEMO Guide](documentation/LIVE-DEMO-GUIDE.md)** - Präsentations-Anleitung  
+🔐 **[→ SECRETS Dokumentation](documentation/SECRETS.md)** - Webhook-Konfiguration  
+🤝 **[→ CONTRIBUTING Guide](documentation/CONTRIBUTING.md)** - Beitragen zum Projekt  
+📁 **[→ REPOSITORY OVERVIEW](documentation/REPOSITORY-OVERVIEW.md)** - Vollständige Datei-Übersicht  
+✅ **[→ SETUP CHECKLIST](documentation/SETUP-CHECKLIST.md)** - Komplette Setup-Anleitung
+
+📚 **Vollständige Dokumentation**: Siehe [documentation/](documentation/) Ordner
 
 ---
 
@@ -69,8 +71,7 @@ Demo-Gruppe-12/
 │   │   └── config.yml
 │   ├── PULL_REQUEST_TEMPLATE.md
 │   ├── CODEOWNERS                 # Auto Reviewer Assignment
-│   ├── dependabot.yml             # Dependency Updates
-│   └── REPOSITORY-SETTINGS.md     # Settings Documentation
+│   └── dependabot.yml             # Dependency Updates
 │
 ├── automations/                   # Automation Dokumentation
 │   ├── discord-notifications/     # Discord Integration
@@ -87,13 +88,22 @@ Demo-Gruppe-12/
 │   ├── styles.css                 # Styling
 │   └── README.md                  # Website Dokumentation
 │
+├── documentation/                 # 📚 Projekt-Dokumentation
+│   ├── README.md                  # Dokumentations-Übersicht
+│   ├── QUICK-START.md             # Schnellstart-Guide
+│   ├── LIVE-DEMO-GUIDE.md        # Live-Demo Anleitung
+│   ├── PRAESENTATION-STRUKTUR.md # Präsentations-Ablauf
+│   ├── PRESENTATION-GUIDE.md     # Detaillierte Präsentation
+│   ├── SECRETS.md                 # Webhook-Konfiguration
+│   ├── SECRETS-QUICKREF.md       # Secrets Quick-Ref
+│   ├── SETUP-CHECKLIST.md        # Setup-Checkliste
+│   ├── REPOSITORY-OVERVIEW.md    # Datei-Übersicht
+│   ├── REPOSITORY-SETTINGS.md    # GitHub Settings
+│   ├── CONTRIBUTING.md            # Contribution Guidelines
+│   ├── SECURITY.md                # Sicherheitsrichtlinien
+│   └── WAS-WURDE-HINZUGEFUEGT.md # Feature-Zusammenfassung
+│
 ├── README.md                      # Haupt-Dokumentation
-├── QUICK-START.md                 # Schnellstart-Guide
-├── LIVE-DEMO-GUIDE.md            # Präsentations-Anleitung
-├── PRESENTATION-GUIDE.md         # Detaillierte Präsentation
-├── SECRETS.md                     # Webhook-Konfiguration
-├── CONTRIBUTING.md                # Contribution Guidelines
-├── SECURITY.md                    # Sicherheitsrichtlinien
 ├── LICENSE                        # MIT Lizenz
 ├── .editorconfig                  # Editor-Konfiguration
 ├── .gitattributes                 # Git-Attribute
@@ -174,13 +184,13 @@ cd Demo-Gruppe-12
 | `SLACK_WEBHOOK_URL` | Slack Incoming Webhook | Optional |
 | `TEAMS_WEBHOOK_URL` | Microsoft Teams Webhook | Optional |
 
-📖 **Detaillierte Anleitung**: Siehe [SECRETS.md](SECRETS.md)
+📖 **Detaillierte Anleitung**: Siehe [SECRETS.md](documentation/SECRETS.md)
 
 #### 4. CODEOWNERS aktivieren (Optional)
 - Gehe zu **Settings → Branches**
 - Branch protection rule für `main` erstellen
 - Aktiviere: "Require review from Code Owners"
-- Siehe [REPOSITORY-SETTINGS.md](.github/REPOSITORY-SETTINGS.md) für Details
+- Siehe [REPOSITORY-SETTINGS.md](documentation/REPOSITORY-SETTINGS.md) für Details
 
 #### 5. Labels erstellen (Optional)
 
@@ -325,17 +335,17 @@ Dieses Projekt ist eine Demo für Bildungszwecke im Rahmen des Moduls "IT Projec
 - 🌐 [Live Website](https://dinesnimalthas.github.io/Demo-Gruppe-12/)
 - 📊 [Automation Dashboard](https://dinesnimalthas.github.io/Demo-Gruppe-12/automation-dashboard.html)
 - 📚 [Automation Dokumentation](./automations/)
-- 🎬 [Live-Demo Guide](./LIVE-DEMO-GUIDE.md)
-- 📖 [Quick-Start Guide](./QUICK-START.md)
-- 🎤 [Präsentations-Guide](./PRESENTATION-GUIDE.md)
-- 🔐 [Secrets Konfiguration](./SECRETS.md)
-- 🤝 [Contributing Guidelines](./CONTRIBUTING.md)
-- 🛡️ [Security Policy](./SECURITY.md)
-- ⚙️ [Repository Settings](./.github/REPOSITORY-SETTINGS.md)
+- 🎬 [Live-Demo Guide](./documentation/LIVE-DEMO-GUIDE.md)
+- 📖 [Quick-Start Guide](./documentation/QUICK-START.md)
+- 🎤 [Präsentations-Guides](./documentation/PRAESENTATION-STRUKTUR.md)
+- 🔐 [Secrets Konfiguration](./documentation/SECRETS.md)
+- 🤝 [Contributing Guidelines](./documentation/CONTRIBUTING.md)
+- 🛡️ [Security Policy](./documentation/SECURITY.md)
+- ⚙️ [Repository Settings](./documentation/REPOSITORY-SETTINGS.md)
 
 ## 🤝 Contributing
 
-Wir freuen uns über Beiträge! Bitte lies die [CONTRIBUTING.md](CONTRIBUTING.md) für Details.
+Wir freuen uns über Beiträge! Bitte lies die [CONTRIBUTING.md](documentation/CONTRIBUTING.md) für Details.
 
 ### Schnell-Guide
 1. Fork das Repository
@@ -348,16 +358,16 @@ Wir freuen uns über Beiträge! Bitte lies die [CONTRIBUTING.md](CONTRIBUTING.md
 
 ## 🐛 Bug Reports & Feature Requests
 
-- 🐛 **Bug gefunden?** → [Bug Report Template](./.github/ISSUE_TEMPLATE/bug_report.md)
-- ✨ **Feature Idee?** → [Feature Request Template](./.github/ISSUE_TEMPLATE/feature_request.md)
-- 📚 **Dokumentation?** → [Documentation Template](./.github/ISSUE_TEMPLATE/documentation.md)
-- 🔧 **Automation Problem?** → [Automation Template](./.github/ISSUE_TEMPLATE/automation.md)
+- 🐛 **Bug gefunden?** → [Bug Report Template](.github/ISSUE_TEMPLATE/bug_report.md)
+- ✨ **Feature Idee?** → [Feature Request Template](.github/ISSUE_TEMPLATE/feature_request.md)
+- 📚 **Dokumentation?** → [Documentation Template](.github/ISSUE_TEMPLATE/documentation.md)
+- 🔧 **Automation Problem?** → [Automation Template](.github/ISSUE_TEMPLATE/automation.md)
 
 ## 🔐 Sicherheit
 
 Sicherheitslücken bitte NICHT öffentlich melden! Kontaktiere @dinesnimalthas direkt.
 
-Siehe [SECURITY.md](SECURITY.md) für Details.
+Siehe [SECURITY.md](documentation/SECURITY.md) für Details.
 
 ---
 
