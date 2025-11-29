@@ -3,13 +3,13 @@
 // ========================================
 
 // === CONFIGURATION ===
-// WICHTIG: Für Live-Demo den PAT lokal einsetzen (nicht committen!)
-// Oder GitHub Discussions/Backend API verwenden
+// WICHTIG: GITHUB_PAT wird automatisch von GitHub Actions ersetzt
+// Lokal läuft Demo-Modus (keine echten API Calls)
 const CONFIG = {
-  GITHUB_PAT: '${{ secrets.TOKEN_ACTIONS }}', // Füge hier deinen PAT ein (nur lokal, nicht committen!)
+  GITHUB_PAT: 'PLACEHOLDER_TOKEN', // Wird von GitHub Actions ersetzt
   REPO_OWNER: 'dinesnimalthas',
   REPO_NAME: 'Demo-Gruppe-12',
-  DEMO_MODE: false // Falls true: Simuliert Success ohne echten API Call
+  DEMO_MODE: true // Lokal: true | Nach Deployment: false
 };
 
 // === SMOOTH SCROLLING ===

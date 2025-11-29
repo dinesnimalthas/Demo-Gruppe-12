@@ -1,0 +1,45 @@
+name: Deploy to GitHub Pages with Token
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inject Token into script.js
+        run: |
+          # Ersetze PLACEHOLDER_TOKEN mit echtem Token aus Secret
+          sed -i "s/PLACEHOLDER_TOKEN/${{ secrets.TOKENS_ACTIONS }}/g" docs/script.js
+          # Deaktiviere Demo-Modus für Production
+          sed -i "s/DEMO_MODE: true/DEMO_MODE: false/g" docs/script.js
+          echo "✅ Token injiziert"
+          
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'docs'
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
