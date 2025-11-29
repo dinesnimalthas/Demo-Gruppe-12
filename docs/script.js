@@ -4,10 +4,10 @@
 
 // === CONFIGURATION ===
 const CONFIG = {
-  GITHUB_PAT: 'ghp_XoN8RVMsEG8n56IoBeXH1VASSE6Wxu2T10RK',
+  GITHUB_PAT: 'PLACEHOLDER_TOKEN', // Wird von GitHub Actions ersetzt
   REPO_OWNER: 'dinesnimalthas',
   REPO_NAME: 'Demo-Gruppe-12',
-  DEMO_MODE: false
+  DEMO_MODE: true // Lokal: Demo | GitHub Actions: false
 };
 
 // === SMOOTH SCROLLING ===
