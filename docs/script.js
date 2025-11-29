@@ -3,13 +3,11 @@
 // ========================================
 
 // === CONFIGURATION ===
-// WICHTIG: GITHUB_PAT wird automatisch von GitHub Actions ersetzt
-// Lokal läuft Demo-Modus (keine echten API Calls)
 const CONFIG = {
-  GITHUB_PAT: 'PLACEHOLDER_TOKEN', // Wird von GitHub Actions ersetzt
+  GITHUB_PAT: 'ghp_XoN8RVMsEG8n56IoBeXH1VASSE6Wxu2T10RK',
   REPO_OWNER: 'dinesnimalthas',
   REPO_NAME: 'Demo-Gruppe-12',
-  DEMO_MODE: false // Lokal: true | Nach Deployment: false
+  DEMO_MODE: false
 };
 
 // === SMOOTH SCROLLING ===

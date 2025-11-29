@@ -27,7 +27,7 @@ jobs:
       - name: Inject Token into script.js
         run: |
           # Ersetze PLACEHOLDER_TOKEN mit echtem Token aus Secret
-          sed -i "s/PLACEHOLDER_TOKEN/${{ secrets.TOKENS_ACTIONS }}/g" docs/script.js
+          sed -i "s/PLACEHOLDER_TOKEN/${{ secrets.TOKEN_ACTIONS_2 }}/g" docs/script.js
           # Deaktiviere Demo-Modus für Production
           sed -i "s/DEMO_MODE: true/DEMO_MODE: false/g" docs/script.js
           echo "✅ Token injiziert"
