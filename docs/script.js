@@ -9,7 +9,7 @@ const CONFIG = {
   GITHUB_PAT: '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', // Füge hier deinen PAT ein (nur lokal, nicht committen!)
   REPO_OWNER: 'dinesnimalthas',
   REPO_NAME: 'Demo-Gruppe-12',
-  DEMO_MODE: true // Falls true: Simuliert Success ohne echten API Call
+  DEMO_MODE: false // Falls true: Simuliert Success ohne echten API Call
 };
 
 // === SMOOTH SCROLLING ===
