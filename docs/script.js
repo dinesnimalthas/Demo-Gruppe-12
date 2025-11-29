@@ -4,7 +4,11 @@
 
 // === CONFIGURATION ===
 const CONFIG = {
+<<<<<<< HEAD
   GITHUB_PAT: 'ghp_XoN8RVMsEG8n56IoBeXH1VASSE6Wxu2T10RK',
+=======
+  GITHUB_PAT: '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', // Wird von GitHub Actions ersetzt
+>>>>>>> ae78b8bc1a7f459c4ce2b9368ea45c799c21670c
   REPO_OWNER: 'dinesnimalthas',
   REPO_NAME: 'Demo-Gruppe-12',
   DEMO_MODE: false
