@@ -1,19 +1,19 @@
-# 🌐 TechGear — Premium Electronics Store
+# 🏠 ImmoFlow — Intelligente Immobilienplattform
 
-Ein minimalistisches, Apple-inspiriertes E-Commerce-Design mit intelligenter GitHub-Automatisierung.
+Eine moderne Immobilienplattform mit vollautomatisiertem GitHub-Workflow-System.
 
 ## 🎨 Design-Philosophie
 
-Das neue Design folgt Apples Designprinzipien:
-- **Minimalismus**: Klare Linien, viel Weißraum, Fokus auf Inhalt
-- **Typografie**: SF Pro Display-ähnliche Schrift (Inter/System Fonts)
-- **Farben**: Dezent und elegant mit blauen Akzenten
-- **Animationen**: Subtil und funktional, niemals aufdringlich
+Modernes, professionelles Design für Immobilienbröker:
+- **Klarheit**: Übersichtliche Darstellung von Immobilien-Angeboten
+- **Vertrauen**: Professionelle Ästhetik für hohe Transaktionen
+- **Effizienz**: Schnelle Navigation, klare Kategorisierung
+- **Automatisierung**: GitHub Actions für Anfragenverwaltung
 - **Responsive**: Perfekt auf allen Geräten
 
 ## 📄 Dateien
 
-- **index.html** - Haupt-Website (Apple-inspired minimalist design)
+- **index.html** - Haupt-Website (ImmoFlow Immobilienplattform)
 - **styles.css** - Separates CSS mit CSS Custom Properties
 - **script.js** - Modulares JavaScript (ES6+)
 - **automation-dashboard.html** - Live Workflow Monitoring Dashboard
@@ -21,20 +21,20 @@ Das neue Design folgt Apples Designprinzipien:
 ## 🚀 Features
 
 ### Design
-- ✅ Apple-inspirierte Navigation mit Blur-Effekt
-- ✅ Minimalistischer Hero-Bereich ohne störende Grafiken
-- ✅ Elegante Produktkarten mit subtilen Hover-Effekten
-- ✅ Clean Support-Formular mit klarer Hierarchie
+- ✅ Moderne Navigation mit Immobilien-Fokus
+- ✅ Hero-Bereich mit KI-gestützter Suche
+- ✅ Elegante Immobilien-Karten mit Bildergalerien
+- ✅ Professional Support-Formular für Anfragen
 - ✅ Responsives Grid-Layout
 - ✅ Smooth Scrolling & Fade-in Animationen
 
 ### Funktionalität
-- ✅ Shopping Cart mit Counter
-- ✅ GitHub Issue Integration
-- ✅ Automatisches Label-System
+- ✅ Favoriten-System mit Counter
+- ✅ GitHub Issue Integration für Anfragen
+- ✅ Automatisches Label-System (Besichtigung, Finanzierung, etc.)
 - ✅ Formular-Validierung
 - ✅ Intersection Observer für Performance
-- ✅ Parallax-Effekte
+- ✅ Multi-Channel Benachrichtigungen
 
 ## 🛠 Technologie-Stack
 

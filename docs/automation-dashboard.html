@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automation Dashboard - TechGear Store</title>
+    <title>Automation Dashboard - ImmoFlow</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -14,15 +14,21 @@
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <div>
-                    <h1 class="text-2xl font-bold">
-                        <i class="fas fa-robot text-blue-500 mr-2"></i>
+                    <h1 class="text-2xl font-bold flex items-center gap-2">
+                        <i class="fas fa-robot text-blue-500"></i>
                         Automation Dashboard
+                        <span class="px-2 py-1 bg-red-600 text-white text-xs rounded-full animate-pulse">🔴 LIVE</span>
                     </h1>
                     <p class="text-gray-400 text-sm">Live GitHub Workflows Monitoring</p>
                 </div>
-                <a href="index.html" class="text-blue-400 hover:text-blue-300">
-                    <i class="fas fa-arrow-left mr-2"></i>Zurück zur Website
-                </a>
+                <div class="flex items-center gap-3">
+                    <button id="refresh-btn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-sm transition">
+                        <i class="fas fa-sync-alt mr-2"></i>Aktualisieren
+                    </button>
+                    <a href="index.html" class="text-blue-400 hover:text-blue-300">
+                        <i class="fas fa-arrow-left mr-2"></i>Zurück
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -36,7 +42,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-400 text-sm">Active Workflows</p>
-                        <p class="text-3xl font-bold text-green-500">6</p>
+                        <p id="stat-workflows" class="text-3xl font-bold text-green-500">--</p>
                     </div>
                     <i class="fas fa-cogs text-4xl text-green-500 opacity-20"></i>
                 </div>
@@ -46,19 +52,19 @@
             <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-gray-400 text-sm">Support Tickets</p>
-                        <p class="text-3xl font-bold text-blue-500">23</p>
+                        <p class="text-gray-400 text-sm">Kundenanfragen</p>
+                        <p id="stat-issues" class="text-3xl font-bold text-blue-500">--</p>
                     </div>
-                    <i class="fas fa-ticket-alt text-4xl text-blue-500 opacity-20"></i>
+                    <i class="fas fa-home text-4xl text-blue-500 opacity-20"></i>
                 </div>
-                <p class="text-xs text-gray-500 mt-2">+5 heute</p>
+                <p class="text-xs text-gray-500 mt-2">Lädt...</p>
             </div>
 
             <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-400 text-sm">Response Time</p>
-                        <p class="text-3xl font-bold text-purple-500">< 2min</p>
+                        <p id="stat-response" class="text-3xl font-bold text-purple-500">--</p>
                     </div>
                     <i class="fas fa-clock text-4xl text-purple-500 opacity-20"></i>
                 </div>
@@ -69,7 +75,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-400 text-sm">Team Alerts</p>
-                        <p class="text-3xl font-bold text-yellow-500">147</p>
+                        <p id="stat-alerts" class="text-3xl font-bold text-yellow-500">--</p>
                     </div>
                     <i class="fas fa-bell text-4xl text-yellow-500 opacity-20"></i>
                 </div>
@@ -81,7 +87,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
             
             <!-- Workflow 1: Label Bot -->
-            <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+            <div id="label-bot" class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
                 <div class="bg-gradient-to-r from-green-600 to-green-700 p-4">
                     <h2 class="text-xl font-bold flex items-center">
                         <i class="fas fa-tags mr-2"></i>
@@ -90,10 +96,10 @@
                 </div>
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 bg-green-900 text-green-300 rounded-full text-sm">
+                        <span class="workflow-status px-3 py-1 bg-green-900 text-green-300 rounded-full text-sm">
                             <i class="fas fa-check-circle mr-1"></i>Active
                         </span>
-                        <span class="text-gray-400 text-sm">Last run: 2 min ago</span>
+                        <span class="last-run-time text-gray-400 text-sm">Lädt...</span>
                     </div>
                     
                     <p class="text-gray-300 mb-4">Automatische Kategorisierung und Labeling von Support-Tickets</p>
@@ -101,15 +107,15 @@
                     <div class="space-y-2 mb-4">
                         <div class="flex justify-between text-sm">
                             <span class="text-gray-400">Issues processed</span>
-                            <span class="font-semibold">23</span>
+                            <span class="stat-value font-semibold">--</span>
                         </div>
                         <div class="flex justify-between text-sm">
                             <span class="text-gray-400">Auto-labeled</span>
-                            <span class="font-semibold text-green-400">21</span>
+                            <span class="stat-value font-semibold text-green-400">--</span>
                         </div>
                         <div class="flex justify-between text-sm">
                             <span class="text-gray-400">Success rate</span>
-                            <span class="font-semibold text-green-400">91.3%</span>
+                            <span class="stat-value font-semibold text-green-400">--</span>
                         </div>
                     </div>
                     
@@ -120,7 +126,7 @@
             </div>
 
             <!-- Workflow 2: Teams Notifications -->
-            <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+            <div id="teams-notifications" class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
                 <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-4">
                     <h2 class="text-xl font-bold flex items-center">
                         <i class="fas fa-bell mr-2"></i>
@@ -129,10 +135,10 @@
                 </div>
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 bg-green-900 text-green-300 rounded-full text-sm">
+                        <span class="workflow-status px-3 py-1 bg-green-900 text-green-300 rounded-full text-sm">
                             <i class="fas fa-check-circle mr-1"></i>Active
                         </span>
-                        <span class="text-gray-400 text-sm">Last run: 5 min ago</span>
+                        <span class="last-run-time text-gray-400 text-sm">Lädt...</span>
                     </div>
                     
                     <p class="text-gray-300 mb-4">Sofortige Team-Benachrichtigungen für kritische Issues</p>
@@ -140,11 +146,11 @@
                     <div class="space-y-2 mb-4">
                         <div class="flex justify-between text-sm">
                             <span class="text-gray-400">Notifications sent</span>
-                            <span class="font-semibold">147</span>
+                            <span class="stat-value font-semibold">--</span>
                         </div>
                         <div class="flex justify-between text-sm">
                             <span class="text-gray-400">Critical alerts</span>
-                            <span class="font-semibold text-red-400">8</span>
+                            <span class="stat-value font-semibold text-red-400">--</span>
                         </div>
                         <div class="flex justify-between text-sm">
                             <span class="text-gray-400">Avg. response</span>
@@ -159,7 +165,7 @@
             </div>
 
             <!-- Workflow 3: PR Size Labeler -->
-            <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+            <div id="pr-size-labeler" class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
                 <div class="bg-gradient-to-r from-purple-600 to-purple-700 p-4">
                     <h2 class="text-xl font-bold flex items-center">
                         <i class="fas fa-ruler-combined mr-2"></i>
@@ -168,10 +174,10 @@
                 </div>
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 bg-green-900 text-green-300 rounded-full text-sm">
+                        <span class="workflow-status px-3 py-1 bg-green-900 text-green-300 rounded-full text-sm">
                             <i class="fas fa-check-circle mr-1"></i>Active
                         </span>
-                        <span class="text-gray-400 text-sm">Last run: 15 min ago</span>
+                        <span class="last-run-time text-gray-400 text-sm">Lädt...</span>
                     </div>
                     
                     <p class="text-gray-300 mb-4">Automatische Größen-Einschätzung für Pull Requests</p>
@@ -179,15 +185,15 @@
                     <div class="space-y-2 mb-4">
                         <div class="flex justify-between text-sm">
                             <span class="text-gray-400">PRs analyzed</span>
-                            <span class="font-semibold">45</span>
+                            <span class="stat-value font-semibold">--</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-400">Avg. PR size</span>
-                            <span class="font-semibold text-yellow-400">Medium</span>
+                            <span class="text-gray-400">Auto-labeled</span>
+                            <span class="stat-value font-semibold text-yellow-400">--</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-400">Too large (XL)</span>
-                            <span class="font-semibold text-orange-400">3</span>
+                            <span class="text-gray-400">Success rate</span>
+                            <span class="stat-value font-semibold text-green-400">--</span>
                         </div>
                     </div>
                     
@@ -198,7 +204,7 @@
             </div>
 
             <!-- Workflow 4: Discord Notifications -->
-            <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+            <div id="discord-notifications" class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
                 <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 p-4">
                     <h2 class="text-xl font-bold flex items-center">
                         <i class="fab fa-discord mr-2"></i>
@@ -207,26 +213,26 @@
                 </div>
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 bg-green-900 text-green-300 rounded-full text-sm">
+                        <span class="workflow-status px-3 py-1 bg-green-900 text-green-300 rounded-full text-sm">
                             <i class="fas fa-check-circle mr-1"></i>Active
                         </span>
-                        <span class="text-gray-400 text-sm">Last run: 8 min ago</span>
+                        <span class="last-run-time text-gray-400 text-sm">Lädt...</span>
                     </div>
                     
                     <p class="text-gray-300 mb-4">Community-Updates via Discord für transparente Kommunikation</p>
                     
                     <div class="space-y-2 mb-4">
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-400">Messages sent</span>
-                            <span class="font-semibold">89</span>
+                            <span class="text-gray-400">Workflow runs</span>
+                            <span class="stat-value font-semibold">--</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-400">Community members</span>
-                            <span class="font-semibold text-indigo-400">234</span>
+                            <span class="text-gray-400">Success rate</span>
+                            <span class="stat-value font-semibold text-indigo-400">--</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-400">Engagement</span>
-                            <span class="font-semibold text-green-400">High</span>
+                            <span class="text-gray-400">Avg. response</span>
+                            <span class="stat-value font-semibold text-green-400">--</span>
                         </div>
                     </div>
                     
@@ -246,99 +252,27 @@
                 </h2>
             </div>
             <div class="p-6">
-                <div class="space-y-4">
-                    <!-- Activity Item 1 -->
-                    <div class="flex items-start space-x-4 pb-4 border-b border-gray-700">
-                        <div class="w-10 h-10 bg-red-900 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-exclamation-circle text-red-400"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="font-semibold">Kritisches Issue erkannt</p>
-                                    <p class="text-sm text-gray-400">Issue #456: "Checkout funktioniert nicht"</p>
-                                </div>
-                                <span class="text-xs text-gray-500">2 min ago</span>
-                            </div>
-                            <div class="mt-2 flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-red-900 text-red-300 rounded text-xs">critical</span>
-                                <span class="px-2 py-1 bg-orange-900 text-orange-300 rounded text-xs">bug</span>
-                                <span class="px-2 py-1 bg-blue-900 text-blue-300 rounded text-xs">payment</span>
-                            </div>
-                            <p class="text-sm text-gray-400 mt-2">
-                                ✅ Team via Teams benachrichtigt • 
-                                ✅ Automatisch an Payment-Expert zugewiesen • 
-                                ✅ SLA-Timer gestartet
-                            </p>
-                        </div>
-                    </div>
+                <div id="activity-feed" class="space-y-4">
+                    <p class="text-gray-500 text-center py-8">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>Lade Aktivitäten...
+                    </p>
+                </div>
+            </div>
+        </div>
 
-                    <!-- Activity Item 2 -->
-                    <div class="flex items-start space-x-4 pb-4 border-b border-gray-700">
-                        <div class="w-10 h-10 bg-purple-900 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-code-branch text-purple-400"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="font-semibold">PR geöffnet und gelabelt</p>
-                                    <p class="text-sm text-gray-400">PR #123: "Fix: Checkout Bug behoben"</p>
-                                </div>
-                                <span class="text-xs text-gray-500">5 min ago</span>
-                            </div>
-                            <div class="mt-2 flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-yellow-900 text-yellow-300 rounded text-xs">size: M</span>
-                                <span class="px-2 py-1 bg-green-900 text-green-300 rounded text-xs">bugfix</span>
-                            </div>
-                            <p class="text-sm text-gray-400 mt-2">
-                                ✅ Größe analysiert (187 Zeilen) • 
-                                ✅ Reviewer zugewiesen • 
-                                ✅ CI/CD Pipeline gestartet
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Activity Item 3 -->
-                    <div class="flex items-start space-x-4 pb-4 border-b border-gray-700">
-                        <div class="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-user-plus text-blue-400"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="font-semibold">Neuer Contributor begrüßt</p>
-                                    <p class="text-sm text-gray-400">@new_dev hat ersten Issue geöffnet</p>
-                                </div>
-                                <span class="text-xs text-gray-500">15 min ago</span>
-                            </div>
-                            <p class="text-sm text-gray-400 mt-2">
-                                ✅ Willkommensnachricht gesendet • 
-                                ✅ Contribution Guidelines verlinkt • 
-                                ✅ Mentor zugewiesen
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Activity Item 4 -->
-                    <div class="flex items-start space-x-4">
-                        <div class="w-10 h-10 bg-green-900 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-400"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="font-semibold">PR erfolgreich gemerged</p>
-                                    <p class="text-sm text-gray-400">PR #120: "Feature: Dark Mode Support"</p>
-                                </div>
-                                <span class="text-xs text-gray-500">30 min ago</span>
-                            </div>
-                            <p class="text-sm text-gray-400 mt-2">
-                                ✅ Discord Community benachrichtigt • 
-                                ✅ Release Notes aktualisiert • 
-                                ✅ Deployment getriggert
-                            </p>
-                        </div>
-                    </div>
+        <!-- Recent Workflow Runs -->
+        <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden mb-8">
+            <div class="bg-gray-700 px-6 py-4 border-b border-gray-600">
+                <h2 class="text-xl font-bold">
+                    <i class="fas fa-play-circle mr-2 text-green-500"></i>
+                    Recent Workflow Runs
+                </h2>
+            </div>
+            <div class="p-6">
+                <div id="workflow-runs">
+                    <p class="text-gray-500 text-center py-4">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>Lade Workflows...
+                    </p>
                 </div>
             </div>
         </div>
@@ -399,10 +333,23 @@
     <!-- Footer -->
     <footer class="bg-gray-800 border-t border-gray-700 py-6 mt-12">
         <div class="container mx-auto px-6 text-center text-gray-400">
-            <p>TechGear Store Automation Dashboard - Powered by GitHub Actions</p>
+            <p>ImmoFlow Automation Dashboard - Powered by GitHub Actions</p>
             <p class="text-sm mt-2">Demo für IT Project Basics - HSLU 2025</p>
+            <p class="text-xs mt-2">
+                <i class="fas fa-sync-alt text-green-400 mr-1"></i>
+                <span class="text-green-400">🔴 LIVE</span> - Letzte Aktualisierung: <span id="last-update">--:--:--</span>
+                <span class="ml-4 text-gray-500" id="refresh-countdown"></span>
+            </p>
         </div>
     </footer>
+
+    <!-- Error Message -->
+    <div id="error-message" class="hidden fixed bottom-4 right-4 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg">
+        API Fehler
+    </div>
+
+    <!-- Live Dashboard Script -->
+    <script src="dashboard-live.js"></script>
 
 </body>
 </html>

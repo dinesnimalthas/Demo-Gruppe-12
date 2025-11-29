@@ -1,13 +1,13 @@
-# 🚀 TechGear Store - Automation Demo
+# 🚀 ImmoFlow - Intelligente Immobilienplattform
 
 **IT Project Basics - HSLU 2025 | Gruppe 12**
 
-Eine moderne E-Commerce-Demo mit vollautomatisierten GitHub-Workflows für Support, Labeling und Team-Notifications.
+Eine moderne Immobilienplattform mit vollautomatisierten GitHub-Workflows für Kundenanfragen, intelligentes Triage-System und Multi-Channel Benachrichtigungen.
 
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-success?style=flat&logo=github)](https://dinesnimalthas.github.io/Demo-Gruppe-12/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-9-success?style=flat&logo=github-actions)](https://github.com/dinesnimalthas/Demo-Gruppe-12/actions)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](documentation/CONTRIBUTING.md)
 
 ## ✨ SOFORT funktionsfähig - Keine Konfiguration nötig!
 
@@ -36,17 +36,21 @@ Start-Process index.html
 ## 📋 Übersicht
 
 Dieses Projekt demonstriert professionelle DevOps-Praktiken mit GitHub Actions:
-- ✅ Automatisierte Support-Ticket-Erstellung
-- ✅ Intelligentes Issue-Labeling
-- ✅ Team-Benachrichtigungen (Teams, Discord, Slack)
-- ✅ PR-Größen-Analyse
-- ✅ Email-Integration
+- ✅ Automatisierte Kundenanfragen-Erfassung
+- ✅ Intelligentes Issue-Triage & Labeling
+- ✅ Multi-Channel Benachrichtigungen (Teams, Discord, Slack)
+- ✅ PR-Größen-Analyse für Code-Reviews
+- ✅ KI-gestütztes Immobilien-Matching
+
+🏠 **Use Case**: Moderne Immobilienplattform mit vollautomatisierten Workflows
 
 ## 🌐 Live Demo
 
 **Haupt-Website**: https://dinesnimalthas.github.io/Demo-Gruppe-12/
 
 **Automation Dashboard**: https://dinesnimalthas.github.io/Demo-Gruppe-12/automation-dashboard.html
+
+**Use Case**: Immobilienplattform mit automatisierter Anfragenverwaltung
 
 ## 🏗️ Projektstruktur
 
@@ -82,7 +86,7 @@ Demo-Gruppe-12/
 │   └── reusable-workflow/        # Reusable Workflows
 │
 ├── docs/                          # GitHub Pages Website
-│   ├── index.html                 # TechGear Store Hauptseite
+│   ├── index.html                 # ImmoFlow Hauptseite
 │   ├── automation-dashboard.html  # Live Workflow Dashboard
 │   ├── script.js                  # Frontend Logic
 │   ├── styles.css                 # Styling
@@ -113,19 +117,19 @@ Demo-Gruppe-12/
 
 ## 🎯 Features
 
-### 🤖 Automatisierter Support
-Kunden füllen das Support-Formular auf der Website aus → GitHub Issue wird automatisch erstellt → Team wird benachrichtigt → Labels werden zugewiesen
+### 🏠 Automatisierte Immobilien-Anfragen
+Kunden füllen das Kontaktformular auf der Website aus → GitHub Issue wird automatisch erstellt → Team wird benachrichtigt → Labels werden zugewiesen → Prioritätsbasierte Bearbeitung
 
 ### 🏷️ Intelligentes Labeling & Triage
-- **Automatische Kategorisierung** nach Keywords
+- **Automatische Kategorisierung** nach Keywords (Besichtigung, Finanzierung, Vertrag, etc.)
 - **Prioritäts-Erkennung** (critical, high, normal)
 - **Expertise-basierte Zuweisung** via CODEOWNERS
 - **Welcome Messages** für First-Time Contributors
 
 ### 📢 Multi-Channel Benachrichtigungen
-- **Microsoft Teams**: Kritische Issues & Release Notifications
-- **Discord**: PR Reviews, Issue Updates, Community Engagement
-- **Slack**: Team Koordination, Push Events, Releases
+- **Microsoft Teams**: Kritische Anfragen & Release Notifications
+- **Discord**: Community-Engagement, Immobilien-Updates
+- **Slack**: Team-Koordination, Status-Updates
 - **Graceful Degradation**: Funktioniert auch ohne konfigurierte Webhooks
 
 ### 📊 PR Management
@@ -227,11 +231,14 @@ Das bedeutet:
 - **Live Website**: https://dinesnimalthas.github.io/Demo-Gruppe-12/
 - **Dashboard**: https://dinesnimalthas.github.io/Demo-Gruppe-12/automation-dashboard.html
 
-### 🎫 Support-Ticket erstellen
+### 🏠 Immobilien-Anfrage erstellen
 1. Öffne die Website
 2. Scrolle zur Support-Sektion
-3. Fülle das Formular aus (Name, Email, Kategorie, Beschreibung)
-4. Klicke "Ticket senden"
+3. Fülle das Formular aus:
+   - Name & Email
+   - Kategorie (Besichtigung, Finanzierung, Vertrag, etc.)
+   - Beschreibung deiner Anfrage
+4. Klicke "Anfrage senden"
 5. ✅ Issue wird automatisch erstellt
 6. 🏷️ Labels werden zugewiesen
 7. 📢 Team wird benachrichtigt (wenn Webhooks konfiguriert)

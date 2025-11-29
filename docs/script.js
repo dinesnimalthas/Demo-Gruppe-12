@@ -1,5 +1,5 @@
 // ========================================
-// TECHGEAR STORE - MAIN JAVASCRIPT
+// IMMOFLOW - MAIN JAVASCRIPT
 // ========================================
 
 // === CONFIGURATION ===
