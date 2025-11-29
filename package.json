@@ -1,0 +1,41 @@
+{
+  "name": "demo-gruppe-12",
+  "version": "1.0.0",
+  "description": "TechGear Store - GitHub Actions Automation Demo für IT Project Basics HSLU 2025",
+  "main": "docs/index.html",
+  "scripts": {
+    "start": "cd docs && start index.html",
+    "test:discord": "pwsh -File automations/discord-notifications/test-webhook.ps1",
+    "test:slack": "pwsh -File automations/slack-notifications/test-slack-webhook.ps1",
+    "test:teams": "pwsh -File automations/teams-email-integration/test-teams-webhook.ps1",
+    "demo": "pwsh -File start-demo.ps1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dinesnimalthas/Demo-Gruppe-12.git"
+  },
+  "keywords": [
+    "github-actions",
+    "automation",
+    "webhooks",
+    "discord",
+    "slack",
+    "teams",
+    "ci-cd",
+    "demo",
+    "hslu",
+    "devops"
+  ],
+  "author": "Gruppe 12 - HSLU IT Project Basics 2025",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dinesnimalthas/Demo-Gruppe-12/issues"
+  },
+  "homepage": "https://dinesnimalthas.github.io/Demo-Gruppe-12/",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}

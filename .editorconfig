@@ -1,0 +1,62 @@
+# EditorConfig ist großartig: https://EditorConfig.org
+
+# Top-Level EditorConfig Datei
+root = true
+
+# Allgemeine Einstellungen für alle Dateien
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Markdown Dateien - trailing spaces sind wichtig für Zeilenumbrüche
+[*.md]
+trim_trailing_whitespace = false
+indent_size = 2
+
+# YAML Dateien
+[*.{yml,yaml}]
+indent_size = 2
+
+# JSON Dateien
+[*.json]
+indent_size = 2
+
+# JavaScript/TypeScript
+[*.{js,jsx,ts,tsx}]
+indent_size = 2
+quote_type = single
+
+# HTML
+[*.html]
+indent_size = 2
+
+# CSS
+[*.{css,scss,sass}]
+indent_size = 2
+
+# PowerShell
+[*.ps1]
+indent_size = 4
+charset = utf-8-bom
+
+# Shell Scripts
+[*.sh]
+indent_size = 2
+end_of_line = lf
+
+# Makefiles müssen Tabs verwenden
+[Makefile]
+indent_style = tab
+
+# Python
+[*.py]
+indent_size = 4
+max_line_length = 88
+
+# Batch Dateien
+[*.{bat,cmd}]
+end_of_line = crlf

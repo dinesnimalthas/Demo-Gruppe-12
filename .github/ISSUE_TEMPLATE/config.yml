@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Diskussion / Frage
+    url: https://github.com/dinesnimalthas/Demo-Gruppe-12/discussions
+    about: Stelle Fragen oder starte eine Diskussion
+  - name: 📖 Dokumentation
+    url: https://github.com/dinesnimalthas/Demo-Gruppe-12/blob/main/README.md
+    about: Durchsuche die Projektdokumentation
+  - name: 🎬 Live Demo Guide
+    url: https://github.com/dinesnimalthas/Demo-Gruppe-12/blob/main/LIVE-DEMO-GUIDE.md
+    about: Anleitung für die Live-Demo Präsentation

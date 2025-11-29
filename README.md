@@ -4,18 +4,30 @@
 
 Eine moderne E-Commerce-Demo mit vollautomatisierten GitHub-Workflows für Support, Labeling und Team-Notifications.
 
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-success?style=flat&logo=github)](https://dinesnimalthas.github.io/Demo-Gruppe-12/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-9-success?style=flat&logo=github-actions)](https://github.com/dinesnimalthas/Demo-Gruppe-12/actions)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
 ## ✨ SOFORT funktionsfähig - Keine Konfiguration nötig!
 
-```bash
-# Website öffnen:
+```powershell
+# Quick-Start Script:
+.\start-demo.ps1
+
+# Oder Website direkt öffnen:
 cd docs
-open index.html  # oder Doppelklick
+Start-Process index.html
 ```
 
 **Demo-Modus ist aktiviert** - Support-Formular funktioniert out-of-the-box!
 
 📖 **[→ QUICK-START Guide](QUICK-START.md)** - In 2 Minuten startklar  
-🎬 **[→ LIVE-DEMO Guide](LIVE-DEMO-GUIDE.md)** - Präsentations-Anleitung
+🎬 **[→ LIVE-DEMO Guide](LIVE-DEMO-GUIDE.md)** - Präsentations-Anleitung  
+🔐 **[→ SECRETS Dokumentation](SECRETS.md)** - Webhook-Konfiguration  
+🤝 **[→ CONTRIBUTING Guide](CONTRIBUTING.md)** - Beitragen zum Projekt  
+📁 **[→ REPOSITORY OVERVIEW](REPOSITORY-OVERVIEW.md)** - Vollständige Datei-Übersicht  
+✅ **[→ SETUP CHECKLIST](SETUP-CHECKLIST.md)** - Komplette Setup-Anleitung
 
 ---
 
@@ -38,28 +50,55 @@ Dieses Projekt demonstriert professionelle DevOps-Praktiken mit GitHub Actions:
 
 ```
 Demo-Gruppe-12/
+├── .github/
+│   ├── workflows/                 # GitHub Actions Workflows
+│   │   ├── discord-notifications.yml
+│   │   ├── slack-notifications.yml
+│   │   ├── teams-email-notifications.yml
+│   │   ├── label-bot.yml
+│   │   ├── triage-bot.yml
+│   │   ├── pr-size-labeler.yml
+│   │   ├── reusable-pr-size-labeler.yml
+│   │   ├── labeler.yml
+│   │   └── deploy-pages.yml
+│   ├── ISSUE_TEMPLATE/            # Issue Templates
+│   │   ├── bug_report.md
+│   │   ├── feature_request.md
+│   │   ├── documentation.md
+│   │   ├── automation.md
+│   │   └── config.yml
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   ├── CODEOWNERS                 # Auto Reviewer Assignment
+│   ├── dependabot.yml             # Dependency Updates
+│   └── REPOSITORY-SETTINGS.md     # Settings Documentation
+│
+├── automations/                   # Automation Dokumentation
+│   ├── discord-notifications/     # Discord Integration
+│   ├── slack-notifications/       # Slack Integration
+│   ├── teams-email-integration/   # Teams & Email
+│   ├── label-triage-bot/          # Auto Labeling
+│   ├── pr-size-labeler/          # PR Size Analysis
+│   └── reusable-workflow/        # Reusable Workflows
+│
 ├── docs/                          # GitHub Pages Website
 │   ├── index.html                 # TechGear Store Hauptseite
 │   ├── automation-dashboard.html  # Live Workflow Dashboard
+│   ├── script.js                  # Frontend Logic
+│   ├── styles.css                 # Styling
 │   └── README.md                  # Website Dokumentation
 │
-├── .github/
-│   └── workflows/                 # GitHub Actions Workflows
-│       ├── label-triage-bot.yml           # Automatisches Issue-Labeling
-│       ├── teams-notifications.yml        # MS Teams Alerts
-│       ├── discord-notifications.yml      # Discord Updates
-│       ├── slack-notifications.yml        # Slack Integration
-│       ├── pr-size-labeler.yml           # PR Größen-Analyse
-│       └── reusable-pr-size-labeler.yml  # Wiederverwendbarer Workflow
-│
-├── automations/                   # Automation Dokumentation
-│   ├── label-triage-bot/
-│   ├── pr-size-labeler/
-│   ├── discord-notifications/
-│   ├── slack-notifications/
-│   └── teams-email-integration/
-│
-└── README.md                      # Diese Datei
+├── README.md                      # Haupt-Dokumentation
+├── QUICK-START.md                 # Schnellstart-Guide
+├── LIVE-DEMO-GUIDE.md            # Präsentations-Anleitung
+├── PRESENTATION-GUIDE.md         # Detaillierte Präsentation
+├── SECRETS.md                     # Webhook-Konfiguration
+├── CONTRIBUTING.md                # Contribution Guidelines
+├── SECURITY.md                    # Sicherheitsrichtlinien
+├── LICENSE                        # MIT Lizenz
+├── .editorconfig                  # Editor-Konfiguration
+├── .gitattributes                 # Git-Attribute
+├── package.json                   # NPM-Konfiguration
+└── start-demo.ps1                 # Demo-Start-Script
 ```
 
 ## 🎯 Features
@@ -67,75 +106,163 @@ Demo-Gruppe-12/
 ### 🤖 Automatisierter Support
 Kunden füllen das Support-Formular auf der Website aus → GitHub Issue wird automatisch erstellt → Team wird benachrichtigt → Labels werden zugewiesen
 
-### 🏷️ Intelligentes Labeling
-- Automatische Kategorisierung nach Keywords
-- Prioritäts-Erkennung (critical, high, normal)
-- Expertise-basierte Zuweisung
+### 🏷️ Intelligentes Labeling & Triage
+- **Automatische Kategorisierung** nach Keywords
+- **Prioritäts-Erkennung** (critical, high, normal)
+- **Expertise-basierte Zuweisung** via CODEOWNERS
+- **Welcome Messages** für First-Time Contributors
 
 ### 📢 Multi-Channel Benachrichtigungen
-- **Microsoft Teams**: Kritische Issues
-- **Discord**: Community Updates
-- **Slack**: Team Koordination
-- **Email**: Eskalationen
+- **Microsoft Teams**: Kritische Issues & Release Notifications
+- **Discord**: PR Reviews, Issue Updates, Community Engagement
+- **Slack**: Team Koordination, Push Events, Releases
+- **Graceful Degradation**: Funktioniert auch ohne konfigurierte Webhooks
 
 ### 📊 PR Management
-- Automatische Größen-Berechnung (XS, S, M, L, XL)
-- Review-Empfehlungen
-- Code-Complexity Warnung
+- **Automatische Größen-Berechnung** (XS, S, M, L, XL)
+- **Review-Empfehlungen** basierend auf Changes
+- **Code-Complexity Warnung** bei großen PRs
+- **Wiederverwendbarer Workflow** für andere Projekte
+
+### 🎨 Professionelle Repository-Struktur
+- **CODEOWNERS** - Automatische Reviewer-Zuweisung
+- **Issue/PR Templates** - Strukturierte Eingaben
+- **Dependabot** - Automatische Dependency-Updates
+- **Branch Protection** - Code Quality Standards
+- **Security Policy** - Verantwortungsvolle Disclosure
 
 ## 🚀 Setup & Deployment
 
 ### Voraussetzungen
 - GitHub Account
-- GitHub Pages aktiviert
+- GitHub Pages aktiviert (optional)
 - (Optional) Webhook URLs für Teams/Discord/Slack
 
-### Installation
+### Schnellstart
 
-1. **Repository klonen**
-```bash
-git clone https://github.com/HSLU-Exercise/Demo-Gruppe-12.git
+```powershell
+# 1. Repository klonen
+git clone https://github.com/dinesnimalthas/Demo-Gruppe-12.git
+cd Demo-Gruppe-12
+
+# 2. Demo starten
+.\start-demo.ps1
+```
+
+### Installation (Detailliert)
+
+#### 1. Repository Setup
+```powershell
+# Fork oder Clone
+git clone https://github.com/dinesnimalthas/Demo-Gruppe-12.git
 cd Demo-Gruppe-12
 ```
 
-2. **GitHub Pages aktivieren**
-- Settings → Pages
+#### 2. GitHub Pages aktivieren
+- Gehe zu **Settings → Pages**
 - Source: `main` branch, `/docs` folder
-- Save
+- **Save**
+- Website ist verfügbar unter: `https://[username].github.io/Demo-Gruppe-12/`
 
-3. **Secrets konfigurieren** (für Benachrichtigungen)
+#### 3. Secrets konfigurieren (Optional für Benachrichtigungen)
+
+**Gehe zu: Settings → Secrets and variables → Actions → New repository secret**
+
+| Secret Name | Beschreibung | Erforderlich |
+|-------------|--------------|--------------|
+| `DISCORD_WEBHOOK_URL` | Discord Webhook für Notifications | Optional |
+| `SLACK_WEBHOOK_URL` | Slack Incoming Webhook | Optional |
+| `TEAMS_WEBHOOK_URL` | Microsoft Teams Webhook | Optional |
+
+📖 **Detaillierte Anleitung**: Siehe [SECRETS.md](SECRETS.md)
+
+#### 4. CODEOWNERS aktivieren (Optional)
+- Gehe zu **Settings → Branches**
+- Branch protection rule für `main` erstellen
+- Aktiviere: "Require review from Code Owners"
+- Siehe [REPOSITORY-SETTINGS.md](.github/REPOSITORY-SETTINGS.md) für Details
+
+#### 5. Labels erstellen (Optional)
+
+```powershell
+# Automatisch mit PowerShell:
+cd automations/label-triage-bot
+.\create-labels.ps1
+
+# Oder mit Node.js:
+node create-labels.js
 ```
-Settings → Secrets → Actions → New repository secret
 
-TEAMS_WEBHOOK_URL      # MS Teams Incoming Webhook
-DISCORD_WEBHOOK_URL    # Discord Webhook
-SLACK_WEBHOOK_URL      # Slack Webhook
-SENDER_EMAIL           # Email für Benachrichtigungen
-RECIPIENT_EMAIL        # Empfänger Email
+### Demo-Modus
+
+**Wichtig**: Alle Workflows funktionieren auch OHNE konfigurierte Webhooks!
+
+```javascript
+// Graceful Degradation in allen Workflows:
+if (!webhook) {
+  console.log('⚠️ Webhook not configured - skipping notification');
+  return;
+}
 ```
 
-4. **GitHub Personal Access Token** (für Support-Form)
-- Ersetze `DEIN_PERSONAL_ACCESS_TOKEN_HIER_EINFUEGEN` in `docs/index.html`
-- **⚠️ NUR FÜR DEMO! Produktiv Backend verwenden!**
+Das bedeutet:
+- ✅ Workflows laufen erfolgreich
+- ✅ Labels werden zugewiesen
+- ⚠️ Benachrichtigungen werden nur gesendet, wenn Webhooks konfiguriert sind
+- 🎬 Perfekt für Live-Demos!
 
 ## 📖 Verwendung
 
-### Support-Ticket erstellen
-1. Öffne die Website: https://hslu-exercise.github.io/Demo-Gruppe-12/
+### 🌐 Website besuchen
+- **Live Website**: https://dinesnimalthas.github.io/Demo-Gruppe-12/
+- **Dashboard**: https://dinesnimalthas.github.io/Demo-Gruppe-12/automation-dashboard.html
+
+### 🎫 Support-Ticket erstellen
+1. Öffne die Website
 2. Scrolle zur Support-Sektion
-3. Fülle das Formular aus
-4. Issue wird automatisch erstellt & Team benachrichtigt
+3. Fülle das Formular aus (Name, Email, Kategorie, Beschreibung)
+4. Klicke "Ticket senden"
+5. ✅ Issue wird automatisch erstellt
+6. 🏷️ Labels werden zugewiesen
+7. 📢 Team wird benachrichtigt (wenn Webhooks konfiguriert)
 
-### Dashboard ansehen
-Besuche: https://hslu-exercise.github.io/Demo-Gruppe-12/automation-dashboard.html
+### 📊 Dashboard nutzen
+Das Automation Dashboard zeigt:
+- Live Workflow-Status
+- Anzahl aktiver Workflows
+- Verwendete Technologien
+- Quick-Links zu allen Automationen
 
-### Workflows testen
-```bash
-# Erstelle ein Test-Issue
-gh issue create --title "Test" --body "Test Description" --label "bug"
+### 🧪 Workflows testen
 
-# Öffne einen Test-PR
-gh pr create --title "Test PR" --body "Test changes"
+#### Mit GitHub CLI (gh)
+```powershell
+# Issue erstellen
+gh issue create --title "Test Bug" --body "Test Description" --label "bug"
+
+# PR erstellen
+gh pr create --title "Test Feature" --body "Test changes"
+
+# Repository öffnen
+gh repo view --web
+```
+
+#### Manuell
+1. Gehe zu GitHub Repository
+2. Erstelle ein neues Issue → Triage Bot läuft automatisch
+3. Erstelle einen PR → PR Size Labeler läuft
+4. Prüfe Actions Tab für Workflow-Runs
+
+#### Webhook Tests
+```powershell
+# Discord Webhook testen
+.\automations\discord-notifications\test-webhook.ps1
+
+# Slack Webhook testen
+.\automations\slack-notifications\test-slack-webhook.ps1
+
+# Teams Webhook testen
+.\automations\teams-email-integration\test-teams-webhook.ps1
 ```
 
 ## 🛠️ Technologie-Stack
@@ -195,10 +322,42 @@ Dieses Projekt ist eine Demo für Bildungszwecke im Rahmen des Moduls "IT Projec
 
 ## 🔗 Links
 
-- 🌐 [Live Website](https://hslu-exercise.github.io/Demo-Gruppe-12/)
-- 📊 [Automation Dashboard](https://hslu-exercise.github.io/Demo-Gruppe-12/automation-dashboard.html)
-- 📚 [Workflow Dokumentation](./automations/)
-- 🎥 [Präsentation Guide](./docs/PRESENTATION-GUIDE.md)
+- 🌐 [Live Website](https://dinesnimalthas.github.io/Demo-Gruppe-12/)
+- 📊 [Automation Dashboard](https://dinesnimalthas.github.io/Demo-Gruppe-12/automation-dashboard.html)
+- 📚 [Automation Dokumentation](./automations/)
+- 🎬 [Live-Demo Guide](./LIVE-DEMO-GUIDE.md)
+- 📖 [Quick-Start Guide](./QUICK-START.md)
+- 🎤 [Präsentations-Guide](./PRESENTATION-GUIDE.md)
+- 🔐 [Secrets Konfiguration](./SECRETS.md)
+- 🤝 [Contributing Guidelines](./CONTRIBUTING.md)
+- 🛡️ [Security Policy](./SECURITY.md)
+- ⚙️ [Repository Settings](./.github/REPOSITORY-SETTINGS.md)
+
+## 🤝 Contributing
+
+Wir freuen uns über Beiträge! Bitte lies die [CONTRIBUTING.md](CONTRIBUTING.md) für Details.
+
+### Schnell-Guide
+1. Fork das Repository
+2. Erstelle einen Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Committe deine Änderungen (`git commit -m 'feat: Add AmazingFeature'`)
+4. Push zum Branch (`git push origin feature/AmazingFeature`)
+5. Öffne einen Pull Request
+
+**Code Owner Review**: Pull Requests werden automatisch den richtigen Reviewern zugewiesen!
+
+## 🐛 Bug Reports & Feature Requests
+
+- 🐛 **Bug gefunden?** → [Bug Report Template](./.github/ISSUE_TEMPLATE/bug_report.md)
+- ✨ **Feature Idee?** → [Feature Request Template](./.github/ISSUE_TEMPLATE/feature_request.md)
+- 📚 **Dokumentation?** → [Documentation Template](./.github/ISSUE_TEMPLATE/documentation.md)
+- 🔧 **Automation Problem?** → [Automation Template](./.github/ISSUE_TEMPLATE/automation.md)
+
+## 🔐 Sicherheit
+
+Sicherheitslücken bitte NICHT öffentlich melden! Kontaktiere @dinesnimalthas direkt.
+
+Siehe [SECURITY.md](SECURITY.md) für Details.
 
 ---
 

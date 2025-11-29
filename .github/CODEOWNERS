@@ -1,0 +1,49 @@
+# CODEOWNERS
+# Diese Datei definiert, wer für welche Bereiche des Repositories verantwortlich ist.
+# Wenn ein PR erstellt wird, werden automatisch die entsprechenden Reviewer zugewiesen.
+
+# Globale Eigentümer - werden für alles zugewiesen, wenn keine spezifischeren Regeln greifen
+* @dinesnimalthas
+
+# GitHub Workflows und CI/CD
+/.github/ @dinesnimalthas
+/.github/workflows/ @dinesnimalthas
+
+# Automations - Team Leads für verschiedene Integrationen
+/automations/discord-notifications/ @dinesnimalthas
+/automations/slack-notifications/ @dinesnimalthas
+/automations/teams-email-integration/ @dinesnimalthas
+/automations/label-triage-bot/ @dinesnimalthas
+/automations/pr-size-labeler/ @dinesnimalthas
+/automations/reusable-workflow/ @dinesnimalthas
+
+# Documentation und Guides
+/docs/ @dinesnimalthas
+*.md @dinesnimalthas
+
+# Frontend Assets
+/docs/*.html @dinesnimalthas
+/docs/*.css @dinesnimalthas
+/docs/*.js @dinesnimalthas
+
+# Konfigurationsdateien
+*.json @dinesnimalthas
+*.yml @dinesnimalthas
+*.yaml @dinesnimalthas
+
+# Demo-Dateien - benötigen Review vor Änderungen
+/automations/*/demo-files/ @dinesnimalthas
+/automations/label-triage-bot/example-code/ @dinesnimalthas
+
+# PowerShell Scripts
+*.ps1 @dinesnimalthas
+
+# JavaScript Code
+*.js @dinesnimalthas
+
+# Wichtige Projektdateien - mehrere Reviewer erforderlich
+/LICENSE @dinesnimalthas
+/README.md @dinesnimalthas
+/QUICK-START.md @dinesnimalthas
+/LIVE-DEMO-GUIDE.md @dinesnimalthas
+/PRESENTATION-GUIDE.md @dinesnimalthas

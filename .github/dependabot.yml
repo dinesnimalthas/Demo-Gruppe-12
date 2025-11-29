@@ -1,0 +1,52 @@
+# Dependabot Configuration
+# Automatische Updates für Abhängigkeiten
+
+version: 2
+updates:
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "automation"
+      - "github-actions"
+    assignees:
+      - "dinesnimalthas"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+
+  # NPM (für zukünftige Node.js Dependencies)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+    assignees:
+      - "dinesnimalthas"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    versioning-strategy: increase
+
+  # NPM für Label Triage Bot Example Code
+  - package-ecosystem: "npm"
+    directory: "/automations/label-triage-bot/example-code"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "example-code"
+    assignees:
+      - "dinesnimalthas"
