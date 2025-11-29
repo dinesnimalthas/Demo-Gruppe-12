@@ -3,12 +3,13 @@
 // ========================================
 
 // === CONFIGURATION ===
-// WICHTIG: Setze deinen GitHub Personal Access Token hier ein
-// NIEMALS den echten Token in Git committen!
+// WICHTIG: Für Live-Demo den PAT lokal einsetzen (nicht committen!)
+// Oder GitHub Discussions/Backend API verwenden
 const CONFIG = {
-  GITHUB_PAT: '', // Füge hier deinen PAT ein (nur lokal, nicht committen!)
+  GITHUB_PAT: '', // Lokal vor Demo einsetzen
   REPO_OWNER: 'dinesnimalthas',
-  REPO_NAME: 'Demo-Gruppe-12'
+  REPO_NAME: 'Demo-Gruppe-12',
+  DEMO_MODE: true // Falls true: Simuliert Success ohne echten API Call
 };
 
 // === SMOOTH SCROLLING ===
@@ -94,12 +95,6 @@ if (supportForm) {
 async function handleSupportFormSubmission(form) {
   const submitButton = form.querySelector('button[type="submit"]');
   
-  // Validation check
-  if (CONFIG.GITHUB_PAT === 'YOUR_GITHUB_PAT_HERE') {
-    showAlert('error', 'GitHub Token fehlt. Bitte konfigurieren Sie den Personal Access Token im JavaScript-Code.');
-    return;
-  }
-
   // Disable button and show loading state
   submitButton.disabled = true;
   const originalHTML = submitButton.innerHTML;
@@ -115,6 +110,25 @@ async function handleSupportFormSubmission(form) {
   };
 
   try {
+    // Demo Mode: Simuliere Success ohne echten API Call
+    if (CONFIG.DEMO_MODE || !CONFIG.GITHUB_PAT) {
+      console.log('📋 Demo Mode: Simuliere Issue-Erstellung');
+      console.log('Formulardaten:', formData);
+      
+      // Simuliere Verzögerung
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Generiere Demo Ticket-Nummer
+      const demoIssueNumber = Math.floor(Math.random() * 900) + 100;
+      showSuccessMessage(demoIssueNumber);
+      form.style.display = 'none';
+      
+      console.log('✅ Demo: Issue #' + demoIssueNumber + ' würde erstellt werden');
+      console.log('ℹ️ Für echte GitHub-Integration: CONFIG.DEMO_MODE = false setzen und PAT eintragen');
+      return;
+    }
+    
+    // Echter API Call
     const issueNumber = await createGitHubIssue(formData);
     showSuccessMessage(issueNumber);
     form.style.display = 'none';

@@ -4,6 +4,19 @@
 
 Eine moderne E-Commerce-Demo mit vollautomatisierten GitHub-Workflows für Support, Labeling und Team-Notifications.
 
+## ✨ SOFORT funktionsfähig - Keine Konfiguration nötig!
+
+```bash
+# Website öffnen:
+cd docs
+open index.html  # oder Doppelklick
+```
+
+**Demo-Modus ist aktiviert** - Support-Formular funktioniert out-of-the-box!
+
+📖 **[→ QUICK-START Guide](QUICK-START.md)** - In 2 Minuten startklar  
+🎬 **[→ LIVE-DEMO Guide](LIVE-DEMO-GUIDE.md)** - Präsentations-Anleitung
+
 ---
 
 ## 📋 Übersicht
@@ -17,9 +30,9 @@ Dieses Projekt demonstriert professionelle DevOps-Praktiken mit GitHub Actions:
 
 ## 🌐 Live Demo
 
-**Haupt-Website**: https://hslu-exercise.github.io/Demo-Gruppe-12/
+**Haupt-Website**: https://dinesnimalthas.github.io/Demo-Gruppe-12/
 
-**Automation Dashboard**: https://hslu-exercise.github.io/Demo-Gruppe-12/automation-dashboard.html
+**Automation Dashboard**: https://dinesnimalthas.github.io/Demo-Gruppe-12/automation-dashboard.html
 
 ## 🏗️ Projektstruktur
 
