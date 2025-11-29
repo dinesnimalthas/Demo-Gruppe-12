@@ -6,7 +6,7 @@
 // WICHTIG: Für Live-Demo den PAT lokal einsetzen (nicht committen!)
 // Oder GitHub Discussions/Backend API verwenden
 const CONFIG = {
-  GITHUB_PAT: '', // Füge hier deinen PAT ein (nur lokal, nicht committen!)
+  GITHUB_PAT: '${{ secrets.TOKEN_ACTIONS }}', // Füge hier deinen PAT ein (nur lokal, nicht committen!)
   REPO_OWNER: 'dinesnimalthas',
   REPO_NAME: 'Demo-Gruppe-12',
   DEMO_MODE: false // Falls true: Simuliert Success ohne echten API Call
