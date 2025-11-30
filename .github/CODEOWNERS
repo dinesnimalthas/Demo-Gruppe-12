@@ -1,6 +1,4 @@
 # CODEOWNERS
-# Diese Datei definiert, wer für welche Bereiche des Repositories verantwortlich ist.
-# Wenn ein PR erstellt wird, werden automatisch die entsprechenden Reviewer zugewiesen.
 
 # Globale Eigentümer - werden für alles zugewiesen, wenn keine spezifischeren Regeln greifen
 * @dinesnimalthas
