@@ -264,11 +264,11 @@ class SupportForm {
     submitBtn.innerHTML = '<span class="loading"></span> Wird gesendet...';
 
     const formData = {
-      name: $('#name')?.value,
-      email: $('#email')?.value,
-      category: $('#category')?.value,
-      subject: $('#subject')?.value,
-      message: $('#message')?.value
+      name: $('#name')?.value || '',
+      email: $('#email')?.value || '',
+      category: $('#category')?.value || '',
+      subject: $('#subject')?.value || '',
+      message: $('#message')?.value || ''
     };
 
     try {
