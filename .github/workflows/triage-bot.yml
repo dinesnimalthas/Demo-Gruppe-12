@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Add triage label and welcome comment
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             console.log('🔍 Starting triage process...');
@@ -80,7 +80,7 @@ jobs:
     if: github.event_name == 'issues'
     steps:
       - name: Check for missing information
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const issue = context.payload.issue;

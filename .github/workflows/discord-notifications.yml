@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: PR Opened Notification
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
@@ -111,7 +111,7 @@ jobs:
 
       - name: Large PR Warning
         if: github.event_name == 'pull_request' && github.event.action == 'labeled'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
@@ -171,7 +171,7 @@ jobs:
 
       - name: Issue Opened Notification
         if: github.event_name == 'issues' && github.event.action == 'opened'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
@@ -236,7 +236,7 @@ jobs:
 
       - name: Security Issue Alert
         if: github.event_name == 'issues' && github.event.action == 'labeled'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
@@ -292,7 +292,7 @@ jobs:
 
       - name: PR Merged Notification
         if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:

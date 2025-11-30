@@ -45,7 +45,7 @@ jobs:
     
     steps:
       - name: Analyze PR Size
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         id: analyze
         with:
           result-encoding: string
@@ -97,7 +97,7 @@ jobs:
             return size;
 
       - name: Remove Old Size Labels
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const pr = context.payload.pull_request;
@@ -117,7 +117,7 @@ jobs:
             }
 
       - name: Add Size Label
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const pr = context.payload.pull_request;
@@ -133,7 +133,7 @@ jobs:
             console.log(`✅ Added label: size: ${size}`);
 
       - name: Add "needs split" Label for XL
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const pr = context.payload.pull_request;
@@ -154,7 +154,7 @@ jobs:
             console.log('⚠️ Added label: needs split (PR is too large)');
 
       - name: Post Statistics Comment
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const pr = context.payload.pull_request;
@@ -243,7 +243,7 @@ jobs:
 
       - name: Discord Notification
         if: inputs.enable_discord == true
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           DISCORD_WEBHOOK: ${{ secrets.discord_webhook }}
         with:
