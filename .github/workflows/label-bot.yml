@@ -19,38 +19,61 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            console.log('🏷️ Auto-labeling based on content...');
+            
             const issue = context.payload.issue || context.payload.pull_request;
             const titleAndBody = (issue.title + ' ' + (issue.body || '')).toLowerCase();
             const labels = [];
 
+            // ImmoFlow-spezifische Kategorien
+            if (titleAndBody.match(/\b(besichtigung|viewing|termin|appointment|ansehen|visit)\b/)) {
+              labels.push('viewing');
+              console.log('🏡 Detected: Viewing request');
+            }
+
+            if (titleAndBody.match(/\b(finanzierung|financing|kredit|mortgage|loan|darlehen)\b/)) {
+              labels.push('financing');
+              console.log('💰 Detected: Financing inquiry');
+            }
+
+            if (titleAndBody.match(/\b(vertrag|contract|kaufvertrag|mietvertrag|agreement)\b/)) {
+              labels.push('contract');
+              console.log('📄 Detected: Contract related');
+            }
+
+            if (titleAndBody.match(/\b(support|hilfe|help|frage|question|problem)\b/)) {
+              labels.push('support');
+              console.log('🤝 Detected: Support request');
+            }
+
             // Bug-related keywords
-            if (titleAndBody.match(/\b(bug|error|fehler|problem|crash|broken|fix)\b/)) {
+            if (titleAndBody.match(/\b(bug|error|fehler|crash|broken|fix)\b/)) {
               labels.push('bug');
+              console.log('🐛 Detected: Bug');
             }
 
             // Feature-related keywords
             if (titleAndBody.match(/\b(feature|enhancement|verbesserung|neu|new)\b/)) {
               labels.push('enhancement');
+              console.log('✨ Detected: Enhancement');
             }
 
             // Documentation-related keywords
             if (titleAndBody.match(/\b(doc|documentation|dokumentation|readme|guide)\b/)) {
               labels.push('documentation');
-            }
-
-            // Question-related keywords
-            if (titleAndBody.match(/\b(question|frage|help|hilfe|how to|wie)\b/)) {
-              labels.push('question');
+              console.log('📚 Detected: Documentation');
             }
 
             // Priority keywords
             if (titleAndBody.match(/\b(urgent|dringend|critical|kritisch|asap)\b/)) {
               labels.push('priority: high');
+              console.log('🚨 Detected: High priority');
             }
 
             // Difficulty labels
             if (titleAndBody.match(/\b(easy|einfach|beginner|anfänger|good first issue)\b/)) {
               labels.push('good first issue');
+              console.log('🎯 Detected: Good first issue');
             }
 
             // Add labels if any were identified
@@ -70,5 +93,7 @@ jobs:
                   labels: labels
                 });
               }
-              console.log(`Added labels: ${labels.join(', ')}`);
+              console.log(`✅ Added ${labels.length} labels: ${labels.join(', ')}`);
+            } else {
+              console.log('ℹ️ No labels matched');
             }

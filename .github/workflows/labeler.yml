@@ -1,388 +1,84 @@
-name: Slack Notifications
+name: Auto Labeler
 
 on:
-  issues:
-    types: [opened, closed, labeled]
   pull_request:
-    types: [opened, closed, labeled, ready_for_review]
-  push:
-    branches: [main]
-  release:
-    types: [published]
+    types: [opened, synchronize]
+  issues:
+    types: [opened, edited]
 
 permissions:
   contents: read
-  issues: read
-  pull-requests: read
+  issues: write
+  pull-requests: write
 
 jobs:
-  notify-slack:
+  label-by-files:
     runs-on: ubuntu-latest
-    name: Send Slack Notification
+    name: Label PRs by File Changes
+    if: github.event_name == 'pull_request'
     
     steps:
-      - name: Issue Opened Notification
-        if: github.event_name == 'issues' && github.event.action == 'opened'
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Auto-label PRs based on changed files
         uses: actions/github-script@v7
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
           script: |
-            const webhook = process.env.SLACK_WEBHOOK;
+            console.log('🏷️ Auto-labeling PR based on file changes...');
             
-            if (!webhook) {
-              console.log('⚠️ Slack webhook not configured');
-              return;
-            }
-            
-            const issue = context.payload.issue;
-            
-            // Determine issue type and color
-            let color = '#2196F3'; // Blue
-            let emoji = '📋';
-            let issueType = 'New Issue';
-            
-            if (issue.title.toLowerCase().includes('bug')) {
-              color = '#F44336'; // Red
-              emoji = '🐛';
-              issueType = 'Bug Report';
-            } else if (issue.title.toLowerCase().includes('feature')) {
-              color = '#4CAF50'; // Green
-              emoji = '✨';
-              issueType = 'Feature Request';
-            }
-            
-            const payload = {
-              attachments: [{
-                color: color,
-                blocks: [
-                  {
-                    type: 'header',
-                    text: {
-                      type: 'plain_text',
-                      text: `${emoji} ${issueType} Created`
-                    }
-                  },
-                  {
-                    type: 'section',
-                    fields: [
-                      {
-                        type: 'mrkdwn',
-                        text: `*Title:*\n${issue.title}`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*Author:*\n<${issue.user.html_url}|${issue.user.login}>`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*Issue:*\n<${issue.html_url}|#${issue.number}>`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*Repository:*\n${context.repo.owner}/${context.repo.repo}`
-                      }
-                    ]
-                  }
-                ]
-              }]
-            };
-            
-            if (issue.body && issue.body.length > 0) {
-              payload.attachments[0].blocks.push({
-                type: 'section',
-                text: {
-                  type: 'mrkdwn',
-                  text: `*Description:*\n${issue.body.length > 200 ? issue.body.substring(0, 200) + '...' : issue.body}`
-                }
-              });
-            }
-            
-            await fetch(webhook, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            
-            console.log('✅ Slack notification sent for new issue');
-
-      - name: PR Opened Notification
-        if: github.event_name == 'pull_request' && github.event.action == 'opened'
-        uses: actions/github-script@v7
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          script: |
-            const webhook = process.env.SLACK_WEBHOOK;
-            
-            if (!webhook) return;
-            
-            const pr = context.payload.pull_request;
-            
-            // Get PR stats
             const { data: files } = await github.rest.pulls.listFiles({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: pr.number,
+              pull_number: context.payload.pull_request.number,
             });
             
-            let totalChanges = 0;
-            files.forEach(file => {
-              totalChanges += file.changes;
-            });
+            const labels = new Set();
             
-            // Determine color based on size
-            let color = '#4CAF50'; // Green
-            let sizeEmoji = '🟢';
-            
-            if (totalChanges >= 500) {
-              color = '#F44336'; // Red
-              sizeEmoji = '🔴';
-            } else if (totalChanges >= 200) {
-              color = '#FF9800'; // Orange
-              sizeEmoji = '🟠';
-            } else if (totalChanges >= 50) {
-              color = '#FFC107'; // Yellow
-              sizeEmoji = '🟡';
+            for (const file of files) {
+              const path = file.filename;
+              console.log(`📄 Analyzing: ${path}`);
+              
+              // Documentation
+              if (path.match(/\.(md|txt)$/i) || path.includes('docs/') || path.includes('documentation/')) {
+                labels.add('documentation');
+              }
+              
+              // Workflows
+              if (path.includes('.github/workflows/')) {
+                labels.add('workflow');
+              }
+              
+              // Frontend
+              if (path.match(/\.(html|css|js)$/i) && path.includes('docs/')) {
+                labels.add('frontend');
+              }
+              
+              // Automation
+              if (path.includes('automations/')) {
+                labels.add('automation');
+              }
+              
+              // Configuration
+              if (path.match(/\.(yml|yaml|json|config)$/i)) {
+                labels.add('configuration');
+              }
+              
+              // Scripts
+              if (path.match(/\.(ps1|sh|bash)$/i)) {
+                labels.add('scripts');
+              }
             }
             
-            const payload = {
-              attachments: [{
-                color: color,
-                blocks: [
-                  {
-                    type: 'header',
-                    text: {
-                      type: 'plain_text',
-                      text: `${sizeEmoji} Pull Request Opened`
-                    }
-                  },
-                  {
-                    type: 'section',
-                    fields: [
-                      {
-                        type: 'mrkdwn',
-                        text: `*Title:*\n${pr.title}`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*Author:*\n<${pr.user.html_url}|${pr.user.login}>`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*PR:*\n<${pr.html_url}|#${pr.number}>`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*Changes:*\n${totalChanges} lines in ${files.length} files`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*Branch:*\n\`${pr.head.ref}\` → \`${pr.base.ref}\``
-                      }
-                    ]
-                  }
-                ]
-              }]
-            };
-            
-            await fetch(webhook, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            
-            console.log('✅ Slack notification sent for new PR');
-
-      - name: PR Merged Notification
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-        uses: actions/github-script@v7
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          script: |
-            const webhook = process.env.SLACK_WEBHOOK;
-            
-            if (!webhook) return;
-            
-            const pr = context.payload.pull_request;
-            
-            const payload = {
-              attachments: [{
-                color: '#4CAF50',
-                blocks: [
-                  {
-                    type: 'header',
-                    text: {
-                      type: 'plain_text',
-                      text: '✅ Pull Request Merged!'
-                    }
-                  },
-                  {
-                    type: 'section',
-                    fields: [
-                      {
-                        type: 'mrkdwn',
-                        text: `*Title:*\n${pr.title}`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*Author:*\n<${pr.user.html_url}|${pr.user.login}>`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*Merged by:*\n<${pr.merged_by?.html_url || ''}|${pr.merged_by?.login || 'Unknown'}>`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*Branch:*\n\`${pr.head.ref}\` → \`${pr.base.ref}\``
-                      }
-                    ]
-                  }
-                ]
-              }]
-            };
-            
-            await fetch(webhook, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            
-            console.log('✅ Slack notification sent for merged PR');
-
-      - name: Release Notification
-        if: github.event_name == 'release' && github.event.action == 'published'
-        uses: actions/github-script@v7
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          script: |
-            const webhook = process.env.SLACK_WEBHOOK;
-            
-            if (!webhook) return;
-            
-            const release = context.payload.release;
-            
-            const payload = {
-              attachments: [{
-                color: '#9C27B0',
-                blocks: [
-                  {
-                    type: 'header',
-                    text: {
-                      type: 'plain_text',
-                      text: '🚀 New Release Published!'
-                    }
-                  },
-                  {
-                    type: 'section',
-                    fields: [
-                      {
-                        type: 'mrkdwn',
-                        text: `*Version:*\n<${release.html_url}|${release.tag_name}>`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*Name:*\n${release.name || release.tag_name}`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*Author:*\n<${release.author.html_url}|${release.author.login}>`
-                      },
-                      {
-                        type: 'mrkdwn',
-                        text: `*Repository:*\n${context.repo.owner}/${context.repo.repo}`
-                      }
-                    ]
-                  }
-                ]
-              }]
-            };
-            
-            if (release.body && release.body.length > 0) {
-              payload.attachments[0].blocks.push({
-                type: 'section',
-                text: {
-                  type: 'mrkdwn',
-                  text: `*Release Notes:*\n${release.body.length > 300 ? release.body.substring(0, 300) + '...' : release.body}`
-                }
+            if (labels.size > 0) {
+              const labelArray = Array.from(labels);
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: labelArray
               });
-            }
-            
-            await fetch(webhook, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            
-            console.log('✅ Slack notification sent for new release');
-
-      - name: High Priority Issue Alert
-        if: github.event_name == 'issues' && github.event.action == 'labeled'
-        uses: actions/github-script@v7
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          script: |
-            const webhook = process.env.SLACK_WEBHOOK;
-            
-            if (!webhook) return;
-            
-            const issue = context.payload.issue;
-            const label = context.payload.label;
-            
-            // Only alert for high priority or critical issues
-            if (label.name === 'priority: high' || label.name === 'priority: critical') {
-              const payload = {
-                text: '🚨 HIGH PRIORITY ISSUE ALERT 🚨',
-                attachments: [{
-                  color: '#F44336',
-                  blocks: [
-                    {
-                      type: 'header',
-                      text: {
-                        type: 'plain_text',
-                        text: '🚨 High Priority Issue'
-                      }
-                    },
-                    {
-                      type: 'section',
-                      fields: [
-                        {
-                          type: 'mrkdwn',
-                          text: `*Title:*\n${issue.title}`
-                        },
-                        {
-                          type: 'mrkdwn',
-                          text: `*Priority:*\n${label.name}`
-                        },
-                        {
-                          type: 'mrkdwn',
-                          text: `*Reporter:*\n<${issue.user.html_url}|${issue.user.login}>`
-                        },
-                        {
-                          type: 'mrkdwn',
-                          text: `*Issue:*\n<${issue.html_url}|#${issue.number}>`
-                        }
-                      ]
-                    },
-                    {
-                      type: 'section',
-                      text: {
-                        type: 'mrkdwn',
-                        text: '⚡ *This issue requires immediate attention!*'
-                      }
-                    }
-                  ]
-                }]
-              };
-              
-              await fetch(webhook, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-              });
-              
-              console.log('🚨 High priority alert sent to Slack');
+              console.log(`✅ Added labels: ${labelArray.join(', ')}`);
+            } else {
+              console.log('ℹ️ No automatic labels applied');
             }

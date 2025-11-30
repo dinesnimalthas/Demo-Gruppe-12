@@ -23,6 +23,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            console.log('📏 Calculating PR size...');
             const pr = context.payload.pull_request;
             
             // Get PR diff stats
@@ -43,7 +44,7 @@ jobs:
               totalChanges += file.changes;
             });
             
-            console.log(`📊 PR Stats: +${additions} -${deletions} (${totalChanges} total changes)`);
+            console.log(`📊 PR Stats: +${additions} -${deletions} (${totalChanges} total changes in ${files.length} files)`);
             
             // Determine size based on total changes
             let sizeLabel = '';

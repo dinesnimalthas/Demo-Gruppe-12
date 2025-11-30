@@ -24,11 +24,12 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
           script: |
+            console.log('📣 Preparing Discord notification for PR...');
             const pr = context.payload.pull_request;
             const webhook = process.env.DISCORD_WEBHOOK;
             
             if (!webhook) {
-              console.log('⚠️ Discord webhook not configured');
+              console.log('⚠️ Discord webhook not configured - skipping');
               return;
             }
             

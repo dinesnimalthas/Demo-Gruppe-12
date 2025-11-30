@@ -2,29 +2,14 @@
 
 **IT Project Basics - HSLU 2025 | Gruppe 12**
 
-Moderne Immobilienplattform mit vollautomatisierten GitHub-Workflows für Kundenanfragen, intelligentes Triage-System und Multi-Channel Benachrichtigungen.
+Vollautomatisierte Immobilienplattform mit GitHub Actions, KI-Matching und Multi-Channel Notifications.
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-success?style=flat&logo=github)](https://dinesnimalthas.github.io/Demo-Gruppe-12/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-9-success?style=flat&logo=github-actions)](https://github.com/dinesnimalthas/Demo-Gruppe-12/actions)
-
----
-
-## 🎨 **NEU: Enhanced Website with Modern Design!**
-
-Die Website wurde komplett überarbeitet mit:
-- ✨ **Glassmorphism** & Gradient Effects
-- 🎬 **Scroll Animations** & 3D Card Tilt
-- ⚡ **Performance Optimized** (Lazy Loading, Code Splitting)
-- 🎯 **Interactive Features** (Animated Counters, Live Search, Parallax)
-- 📱 **Fully Responsive** mit Dark Mode Support
-
-👉 **[WEBSITE-ENHANCEMENT.md](docs/WEBSITE-ENHANCEMENT.md)** - Komplette Feature-Übersicht  
-👉 **[ANIMATION-GUIDE.md](docs/ANIMATION-GUIDE.md)** - Animation Reference
+[![Live Demo](https://img.shields.io/badge/🔴_LIVE-Demo-success?style=for-the-badge)](https://dinesnimalthas.github.io/Demo-Gruppe-12/)
+[![Dashboard](https://img.shields.io/badge/📊-Dashboard-blue?style=for-the-badge)](https://dinesnimalthas.github.io/Demo-Gruppe-12/automation-dashboard.html)
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Demo
 
 ```powershell
 # Demo starten (Windows)
@@ -38,24 +23,28 @@ cd docs && Start-Process index.html
 
 ---
 
-## ✨ Features
+## 💡 Der komplette Flow
 
-### 🏠 Automatisierte Kundenanfragen
-Website-Formular → GitHub Issue → Auto-Labeling → Team-Benachrichtigung → Zuweisung
+```
+1. Formular ausfüllen (Website)
+   ↓
+2. GitHub Issue erstellt (automatisch)
+   ↓
+3. Triage Bot kategorisiert (viewing/financing/contract)
+   ↓
+4. Team-Notification (Discord, Slack, Teams)
+   ↓
+5. CODEOWNERS weist Reviewer zu
+   ↓
+6. Live Dashboard zeigt Status
+```
 
-### 🤖 Intelligente Automationen
-- **Triage Bot**: Kategorisiert Issues nach Keywords (Besichtigung, Finanzierung, Vertrag)
-- **PR Size Labeler**: Berechnet automatisch PR-Größe (XS bis XL) für optimale Reviews
-- **Multi-Channel Alerts**: Teams, Discord & Slack Benachrichtigungen
-- **CODEOWNERS**: Automatische Reviewer-Zuweisung basierend auf Dateiänderungen
-
-### 📊 Live Dashboard
-Echtzeit-Monitoring mit GitHub API Integration:
-- Aktive Workflows & Issue-Statistiken
-- Response Time & Team Alerts
-- Recent Activity Feed
-- Workflow Run History
-- **Auto-Refresh alle 30 Sekunden**
+### ✨ Highlights
+- 🤖 **9 GitHub Actions Workflows** - Vollautomatisiert
+- 🎨 **Moderne UI** - Glassmorphism, Animationen, Responsive
+- 📊 **Live Dashboard** - Real-time GitHub API (30s refresh)
+- 🔔 **Multi-Channel** - Discord, Slack, Teams Integration
+- 🏷️ **Smart Labels** - Auto-Kategorisierung & Priorisierung
 
 ---
 
@@ -108,70 +97,54 @@ Settings → Secrets → Actions → New secret
 
 | Secret | Beschreibung | Erforderlich |
 |--------|--------------|--------------|
+---
+
+## 🎯 Demo-Flow für Präsentation
+
+**1. Website zeigen** → https://dinesnimalthas.github.io/Demo-Gruppe-12/
+   - Moderne UI mit Animationen
+   - 4 Immobilien-Angebote
+   - Services & Automation-Übersicht
+
+**2. Formular ausfüllen** → Support-Sektion
+   - Name, Email, Kategorie (z.B. "Besichtigungstermin")
+   - Issue wird automatisch erstellt
+
+**3. GitHub Issue ansehen** → Repository → Issues
+   - Auto-Labels: `support`, `viewing`
+   - Triage Bot Comment
+   - CODEOWNERS Assignment
+
+**4. Notifications prüfen**
+   - Discord/Slack/Teams erhält Nachricht
+   - Workflow-Status in Actions
+
+**5. Live Dashboard** → automation-dashboard.html
+   - Echtzeit Stats
+   - Workflow Runs
+   - Activity Feed (auto-refresh 30s)
+
+---
+
+## 🛠️ Setup für Secrets
+
+| Secret | Verwendung | Status |
+|--------|------------|--------|
+| `TOKEN_ACTIONS_2` | GitHub API (Issues erstellen) | ✅ Konfiguriert |
 | `DISCORD_WEBHOOK_URL` | Discord Notifications | Optional |
 | `SLACK_WEBHOOK_URL` | Slack Notifications | Optional |
 | `TEAMS_WEBHOOK_URL` | Teams Notifications | Optional |
 
-**Hinweis**: Alle Workflows funktionieren auch OHNE Webhooks (Graceful Degradation)
+---
 
-📖 Details: [SECRETS.md](documentation/SECRETS.md)
+## 📚 Mehr Infos
+
+- 📖 [Komplette Dokumentation](documentation/)
+- 🎬 [Präsentations-Guide](documentation/LIVE-DEMO-GUIDE.md)
+- 🔐 [Secrets Setup](documentation/SECRETS.md)
 
 ---
 
-## 🎯 Verwendung
-
-### Immobilien-Anfrage erstellen
-1. Öffne [Website](https://dinesnimalthas.github.io/Demo-Gruppe-12/)
-2. Fülle Support-Formular aus (Besichtigung, Finanzierung, Vertrag, etc.)
-3. **→** Issue wird automatisch erstellt
-4. **→** Labels werden zugewiesen
-5. **→** Team wird benachrichtigt
-
-### Workflows testen
-```powershell
-# Issue erstellen
-gh issue create --title "Besichtigungstermin Villa Luzern" --body "Terminanfrage"
-
-# Webhook testen
-.\automations\discord-notifications\test-webhook.ps1
-```
-
----
-
-## 📚 Dokumentation
-
-| Dokument | Beschreibung |
-|----------|--------------|
-| [📖 Quick-Start](documentation/QUICK-START.md) | In 2 Minuten startklar |
-| [🎬 Live-Demo Guide](documentation/LIVE-DEMO-GUIDE.md) | Perfekte Präsentation |
-| [🔐 Secrets](documentation/SECRETS.md) | Webhook-Konfiguration |
-| [✅ Setup Checklist](documentation/SETUP-CHECKLIST.md) | Komplette Anleitung |
-| [📁 Repository Overview](documentation/REPOSITORY-OVERVIEW.md) | Datei-Struktur |
-| [🤝 Contributing](documentation/CONTRIBUTING.md) | Beitragen zum Projekt |
-
-**Vollständige Dokumentation**: [documentation/](documentation/) Ordner
-
----
-
-## 🔗 Links
-
-- 🌐 [Live Website](https://dinesnimalthas.github.io/Demo-Gruppe-12/)
-- 📊 [Automation Dashboard 🔴](https://dinesnimalthas.github.io/Demo-Gruppe-12/automation-dashboard.html)
-- ⚙️ [GitHub Actions](https://github.com/dinesnimalthas/Demo-Gruppe-12/actions)
-- 📚 [Automations Docs](./automations/)
-
----
-
-## 🎓 Projekt-Info
-
-**Hochschule Luzern** | IT Project Basics | HS 2025
-
-**Made with ❤️ by Gruppe 12**
-
----
-
-## 📝 Lizenz
-
-MIT License - Demo für Bildungszwecke
+**🎓 HSLU IT Project Basics | HS 2025 | Made with ❤️ by Gruppe 12**
 
 

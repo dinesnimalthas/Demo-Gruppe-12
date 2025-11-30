@@ -24,13 +24,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Inject Token into immoflow.js
+      - name: Inject GitHub Token
         run: |
-          # Ersetze PLACEHOLDER_TOKEN mit echtem Token aus Secret
+          echo "🔧 Injecting GitHub Token into immoflow.js..."
           sed -i "s/PLACEHOLDER_TOKEN/${{ secrets.TOKEN_ACTIONS_2 }}/g" docs/immoflow.js
-          # Deaktiviere Demo-Modus für Production
-          sed -i "s/DEMO_MODE: false/DEMO_MODE: false/g" docs/immoflow.js
-          echo "✅ Token injiziert in immoflow.js"
+          echo "✅ Token successfully injected"
+          echo "📝 Token length: $(echo '${{ secrets.TOKEN_ACTIONS_2 }}' | wc -c) characters"
           
       - name: Setup Pages
         uses: actions/configure-pages@v4

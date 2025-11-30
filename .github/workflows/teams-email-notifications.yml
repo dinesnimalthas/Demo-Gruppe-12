@@ -26,6 +26,7 @@ jobs:
           TEAMS_WEBHOOK: ${{ secrets.TEAMS_WEBHOOK_URL }}
         with:
           script: |
+            console.log('🔔 Checking if issue needs critical alert...');
             const issue = context.payload.issue;
             const labels = issue.labels.map(label => label.name.toLowerCase());
             
@@ -37,7 +38,7 @@ jobs:
             );
             
             if (!isCritical) {
-              console.log('Issue ist nicht kritisch, keine Benachrichtigung');
+              console.log('ℹ️ Issue ist nicht kritisch, keine Benachrichtigung');
               return;
             }
             

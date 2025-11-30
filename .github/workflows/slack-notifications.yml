@@ -28,21 +28,40 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
           script: |
+            console.log('📢 Preparing Slack notification for issue...');
             const webhook = process.env.SLACK_WEBHOOK;
             
             if (!webhook) {
-              console.log('⚠️ Slack webhook not configured');
+              console.log('⚠️ Slack webhook not configured - skipping');
               return;
             }
             
             const issue = context.payload.issue;
+            const labels = issue.labels.map(l => l.name);
             
             // Determine issue type and color
             let color = '#2196F3'; // Blue
             let emoji = '📋';
             let issueType = 'New Issue';
             
-            if (issue.title.toLowerCase().includes('bug')) {
+            // ImmoFlow-spezifische Kategorien
+            if (labels.includes('viewing')) {
+              color = '#4CAF50';
+              emoji = '🏡';
+              issueType = 'Besichtigungstermin';
+            } else if (labels.includes('financing')) {
+              color = '#FF9800';
+              emoji = '💰';
+              issueType = 'Finanzierungsanfrage';
+            } else if (labels.includes('contract')) {
+              color = '#9C27B0';
+              emoji = '📄';
+              issueType = 'Vertragsangelegenheit';
+            } else if (labels.includes('support')) {
+              color = '#2196F3';
+              emoji = '🤝';
+              issueType = 'Support-Anfrage';
+            } else if (issue.title.toLowerCase().includes('bug')) {
               color = '#F44336'; // Red
               emoji = '🐛';
               issueType = 'Bug Report';
