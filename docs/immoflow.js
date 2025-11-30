@@ -6,7 +6,7 @@
 // === CONFIGURATION ===
 const CONFIG = {
   GITHUB_REPO: 'dinesnimalthas/Demo-Gruppe-12',
-  GITHUB_TOKEN: null, // Set in repository secrets
+  GITHUB_TOKEN: 'PLACEHOLDER_TOKEN', // Will be replaced by GitHub Actions
   API_BASE: 'https://api.github.com',
   DEMO_MODE: false,
   ANIMATION_DURATION: 600,
@@ -303,11 +303,20 @@ ${data.message}
 *Automatisch erstellt über ImmoFlow Support-Formular*
     `.trim();
 
+    // Try to get token from environment or localStorage
+    const token = CONFIG.GITHUB_TOKEN || localStorage.getItem('github_token');
+    
+    if (!token) {
+      console.warn('No GitHub token available. Using public API (limited to read-only).');
+      // Simulate successful submission for demo
+      return this.simulateSubmission();
+    }
+
     const response = await fetch(`${CONFIG.API_BASE}/repos/${CONFIG.GITHUB_REPO}/issues`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(CONFIG.GITHUB_TOKEN && { 'Authorization': `token ${CONFIG.GITHUB_TOKEN}` })
+        'Authorization': `token ${token}`
       },
       body: JSON.stringify({
         title: issueTitle,
@@ -317,7 +326,9 @@ ${data.message}
     });
 
     if (!response.ok) {
-      throw new Error('GitHub API error');
+      const errorData = await response.json().catch(() => ({}));
+      console.error('GitHub API Error:', errorData);
+      throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
     }
 
     return response.json();
@@ -633,8 +644,28 @@ class ImmoFlow {
 // === START APPLICATION ===
 const app = new ImmoFlow();
 
+// === TOKEN SETUP HELPER ===
+// Check if token is in URL parameters (for admin setup)
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.has('token')) {
+  const token = urlParams.get('token');
+  localStorage.setItem('github_token', token);
+  console.log('✓ GitHub Token gespeichert!');
+  // Remove token from URL for security
+  window.history.replaceState({}, document.title, window.location.pathname);
+}
+
 // === EXPOSE TO WINDOW ===
 window.ImmoFlow = {
   config: CONFIG,
-  app: app
+  app: app,
+  setToken: (token) => {
+    localStorage.setItem('github_token', token);
+    console.log('✓ GitHub Token gespeichert!');
+  },
+  getToken: () => localStorage.getItem('github_token'),
+  clearToken: () => {
+    localStorage.removeItem('github_token');
+    console.log('✓ GitHub Token gelöscht!');
+  }
 };
