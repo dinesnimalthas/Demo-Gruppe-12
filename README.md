@@ -10,6 +10,20 @@ Moderne Immobilienplattform mit vollautomatisierten GitHub-Workflows für Kunden
 
 ---
 
+## 🎨 **NEU: Enhanced Website with Modern Design!**
+
+Die Website wurde komplett überarbeitet mit:
+- ✨ **Glassmorphism** & Gradient Effects
+- 🎬 **Scroll Animations** & 3D Card Tilt
+- ⚡ **Performance Optimized** (Lazy Loading, Code Splitting)
+- 🎯 **Interactive Features** (Animated Counters, Live Search, Parallax)
+- 📱 **Fully Responsive** mit Dark Mode Support
+
+👉 **[WEBSITE-ENHANCEMENT.md](docs/WEBSITE-ENHANCEMENT.md)** - Komplette Feature-Übersicht  
+👉 **[ANIMATION-GUIDE.md](docs/ANIMATION-GUIDE.md)** - Animation Reference
+
+---
+
 ## 🚀 Quick Start
 
 ```powershell
