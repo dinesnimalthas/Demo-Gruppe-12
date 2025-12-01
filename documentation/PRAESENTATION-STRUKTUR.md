@@ -49,15 +49,21 @@
 
 **Demo 2: PR Size Labeler**
 ```
-1. Öffne VS Code (schon vorbereitet)
-2. Zeige Branch "demo-feature" 
-3. Terminal: git push origin demo-feature
-4. GitHub: Erstelle PR mit CLI
-   gh pr create --title "Update Hero Section" --body "Demo PR"
-5. → Wechsel zu PR: Labels erscheinen (size: S, frontend)
-6. → Zeige Bot-Kommentar: "📊 Total Changes: 15 lines"
-7. → Actions Tab: pr-size-labeler läuft
-8. Sage: "3 Workflows arbeiten parallel"
+1. VS Code ist offen (auf main branch)
+2. Terminal: git checkout -b demo-feature
+3. Öffne docs/index.html (oder eine andere kleine Datei)
+4. Ändere EINE Zeile (z.B. Zeile 5: <title>ImmoFlow - Live Demo 2025</title>)
+5. Speichern (Ctrl+S)
+6. Terminal: 
+   git add .
+   git commit -m "feat: Update title for demo"
+   git push origin demo-feature
+7. Terminal: gh pr create --title "✨ Update Hero Section" --body "Live Demo PR"
+8. → Wechsel zu GitHub PR Tab
+9. → Refresh → Labels erscheinen (size: XS oder S, frontend)
+10. → Zeige Bot-Kommentar: "📊 Total Changes: 2-3 lines, Size: XS"
+11. → Actions Tab: Zeige pr-size-labeler + labeler laufen
+12. Sage: "2-3 Workflows parallel - Size-Analyse + File-Labeling + Review-Assignment"
 ```
 
 **Timing**: Nicht auf langsame Workflows warten → parallel zeigen
@@ -247,11 +253,12 @@
 
 #### Git vorbereiten:
 ```powershell
-# Demo-Branch erstellen (VORHER!)
-git checkout -b demo-feature
-# Kleine Änderung in docs/index.html (Zeile 5 markieren)
-# NICHT committen - das machst du live!
+# Stelle sicher dass du auf main bist
 git checkout main
+git pull origin main
+
+# NICHTS vorher vorbereiten - du erstellst den Branch LIVE!
+# Das zeigt dass alles "on the fly" funktioniert
 ```
 
 #### Formular-Text bereit (Copy-Paste):
@@ -271,8 +278,10 @@ Oder: Automation Issue → Perfekt für ImmoFlow-Demo!
 - ✅ Issue erstellen (dann löschen)
 - ✅ Website-Formular funktioniert
 - ✅ Dashboard lädt
+- ✅ `gh` CLI funktioniert (teste: `gh auth status`)
 - ✅ Git push funktioniert
 - ✅ Webhooks funktionieren (oder wissen dass sie fehlen)
+- ✅ NICHT: Demo-Branch erstellen (machst du live!)
 
 ### WÄHREND deiner Demo:
 
@@ -312,13 +321,13 @@ Oder: Automation Issue → Perfekt für ImmoFlow-Demo!
 # Projektverzeichnis
 cd "C:\Users\dines\OneDrive - Hochschule Luzern\Dokumente\SJ_01\Semester 1\IT Project Basics\Code\Demo-Gruppe-12"
 
-# Demo 2: PR erstellen
-git checkout demo-feature
-# [VS Code: Zeige Änderung]
+# Demo 2: PR erstellen (ALLES LIVE!)
+git checkout -b demo-feature
+# [VS Code: Ändere docs/index.html Zeile 5]
 git add .
-git commit -m "feat: Update hero section for demo"
+git commit -m "feat: Update title for live demo"
 git push origin demo-feature
-gh pr create --title "✨ Update Hero Section" --body "Live Demo PR"
+gh pr create --title "✨ Update Website Title" --body "Live Demo PR"
 
 # Demo 5: Deploy
 git checkout main
