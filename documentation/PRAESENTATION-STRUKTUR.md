@@ -27,14 +27,24 @@
 ```
 1. Öffne GitHub Issues
 2. Klicke "New Issue"
-3. Tippe live:
+3. → TEMPLATES erscheinen! Zeige sie kurz:
+   - 🔧 Automation Issue
+   - 🐛 Bug Report
+   - 📚 Documentation
+   - ✨ Feature Request
+   - 💬 Diskussion / Frage
+   - 📖 Dokumentation
+   - 🎬 Live Demo Guide
+4. Wähle "Bug Report" (oder "Automation Issue" für ImmoFlow-Demo)
+5. Template öffnet sich mit vorausgefüllten Feldern
+6. Fülle aus (schnell):
    Title: "Besichtigungstermin Villa Luzern"
-   Body: "Ich möchte die 5-Zimmer Villa besichtigen"
-4. Submit Issue
-5. → Wechsel zu Actions Tab (Workflows laufen!)
-6. → Zurück zu Issue: Labels automatisch gesetzt (viewing, support, needs triage)
-7. → Zeige Welcome-Kommentar vom Bot
-8. Sage: "Alles automatisch in 10 Sekunden"
+   Beschreibung: "Ich möchte die 5-Zimmer Villa besichtigen"
+7. Submit Issue
+8. → Wechsel zu Actions Tab (Workflows laufen!)
+9. → Zurück zu Issue: Labels automatisch gesetzt (viewing, bug/support, needs triage)
+10. → Zeige Welcome-Kommentar vom Bot
+11. Sage: "Templates + Auto-Labeling + Bot-Kommentar - alles automatisch"
 ```
 
 **Demo 2: PR Size Labeler**
@@ -246,11 +256,15 @@ git checkout main
 
 #### Formular-Text bereit (Copy-Paste):
 ```
-Name: Max Mustermann
-Email: max@demo.com
-Kategorie: Besichtigungstermin
-Betreff: Villa am See Luzern
-Nachricht: Ich interessiere mich für die 5-Zimmer Villa mit Seeblick. Wann wäre ein Besichtigungstermin möglich?
+# Falls du "Blank issue" verwendest:
+Title: Besichtigungstermin Villa am See
+Body: Ich interessiere mich für die 5-Zimmer Villa mit Seeblick in Luzern. 
+Wann wäre ein Besichtigungstermin möglich?
+
+# Falls du Template verwendest:
+Einfach die vorausgefüllten Felder anpassen
+Bug Report → Ändere zu: "Problem mit Besichtigungstermin-Buchung"
+Oder: Automation Issue → Perfekt für ImmoFlow-Demo!
 ```
 
 #### Test VORHER (1 Stunde vor Präsentation):
