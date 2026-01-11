@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Issue Opened Notification
         if: github.event_name == 'issues' && github.event.action == 'opened'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
@@ -127,7 +127,7 @@ jobs:
 
       - name: PR Opened Notification
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
@@ -215,7 +215,7 @@ jobs:
 
       - name: PR Merged Notification
         if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
@@ -272,7 +272,7 @@ jobs:
 
       - name: Release Notification
         if: github.event_name == 'release' && github.event.action == 'published'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
@@ -339,7 +339,7 @@ jobs:
 
       - name: High Priority Issue Alert
         if: github.event_name == 'issues' && github.event.action == 'labeled'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
